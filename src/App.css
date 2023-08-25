@@ -1,0 +1,26 @@
+.App {
+    height          : 100vh;
+    background-color: white;
+    display         : flex;
+    flex-direction  : column;
+}
+
+.pc-nav-active {
+    @apply relative bottom-[-1px] px-3 py-1.5 w-36 border border-b-[#fff] border-solid border-[#d0d7de] rounded-t-lg bg-white;
+}
+
+.pc-nav {
+    @apply border-[#f6f8fa] border-t-2 border-x-2 border-solid px-6 py-1.5 text-slate-950 cursor-pointer inline-block
+}
+
+.pc-border {
+    @apply border border-solid border-[#d0d7de] rounded-md
+}
+
+.pc-dot-status {
+    @apply w-4 h-4 bg-[#0969da] rounded-lg
+}
+
+.pc-css-todo {
+    @apply pt-3 pb-3 pc-border px-4 flex flex-col justify-between bg-white shadow
+}
