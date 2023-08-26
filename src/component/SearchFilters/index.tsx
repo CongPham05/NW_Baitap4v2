@@ -14,7 +14,7 @@ const Search: React.FC<SearchProps> = () => {
     }
 
     return (
-        <div className='border-t border-solid border-[#d0d7de] h-18 flex items-center p-4 '>
+        <div className='border-t border-solid border-[#d0d7de] h-18 flex items-center p-3 '>
             <input type="text" placeholder='Filter by keyword or by field'
                 className='w-[800px] border h-9 leading-8 text-[16px] pl-6 border-solid outline-none border-[#d0d7de] rounded-md p-1.5 focus:border-[#218bff] '
                 onChange={handleSearch}

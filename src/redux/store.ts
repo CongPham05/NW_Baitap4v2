@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import dataReducer from '../pages/Board/dataSlice';
+import tasksReducer from '../pages/Board/tasksSlice';
+import colsReducer from '../pages/Board/colsSlice';
 import filterReducer from '../component/SearchFilters/filtersSlice'
 export const store = configureStore({
     reducer: {
-        dataList: dataReducer,
+        tasks: tasksReducer,
+        cols: colsReducer,
         filters: filterReducer,
     },
 })

@@ -1,7 +1,8 @@
-import PlusIcon from "../../icons/PlusIcon";
 import { useMemo, useState } from "react";
-import { Column, Id, Task } from "../../types"
-import ColumnContainer from "../../component/ColumnContainer";
+import { createPortal } from "react-dom";
+import { useSelector } from 'react-redux';
+import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import { v4 as uuidv4 } from 'uuid';
 import {
     DndContext,
     DragEndEvent,
@@ -12,9 +13,11 @@ import {
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import { createPortal } from "react-dom";
+import { Column, Id, Task } from "../../types"
+import ColumnContainer from "../../component/ColumnContainer";
+import PlusIcon from "../../icons/PlusIcon";
 import TaskCard from "../../component/TaskCard";
+import { tasksSelector, colsSelector } from "../../redux/selectors";
 
 const defaultCols: Column[] = [
     {
@@ -34,12 +37,12 @@ const defaultCols: Column[] = [
         title: "Done",
     },
 ];
-
 const defaultTasks: Task[] = [
     {
         id: "1",
         columnId: "new",
         content: "Bài 1",
+
     },
     {
         id: "2",
@@ -74,11 +77,6 @@ const defaultTasks: Task[] = [
         content: "Bài 8",
     },
     {
-        id: "9",
-        columnId: "new",
-        content: "Bài 9",
-    },
-    {
         id: "10",
         columnId: "delay",
         content: "Bài 10",
@@ -91,12 +89,18 @@ const defaultTasks: Task[] = [
 
 ];
 
+
 function Board() {
+    // const defaultTasks = useSelector(tasksSelector)
+    // const defaultCols = useSelector(colsSelector)
+
+
 
     const [columns, setColumns] = useState<Column[]>(defaultCols);
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
     const [tasks, setTasks] = useState<Task[]>(defaultTasks);
+
     const [activeColumn, setActiveColumn] = useState<Column | null>(null);
     const [activeTask, setActiveTask] = useState<Task | null>(null);
 
@@ -109,36 +113,37 @@ function Board() {
     );
 
     return (
-        <div className='pt-2 pb-20 pl-8 flex flex-grow overflow-y-hidden gap-2'>
+        <div className='pt-1 pb-8 pl-8 flex flex-grow overflow-y-hidden gap-2 '>
             <DndContext
                 sensors={sensors}
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
                 onDragOver={onDragOver}
             >
-                <div className="flex gap-4">
-                    <div className="flex gap-4">
-                        <SortableContext items={columnsId}>
-                            {columns.map((col) => (
-                                <ColumnContainer
-                                    key={col.id}
-                                    column={col}
-                                    deleteColumn={deleteColumn}
-                                    updateColumn={updateColumn}
-                                    createTask={createTask}
-                                    deleteTask={deleteTask}
-                                    updateTask={updateTask}
-                                    tasks={tasks.filter((task) => task.columnId === col.id)}
-                                />
-                            ))}
-                        </SortableContext>
-                    </div>
-                    <div onClick={() => { createNewColumn() }}
-                        className='hover:bg-[#fff] flex-shrink-0  cursor-pointer w-11 h-11  bg-[#f6f8fa] 
+                <div className="flex gap-2">
+
+                    <SortableContext items={columnsId}>
+                        {columns.map((col) => (
+                            <ColumnContainer
+                                key={col.id}
+                                column={col}
+                                deleteColumn={deleteColumn}
+                                updateColumn={updateColumn}
+                                createTask={createTask}
+                                deleteTask={deleteTask}
+                                updateTask={updateTask}
+                                deleteAllTask={deleteAllTask}
+                                tasks={tasks.filter((task) => task.columnId === col.id)}
+                            />
+                        ))}
+
+                        <div onClick={() => { createNewColumn() }}
+                            className='hover:bg-[#fff] flex-shrink-0  cursor-pointer w-11 h-11  bg-[#f6f8fa] 
                                     border border-solid border-[#d0d7de] rounded-md flex items-center justify-center'
-                    >
-                        <PlusIcon />
-                    </div>
+                        >
+                            <PlusIcon />
+                        </div>
+                    </SortableContext>
                 </div>
 
                 {createPortal(
@@ -150,6 +155,7 @@ function Board() {
                                 updateColumn={updateColumn}
                                 createTask={createTask}
                                 deleteTask={deleteTask}
+                                deleteAllTask={deleteAllTask}
                                 updateTask={updateTask}
                                 tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
                             />
@@ -164,14 +170,15 @@ function Board() {
                     </DragOverlay>, document.body
                 )}
             </DndContext>
+
         </div>
     );
 
-    function createTask(columnId: Id) {
+    function createTask(columnId: Id, inputValue: string) {
         const newTask: Task = {
-            id: generateId(),
+            id: uuidv4(),
             columnId,
-            content: `Task ${tasks.length + 1}`,
+            content: inputValue,
         };
 
         setTasks([...tasks, newTask]);
@@ -181,6 +188,13 @@ function Board() {
         const newTasks = tasks.filter((task) => task.id !== id);
         setTasks(newTasks);
     }
+
+    function deleteAllTask(id: Id) {
+        const newTasks = tasks.filter((task) => task.columnId !== id);
+        setTasks(newTasks);
+
+    }
+
 
     function updateTask(id: Id, content: string) {
         const newTasks = tasks.map((task) => {
@@ -193,7 +207,7 @@ function Board() {
 
     function createNewColumn() {
         const columnToAdd: Column = {
-            id: generateId(),
+            id: uuidv4(),
             title: `Column ${columns.length + 1}`,
         };
 
@@ -299,8 +313,5 @@ function Board() {
     }
 }
 
-function generateId() {
-    return Math.floor(Math.random() * 10001);
-}
 
 export default Board;

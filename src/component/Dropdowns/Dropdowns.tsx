@@ -1,15 +1,19 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ArchiveBoxIcon, TrashIcon, PencilIcon, EyeSlashIcon, SparklesIcon } from '@heroicons/react/24/outline'
+import { Column, Id } from '../../types';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
-interface ColumnProps {
-
+interface DropdownsProps {
+    deleteColumn: (id: Id) => void;
+    column: Column;
+    deleteAllTask: (id: Id) => void;
 }
 
-const Column: React.FC<ColumnProps> = () => {
+const Dropdowns: React.FC<DropdownsProps> = ({ deleteColumn, column, deleteAllTask }) => {
+
     return (
         <Menu as="div" className="relative inline-block text-left ">
             <div>
@@ -44,13 +48,13 @@ const Column: React.FC<ColumnProps> = () => {
                         </Menu.Item>
                         <Menu.Item >
                             {({ active }) => (
-                                <div className={classNames(
-                                    active ? 'bg-gray-100 text-gray-900 ' : ' text-gray-700', 'flex items-center py-1.5 px-4 gap-2 text-red-600 mb-1'
-                                )}>
+                                <div onClick={() => deleteAllTask(column.id)}
+                                    className={classNames(
+                                        active ? 'bg-gray-100 text-gray-900 ' : ' text-gray-700', 'flex items-center py-1.5 px-4 gap-2 text-red-600 mb-1'
+                                    )}>
                                     <TrashIcon className="h-5 w-5  text-red-600" aria-hidden="true" />
                                     <a href="#" className='  text-sm '>Delete all </a>
                                 </div>
-
                             )}
                         </Menu.Item>
                     </div>
@@ -92,9 +96,10 @@ const Column: React.FC<ColumnProps> = () => {
 
                         <Menu.Item >
                             {({ active }) => (
-                                <div className={classNames(
-                                    active ? 'bg-gray-100 text-gray-900 ' : ' text-gray-700', 'flex items-center py-1.5 px-4 gap-2 text-red-600 mb-1'
-                                )}>
+                                <div onClick={() => { deleteColumn(column.id) }}
+                                    className={classNames(
+                                        active ? 'bg-gray-100 text-gray-900 ' : ' text-gray-700', 'flex items-center py-1.5 px-4 gap-2 text-red-600 mb-1'
+                                    )}>
                                     <TrashIcon className="h-5 w-5  text-red-600" aria-hidden="true" />
                                     <a href="#" className='  text-sm '> Delete</a>
                                 </div>
@@ -108,4 +113,4 @@ const Column: React.FC<ColumnProps> = () => {
     );
 };
 
-export default Column;
+export default Dropdowns;

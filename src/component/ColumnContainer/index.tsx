@@ -1,30 +1,65 @@
+
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { Column, Id, Task } from '../../types';
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
+import { Column, Id, Task } from '../../types';
 import PlusIcon from "../../icons/PlusIcon";
 import TaskCard from "../TaskCard";
+import Dropdowns from "../Dropdowns/Dropdowns";
 
 interface Props {
     column: Column;
     deleteColumn: (id: Id) => void;
     updateColumn: (id: Id, title: string) => void;
-    createTask: (columnId: Id) => void;
+    createTask: (columnId: Id, inputValue: string) => void;
     updateTask: (id: Id, content: string) => void;
     deleteTask: (id: Id) => void;
+    deleteAllTask: (id: Id) => void;
     tasks: Task[];
 }
 
-function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks, deleteTask, updateTask }: Props) {
+function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks, deleteTask, deleteAllTask, updateTask }: Props) {
 
     const [editMode, setEditMode] = useState(false);
     const tasksIds = useMemo(() => {
         return tasks.map((task) => task.id);
     }, [tasks]);
 
+    const [showInput, setShowInput] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        const handleOutsideClick = (event: MouseEvent) => {
+            if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+                setShowInput(false);
+            }
+        };
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, []);
+
+    const handleShowInput = () => {
+        setShowInput(true);
+    };
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+    };
+
+    const handleInputEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter' && inputValue.length > 0) {
+            createTask(column.id, inputValue);
+            setInputValue('');
+            setShowInput(false);
+        }
+    };
+
     const { setNodeRef, attributes, listeners, transform, transition, isDragging }
         = useSortable({
-            id: column.id, data: { type: "Column", column, },
+            id: column.id, data: { type: "Column", column },
             disabled: editMode,
         });
 
@@ -33,24 +68,24 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
     if (isDragging) {
         return (
             <div ref={setNodeRef} style={style}
-                className="border-2 w-[390px]" >
+                className="border-2 w-[350px]" >
             </div>
         );
     }
-
     return (
         <div ref={setNodeRef} style={style}
-            className="flex-col flex w-[390px] bg-[#f6f8fa] pc-border "
+            {...attributes}
+            {...listeners}
+            className="flex-col flex w-[350px] bg-[#f6f8fa] pc-border hover:cursor-grab relative "
         >
+
             {/* Column title */}
-            <div onClick={() => { setEditMode(true) }}
-                {...attributes}
-                {...listeners}
-                className=" py-3.5 px-4 flex items-center justify-between " >
-                <div className="flex gap-2 text-lg font-semibold">
+            <div className=" py-2 px-4 flex items-center justify-between " >
+                <div onClick={() => { setEditMode(true) }}
+                    className=" gap-2 text-[17px] font-semibold flex items-center cursor-pointer hover:border-b hover:border-[#0969da] ">
                     {!editMode && column.title}
                     {editMode && (
-                        <input className="text-lg font-semibold  border rounded outline-none px-2"
+                        <input className="text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
                             value={column.title}
                             onChange={(e) => updateColumn(column.id, e.target.value)}
                             autoFocus
@@ -64,19 +99,14 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                         />
                     )}
                     <div className='w-5 h-5 bg-[#e8ebef]  rounded-xl flex items-center justify-center'>
-                        <span className='text-[#656d76] text-sm block'>0</span>
+                        <span className='text-[#656d76] text-sm block'>{tasks.length}</span>
                     </div>
                 </div>
-                <button onClick={() => { deleteColumn(column.id) }}
-                    className=" hover:bg-[#f3f4f6] p-1 rounded-lg font-semibold text-[#656d76] " >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6   ">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                    </svg>
-                </button>
+                <Dropdowns deleteColumn={deleteColumn} column={column} deleteAllTask={deleteAllTask} />
             </div>
 
             {/* Column task container */}
-            <div className=" flex-grow p-2 overflow-x-hidden overflow-y-auto">
+            <div className="flex flex-col gap-2 flex-grow px-2 pb-2 overflow-x-hidden overflow-y-auto">
                 <SortableContext items={tasksIds}>
                     {tasks.map((task) => (
                         <TaskCard
@@ -89,13 +119,24 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                 </SortableContext>
             </div>
             {/* Column footer */}
-            <button className="flex gap-2 items-center rounded-md p-4 hover:bg-[#eeeff2] hover:text-black "
-                onClick={() => { createTask(column.id) }}
+            <button className="flex gap-2 items-center rounded-md p-3 hover:bg-[#eeeff2] text-[#656d76] "
+                onClick={handleShowInput}
             >
                 <PlusIcon />
-                Add task
+                Add item
             </button>
+            {showInput && (
+                <input ref={inputRef} autoFocus type="text" className=" absolute bottom-0 w-full h-12 border-none cursor-auto outline-blue-500 px-4"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onKeyDown={handleInputEnter}
+                />
+            )
+            }
+
         </div>
+
+
     );
 }
 
