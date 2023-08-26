@@ -59,7 +59,8 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
 
     const { setNodeRef, attributes, listeners, transform, transition, isDragging }
         = useSortable({
-            id: column.id, data: { type: "Column", column },
+            id: column.id,
+            data: { type: "Column", column },
             disabled: editMode,
         });
 
@@ -106,8 +107,9 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
             </div>
 
             {/* Column task container */}
-            <div className="flex flex-col gap-2 flex-grow px-2 pb-2 overflow-x-hidden overflow-y-auto">
-                <SortableContext items={tasksIds}>
+
+            <SortableContext items={tasksIds}>
+                <div className="flex flex-col gap-2 flex-grow px-2 pb-2 overflow-x-hidden overflow-y-auto">
                     {tasks.map((task) => (
                         <TaskCard
                             key={task.id}
@@ -116,8 +118,8 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                             updateTask={updateTask}
                         />
                     ))}
-                </SortableContext>
-            </div>
+                </div>
+            </SortableContext>
             {/* Column footer */}
             <button className="flex gap-2 items-center rounded-md p-3 hover:bg-[#eeeff2] text-[#656d76] "
                 onClick={handleShowInput}

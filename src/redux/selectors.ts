@@ -3,8 +3,8 @@ import type { RootState } from '../redux/store'
 
 
 export const tasksSelector = (state: RootState) => state.tasks;
-export const colsSelector = (state: RootState) => state.cols;
-export const filterSearchSelector = (state: RootState) => state.filters.search;
+export const colsSelector = (state: RootState) => state.columns;
+// export const filterSearchSelector = (state: RootState) => state.filters.search;
 
 // export const todosRemainningSelector = createSelector(
 //     todoListsSelector,

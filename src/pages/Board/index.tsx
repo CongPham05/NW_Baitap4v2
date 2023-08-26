@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { useSelector } from 'react-redux';
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import { v4 as uuidv4 } from 'uuid';
+import { useSelector, useDispatch } from 'react-redux';
+import { SortableContext } from "@dnd-kit/sortable";
 import {
     DndContext,
     DragEndEvent,
@@ -18,88 +17,15 @@ import ColumnContainer from "../../component/ColumnContainer";
 import PlusIcon from "../../icons/PlusIcon";
 import TaskCard from "../../component/TaskCard";
 import { tasksSelector, colsSelector } from "../../redux/selectors";
-
-const defaultCols: Column[] = [
-    {
-        id: "new",
-        title: "New",
-    },
-    {
-        id: "inProgress",
-        title: "In progress",
-    },
-    {
-        id: 'delay',
-        title: "Delay"
-    },
-    {
-        id: "done",
-        title: "Done",
-    },
-];
-const defaultTasks: Task[] = [
-    {
-        id: "1",
-        columnId: "new",
-        content: "Bài 1",
-
-    },
-    {
-        id: "2",
-        columnId: "new",
-        content:
-            "Bài 2",
-    },
-    {
-        id: "3",
-        columnId: "inProgress",
-        content: "Bài 3",
-    },
-    {
-        id: "4",
-        columnId: "inProgress",
-        content: "Bài 4",
-    },
-    {
-        id: "5",
-        columnId: "done",
-        content: "Bài 5",
-    },
-    {
-        id: "6",
-        columnId: "done",
-        content: "Bài 6",
-    },
-
-    {
-        id: "8",
-        columnId: "new",
-        content: "Bài 8",
-    },
-    {
-        id: "10",
-        columnId: "delay",
-        content: "Bài 10",
-    },
-    {
-        id: "11",
-        columnId: "delay",
-        content: "Bài 11",
-    },
-
-];
+import { addTask, moveTaskToColumn, reorderTasks, delTask, deleteAllTasksInColumn } from "./tasksSlice";
+import { addColumn, moveColumn, deleteCol, updateCol } from "./colsSlice";
 
 
 function Board() {
-    // const defaultTasks = useSelector(tasksSelector)
-    // const defaultCols = useSelector(colsSelector)
-
-
-
-    const [columns, setColumns] = useState<Column[]>(defaultCols);
+    const dispatch = useDispatch();
+    const tasks = useSelector(tasksSelector)
+    const columns = useSelector(colsSelector)
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
-
-    const [tasks, setTasks] = useState<Task[]>(defaultTasks);
 
     const [activeColumn, setActiveColumn] = useState<Column | null>(null);
     const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -175,24 +101,15 @@ function Board() {
     );
 
     function createTask(columnId: Id, inputValue: string) {
-        const newTask: Task = {
-            id: uuidv4(),
-            columnId,
-            content: inputValue,
-        };
-
-        setTasks([...tasks, newTask]);
+        dispatch(addTask({ columnId, inputValue }))
     }
 
     function deleteTask(id: Id) {
-        const newTasks = tasks.filter((task) => task.id !== id);
-        setTasks(newTasks);
+        dispatch(delTask({ id }))
     }
 
     function deleteAllTask(id: Id) {
-        const newTasks = tasks.filter((task) => task.columnId !== id);
-        setTasks(newTasks);
-
+        dispatch(deleteAllTasksInColumn({ id }))
     }
 
 
@@ -202,33 +119,21 @@ function Board() {
             return { ...task, content };
         });
 
-        setTasks(newTasks);
+        console.log(newTasks);
+
     }
 
     function createNewColumn() {
-        const columnToAdd: Column = {
-            id: uuidv4(),
-            title: `Column ${columns.length + 1}`,
-        };
-
-        setColumns([...columns, columnToAdd]);
+        dispatch(addColumn())
     }
 
     function deleteColumn(id: Id) {
-        const filteredColumns = columns.filter((col) => col.id !== id);
-        setColumns(filteredColumns);
-
-        const newTasks = tasks.filter((t) => t.columnId !== id);
-        setTasks(newTasks);
+        dispatch(deleteCol({ id }))
+        dispatch(deleteAllTasksInColumn({ id }))
     }
 
     function updateColumn(id: Id, title: string) {
-        const newColumns = columns.map((col) => {
-            if (col.id !== id) return col;
-            return { ...col, title };
-        });
-
-        setColumns(newColumns);
+        dispatch(updateCol({ id, title }))
     }
 
     function onDragStart(event: DragStartEvent) {
@@ -258,19 +163,13 @@ function Board() {
         const isActiveAColumn = active.data.current?.type === "Column";
         if (!isActiveAColumn) return;
 
-        console.log("DRAG END");
-
-        setColumns((columns) => {
-            const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
-
-            const overColumnIndex = columns.findIndex((col) => col.id === overId);
-
-            return arrayMove(columns, activeColumnIndex, overColumnIndex);
-        });
+        dispatch(moveColumn({ activeId, overId }))
     }
 
     function onDragOver(event: DragOverEvent) {
         const { active, over } = event;
+        console.log({ active, over });
+
         if (!over) return;
 
         const activeId = active.id;
@@ -285,30 +184,22 @@ function Board() {
 
         // Im dropping a Task over another Task
         if (isActiveATask && isOverATask) {
-            setTasks((tasks) => {
-                const activeIndex = tasks.findIndex((t) => t.id === activeId);
-                const overIndex = tasks.findIndex((t) => t.id === overId);
-
-                if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
-                    tasks[activeIndex].columnId = tasks[overIndex].columnId;
-                    return arrayMove(tasks, activeIndex, overIndex - 1);
-                }
-
-                return arrayMove(tasks, activeIndex, overIndex);
-            });
+            dispatch(reorderTasks({ activeId, overId }))
         }
 
-        const isOverAColumn = over.data.current?.type === "Column";
+        const isOverAColumn = over.data.current?.task.columnId === "Column";
+        console.log({ isActiveATask, isOverAColumn });
 
         // Im dropping a Task over a column
         if (isActiveATask && isOverAColumn) {
-            setTasks((tasks) => {
-                const activeIndex = tasks.findIndex((t) => t.id === activeId);
+            dispatch(moveTaskToColumn({ activeId, overId }))
+            // setTasks((tasks) => {
+            //     const activeIndex = tasks.findIndex((t) => t.id === activeId);
 
-                tasks[activeIndex].columnId = overId;
-                console.log("DROPPING TASK OVER COLUMN", { activeIndex });
-                return arrayMove(tasks, activeIndex, activeIndex);
-            });
+            //     tasks[activeIndex].columnId = overId;
+            //     console.log("DROPPING TASK OVER COLUMN", { activeIndex });
+            //     return arrayMove(tasks, activeIndex, activeIndex);
+            // });
         }
     }
 }

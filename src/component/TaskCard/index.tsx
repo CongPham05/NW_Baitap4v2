@@ -18,7 +18,7 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
     const { setNodeRef, attributes, listeners, transform, transition, isDragging }
         = useSortable({
             id: task.id, data: { type: "Task", task },
-            disabled: false,
+            // disabled: false,
         });
     const style = { transition, transform: CSS.Transform.toString(transform) };
 
@@ -36,7 +36,7 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
             style={style}
             {...attributes}
             {...listeners}
-            className="pc-css-todo hover:cursor-grab group hover:border-[#0969da] relative">
+            className="pc-css-todo hover:cursor-grab group hover:border-[#0969da] relative ">
             <div className='flex items-center text-[#656d76] text-xs'>
                 <span className='inline-block w-5'>
                     <ChartPieIcon />

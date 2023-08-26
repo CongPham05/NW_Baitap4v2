@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { Task } from '../../types';
+import { arrayMove } from "@dnd-kit/sortable";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const initialState: Task[] = [
@@ -57,13 +59,54 @@ export const dataSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        addTodo: () => {
+        addTask: (state, action) => {
+            const { columnId, inputValue } = action.payload;
+            const newTask: Task = {
+                id: uuidv4(),
+                columnId,
+                content: inputValue,
+            };
+            state.push(newTask);
+        },
+        updateTask: () => {
 
+        },
+        delTask: (state, action) => {
+            const { id } = action.payload;
+            return state.filter(task => task.id !== id);
+
+        },
+        deleteAllTasksInColumn: (state, action) => {
+            const { id } = action.payload;
+            return state.filter((task) => task.columnId !== id);
+        },
+
+        // Action for reordering tasks within the same column
+        reorderTasks: (state, action) => {
+            const { activeId, overId } = action.payload;
+            const activeIndex = state.findIndex((t) => t.id === activeId);
+            const overIndex = state.findIndex((t) => t.id === overId);
+            console.log("DRAG TASK END IN COL");
+
+            // if (state[activeIndex].columnId != state[overIndex].columnId) {
+            //     state[activeIndex].columnId = state[overIndex].columnId;
+            //     return arrayMove(state, activeIndex, overIndex - 1);
+            // }
+            return arrayMove(state, activeIndex, overIndex);
+        },
+
+        // Action for moving a task to another column
+        moveTaskToColumn: (state, action) => {
+            const { activeId, overId } = action.payload;
+            const activeIndex = state.findIndex((t) => t.id === activeId);
+            state[activeIndex].columnId = overId;
+            console.log("DROPPING TASK OVER COLUMN", { activeIndex });
+            return arrayMove(state, activeIndex, activeIndex);
         },
     },
 })
 
-export const { addTodo } = dataSlice.actions
+export const { addTask, updateTask, delTask, deleteAllTasksInColumn, moveTaskToColumn, reorderTasks } = dataSlice.actions
 export default dataSlice.reducer
 
 
