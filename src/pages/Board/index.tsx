@@ -23,13 +23,13 @@ import { addColumn, moveColumn, deleteCol, updateCol } from "./colsSlice";
 
 function Board() {
     const dispatch = useDispatch();
-    const tasks = useSelector(tasksSelector)
     const columns = useSelector(colsSelector)
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-    const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+    const tasks = useSelector(tasksSelector)
     const [activeTask, setActiveTask] = useState<Task | null>(null);
 
+    const [activeColumn, setActiveColumn] = useState<Column | null>(null);
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -114,12 +114,12 @@ function Board() {
 
 
     function updateTask(id: Id, content: string) {
-        const newTasks = tasks.map((task) => {
-            if (task.id !== id) return task;
-            return { ...task, content };
-        });
+        // const newTasks = tasks.map((task) => {
+        //     if (task.id !== id) return task;
+        //     return { ...task, content };
+        // });
 
-        console.log(newTasks);
+        // console.log(newTasks);
 
     }
 
@@ -137,6 +137,7 @@ function Board() {
     }
 
     function onDragStart(event: DragStartEvent) {
+
         if (event.active.data.current?.type === "Column") {
             setActiveColumn(event.active.data.current.column);
             return;
@@ -168,8 +169,6 @@ function Board() {
 
     function onDragOver(event: DragOverEvent) {
         const { active, over } = event;
-        console.log({ active, over });
-
         if (!over) return;
 
         const activeId = active.id;
@@ -182,27 +181,17 @@ function Board() {
 
         if (!isActiveATask) return;
 
-        // Im dropping a Task over another Task
+        // Dropping a Task over another Task
         if (isActiveATask && isOverATask) {
             dispatch(reorderTasks({ activeId, overId }))
         }
+        const isOverAColumn = over.data.current?.type === "Column";
 
-        const isOverAColumn = over.data.current?.task.columnId === "Column";
-        console.log({ isActiveATask, isOverAColumn });
-
-        // Im dropping a Task over a column
+        // Dropping a Task over a column
         if (isActiveATask && isOverAColumn) {
             dispatch(moveTaskToColumn({ activeId, overId }))
-            // setTasks((tasks) => {
-            //     const activeIndex = tasks.findIndex((t) => t.id === activeId);
-
-            //     tasks[activeIndex].columnId = overId;
-            //     console.log("DROPPING TASK OVER COLUMN", { activeIndex });
-            //     return arrayMove(tasks, activeIndex, activeIndex);
-            // });
         }
     }
 }
-
 
 export default Board;

@@ -46,7 +46,6 @@ export const dataSlice = createSlice({
         moveColumn: (state, action) => {
 
             const { activeId, overId } = action.payload;
-            console.log("DRAG COLUMN END");
             const activeColumnIndex = state.findIndex((col) => col.id === activeId);
             const overColumnIndex = state.findIndex((col) => col.id === overId);
             return arrayMove(state, activeColumnIndex, overColumnIndex);

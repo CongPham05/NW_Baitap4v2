@@ -18,7 +18,7 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
     const { setNodeRef, attributes, listeners, transform, transition, isDragging }
         = useSortable({
             id: task.id, data: { type: "Task", task },
-            // disabled: false,
+            disabled: false,
         });
     const style = { transition, transform: CSS.Transform.toString(transform) };
 

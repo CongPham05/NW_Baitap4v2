@@ -81,28 +81,41 @@ export const dataSlice = createSlice({
             return state.filter((task) => task.columnId !== id);
         },
 
-        // Action for reordering tasks within the same column
+        //Action for reordering tasks within the same column
         reorderTasks: (state, action) => {
             const { activeId, overId } = action.payload;
+
             const activeIndex = state.findIndex((t) => t.id === activeId);
             const overIndex = state.findIndex((t) => t.id === overId);
-            console.log("DRAG TASK END IN COL");
 
-            // if (state[activeIndex].columnId != state[overIndex].columnId) {
-            //     state[activeIndex].columnId = state[overIndex].columnId;
-            //     return arrayMove(state, activeIndex, overIndex - 1);
-            // }
+            if (state[activeIndex].columnId !== state[overIndex].columnId) {
+
+                const updatedTasks = state.map((task, index) => {
+                    if (index === activeIndex) {
+                        return { ...task, columnId: state[overIndex].columnId };
+                    }
+                    return task;
+                });
+                //updatedTasks;
+                // state[activeIndex].columnId = state[overIndex].columnId;
+                return arrayMove(updatedTasks, activeIndex, overIndex - 1);
+            }
+
             return arrayMove(state, activeIndex, overIndex);
         },
-
         // Action for moving a task to another column
         moveTaskToColumn: (state, action) => {
             const { activeId, overId } = action.payload;
             const activeIndex = state.findIndex((t) => t.id === activeId);
-            state[activeIndex].columnId = overId;
-            console.log("DROPPING TASK OVER COLUMN", { activeIndex });
-            return arrayMove(state, activeIndex, activeIndex);
+            const updatedTasks = state.map((task, index) => {
+                if (index === activeIndex) {
+                    return { ...task, columnId: overId };
+                }
+                return task;
+            })
+            return arrayMove(updatedTasks, activeIndex, activeIndex);
         },
+
     },
 })
 

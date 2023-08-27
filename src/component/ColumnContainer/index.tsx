@@ -69,7 +69,7 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
     if (isDragging) {
         return (
             <div ref={setNodeRef} style={style}
-                className="border-2 w-[350px]" >
+                className="pc-border w-[350px]" >
             </div>
         );
     }
@@ -77,7 +77,7 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
         <div ref={setNodeRef} style={style}
             {...attributes}
             {...listeners}
-            className="flex-col flex w-[350px] bg-[#f6f8fa] pc-border hover:cursor-grab relative "
+            className="flex-col flex w-[350px] h-full bg-[#f6f8fa] pc-border hover:cursor-grab relative "
         >
 
             {/* Column title */}
@@ -108,8 +108,8 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
 
             {/* Column task container */}
 
-            <SortableContext items={tasksIds}>
-                <div className="flex flex-col gap-2 flex-grow px-2 pb-2 overflow-x-hidden overflow-y-auto">
+            <div className="flex flex-col gap-2 flex-grow px-2 pb-2 overflow-x-hidden overflow-y-auto">
+                <SortableContext items={tasksIds}>
                     {tasks.map((task) => (
                         <TaskCard
                             key={task.id}
@@ -118,8 +118,8 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                             updateTask={updateTask}
                         />
                     ))}
-                </div>
-            </SortableContext>
+                </SortableContext>
+            </div>
             {/* Column footer */}
             <button className="flex gap-2 items-center rounded-md p-3 hover:bg-[#eeeff2] text-[#656d76] "
                 onClick={handleShowInput}
