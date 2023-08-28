@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { XMarkIcon, ChartPieIcon } from '@heroicons/react/24/outline'
 import { Id, Task } from "../../types"
+import WrapOptions from "../../services/WrapOptions";
 
 interface Props {
     task: Task;
@@ -48,7 +48,7 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
                     <span> {task.content}</span>
                 </a>
             </div>
-
+            <WrapOptions task={task} type={null} />
             <div className="hidden group-hover:block w-9 absolute right-[2px] top-5 -translate-y-1/2 text-[#656d76] p-2 
                             opacity-60 hover:opacity-100  hover:text-red-500 cursor-pointer "
                 onClick={() => { deleteTask(task.id) }}

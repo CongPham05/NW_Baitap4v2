@@ -121,7 +121,7 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                 </SortableContext>
             </div>
             {/* Column footer */}
-            <button className="flex gap-2 items-center rounded-md p-3 hover:bg-[#eeeff2] text-[#656d76] "
+            <button className="flex gap-2 items-center rounded-md p-2.5 hover:bg-[#eeeff2] text-[#656d76] "
                 onClick={handleShowInput}
             >
                 <PlusIcon />

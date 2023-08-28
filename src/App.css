@@ -23,5 +23,5 @@
 }
 
 .pc-css-todo {
-    @apply pt-3 pb-7 pc-border px-4 flex flex-col justify-between bg-white shadow
+    @apply py-3 pc-border px-4 flex flex-col justify-between bg-white shadow
 }

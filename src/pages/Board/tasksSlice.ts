@@ -9,49 +9,66 @@ const initialState: Task[] = [
         id: "1",
         columnId: "new",
         content: "Bài 1",
-
+        description: null,
+        priority: "low",
+        size: "large"
     },
     {
         id: "2",
         columnId: "new",
-        content:
-            "Bài 2",
+        content: "Bài 2",
+        description: null,
+        priority: "urgent",
+        size: "small"
     },
     {
         id: "3",
         columnId: "inProgress",
         content: "Bài 3",
+        description: null,
+        priority: "high",
+        size: "xLarge"
     },
     {
         id: "4",
         columnId: "inProgress",
         content: "Bài 4",
+        description: null,
+        priority: "medium",
+        size: "mediumS"
     },
     {
         id: "5",
-        columnId: "done",
+        columnId: "delay",
         content: "Bài 5",
+        description: null,
+        priority: null,
+        size: "tiny"
     },
     {
         id: "6",
         columnId: "done",
         content: "Bài 6",
+        description: null,
+        priority: "low",
+        size: null
     },
 
     {
         id: "8",
         columnId: "new",
         content: "Bài 8",
+        description: null,
+        priority: "low",
+        size: "large"
     },
     {
         id: "10",
         columnId: "delay",
         content: "Bài 10",
-    },
-    {
-        id: "11",
-        columnId: "delay",
-        content: "Bài 11",
+        description: null,
+        priority: "low",
+        size: "large"
     },
 
 ];
@@ -65,6 +82,9 @@ export const dataSlice = createSlice({
                 id: uuidv4(),
                 columnId,
                 content: inputValue,
+                description: null,
+                priority: null,
+                size: null,
             };
             state.push(newTask);
         },
@@ -96,8 +116,6 @@ export const dataSlice = createSlice({
                     }
                     return task;
                 });
-                //updatedTasks;
-                // state[activeIndex].columnId = state[overIndex].columnId;
                 return arrayMove(updatedTasks, activeIndex, overIndex - 1);
             }
 

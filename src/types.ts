@@ -9,4 +9,7 @@ export type Task = {
     id: Id;
     columnId: Id;
     content: string;
+    description: null | string,
+    priority: Id | null,
+    size: Id | null
 };

@@ -13,7 +13,7 @@ const Routers: React.FC<RoutersProps> = () => {
         <Routes>
             <Route path='/' element={<Navigate to='/board' />} />
             <Route path='/board' element={<Board />} />
-            {/* <Route path='/table' element={<Table />} /> */}
+            <Route path='/table' element={<Table />} />
         </Routes>
     );
 };
