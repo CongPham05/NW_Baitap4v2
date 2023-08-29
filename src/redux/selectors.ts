@@ -13,8 +13,7 @@ export const todosRemainningSelector = createSelector(
     (todoLst, colsLst, searchText) => {
         return todoLst.filter(todo => {
             const columnTitle = colsLst.find(column => column.id === todo.columnId)?.title || "";
-            return todo.content.includes(searchText) ||
-                columnTitle.includes(searchText);
+            return todo.content.includes(searchText) || columnTitle.includes(searchText);
         });
     }
 )

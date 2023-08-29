@@ -6,13 +6,14 @@ import WrapOptions from "../../services/WrapOptions";
 import { useState } from "react";
 import Modal from "../../services/Modal";
 
+
+
 interface Props {
     task: Task;
     deleteTask: (id: Id) => void;
 }
 
 function TaskCard({ task, deleteTask }: Props) {
-
     const [isModal, setIsModal] = useState(false);
     const handleShowModal = () => { setIsModal(!isModal) }
 
@@ -50,6 +51,7 @@ function TaskCard({ task, deleteTask }: Props) {
                     <span> {task.content}</span>
                 </span>
             </div>
+
             <Modal isOpen={isModal} onRequestClose={handleShowModal} task={task} />
             <WrapOptions task={task} type={null} />
             <div className="hidden group-hover:block w-9 absolute right-[2px] top-5 -translate-y-1/2 text-[#656d76] p-2 

@@ -92,7 +92,22 @@ export const dataSlice = createSlice({
             const { id, content } = action.payload;
             return state.map((task) => {
                 if (task.id === id) {
-                    return { ...task, content: content };
+                    return {
+                        ...task,
+                        content
+                    };
+                }
+                return task;
+            });
+        },
+        updDesc: (state, action) => {
+            const { id, description } = action.payload;
+            return state.map((task) => {
+                if (task.id === id) {
+                    return {
+                        ...task,
+                        description
+                    };
                 }
                 return task;
             });
@@ -140,7 +155,7 @@ export const dataSlice = createSlice({
     },
 })
 
-export const { addTask, updTask, delTask, deleteAllTasksInColumn, moveTaskToColumn, reorderTasks } = dataSlice.actions
+export const { addTask, updTask, delTask, deleteAllTasksInColumn, moveTaskToColumn, reorderTasks, updDesc } = dataSlice.actions
 export default dataSlice.reducer
 
 

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { PlusIcon, BarsArrowDownIcon, BarsArrowUpIcon, ChartPieIcon } from '@heroicons/react/24/outline'
 import { todosRemainningSelector, colsSelector } from "../../redux/selectors";
 import WrapOptions from '../../services/WrapOptions';
+
 
 interface TableProps {
 
@@ -12,6 +13,8 @@ const Table: React.FC<TableProps> = () => {
 
     const columns = useSelector(colsSelector)
     const tasks = useSelector(todosRemainningSelector)
+    const [isModal, setIsModal] = useState(false);
+    const handleShowModal = () => { setIsModal(!isModal) }
 
     return (
         <div className="w-full mx-auto ">
@@ -67,6 +70,7 @@ const Table: React.FC<TableProps> = () => {
 
                         <tbody>
                             {tasks.map((task, index) => (
+
                                 <tr key={task.id} className='font-normal border-b border-[#d0d7de] text-[#656d76] hover:bg-[#f6f8fa] '>
                                     <th className=" flex justify-start px-2 py-2.5 font-normal border-t-0  align-middle border-l-0 border-r text-sm whitespace-nowrap  ">
                                         <div className=' w-1/12  mx-4 '>
@@ -76,7 +80,12 @@ const Table: React.FC<TableProps> = () => {
                                             <span className='inline-block w-5 mr-1'>
                                                 <ChartPieIcon />
                                             </span>
-                                            <a href="#" className='inline-block hover:underline hover:text-[#0969da]'>{task.content}</a>
+                                            <span className='inline-block hover:underline hover:text-[#0969da] cursor-pointer'
+                                                onClick={handleShowModal}>
+                                                {task.content}
+
+                                            </span>
+
                                         </div>
 
                                     </th>
