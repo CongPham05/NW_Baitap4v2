@@ -12,13 +12,12 @@ interface Props {
     deleteColumn: (id: Id) => void;
     updateColumn: (id: Id, title: string) => void;
     createTask: (columnId: Id, inputValue: string) => void;
-    updateTask: (id: Id, content: string) => void;
     deleteTask: (id: Id) => void;
     deleteAllTask: (id: Id) => void;
     tasks: Task[];
 }
 
-function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks, deleteTask, deleteAllTask, updateTask }: Props) {
+function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks, deleteTask, deleteAllTask }: Props) {
 
     const [editMode, setEditMode] = useState(false);
     const tasksIds = useMemo(() => {
@@ -115,7 +114,6 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                             key={task.id}
                             task={task}
                             deleteTask={deleteTask}
-                            updateTask={updateTask}
                         />
                     ))}
                 </SortableContext>
@@ -133,12 +131,8 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                     onChange={handleInputChange}
                     onKeyDown={handleInputEnter}
                 />
-            )
-            }
-
+            )}
         </div>
-
-
     );
 }
 

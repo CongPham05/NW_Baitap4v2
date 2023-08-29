@@ -88,13 +88,18 @@ export const dataSlice = createSlice({
             };
             state.push(newTask);
         },
-        updateTask: () => {
-
+        updTask: (state, action) => {
+            const { id, content } = action.payload;
+            return state.map((task) => {
+                if (task.id === id) {
+                    return { ...task, content: content };
+                }
+                return task;
+            });
         },
         delTask: (state, action) => {
             const { id } = action.payload;
             return state.filter(task => task.id !== id);
-
         },
         deleteAllTasksInColumn: (state, action) => {
             const { id } = action.payload;
@@ -118,7 +123,6 @@ export const dataSlice = createSlice({
                 });
                 return arrayMove(updatedTasks, activeIndex, overIndex - 1);
             }
-
             return arrayMove(state, activeIndex, overIndex);
         },
         // Action for moving a task to another column
@@ -133,11 +137,10 @@ export const dataSlice = createSlice({
             })
             return arrayMove(updatedTasks, activeIndex, activeIndex);
         },
-
     },
 })
 
-export const { addTask, updateTask, delTask, deleteAllTasksInColumn, moveTaskToColumn, reorderTasks } = dataSlice.actions
+export const { addTask, updTask, delTask, deleteAllTasksInColumn, moveTaskToColumn, reorderTasks } = dataSlice.actions
 export default dataSlice.reducer
 
 

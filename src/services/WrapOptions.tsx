@@ -23,7 +23,7 @@ const optionsPriority = [
         title: "🏕 Medium",
         colorBorder: "#4ac26b66",
         colorBg: "#dafbe1",
-        colorText: "#FF5722",
+        colorText: "#1a7f37",
     },
 
     {
@@ -61,7 +61,7 @@ const optionsSize = [
         title: "🐇 Small",
         colorBorder: "#4ac26b66",
         colorBg: "#dafbe1",
-        colorText: "#FF5722",
+        colorText: "#1a7f37",
     },
     {
         id: "tiny",

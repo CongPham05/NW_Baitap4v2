@@ -37,7 +37,6 @@ function Board() {
             },
         })
     );
-
     return (
         <div className='pt-1 pb-8 pl-8 flex flex-grow overflow-y-hidden gap-2 '>
             <DndContext
@@ -47,7 +46,6 @@ function Board() {
                 onDragOver={onDragOver}
             >
                 <div className="flex gap-2">
-
                     <SortableContext items={columnsId}>
                         {columns.map((col) => (
                             <ColumnContainer
@@ -57,7 +55,6 @@ function Board() {
                                 updateColumn={updateColumn}
                                 createTask={createTask}
                                 deleteTask={deleteTask}
-                                updateTask={updateTask}
                                 deleteAllTask={deleteAllTask}
                                 tasks={tasks.filter((task) => task.columnId === col.id)}
                             />
@@ -82,7 +79,6 @@ function Board() {
                                 createTask={createTask}
                                 deleteTask={deleteTask}
                                 deleteAllTask={deleteAllTask}
-                                updateTask={updateTask}
                                 tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
                             />
                         )}
@@ -90,7 +86,6 @@ function Board() {
                             <TaskCard
                                 task={activeTask}
                                 deleteTask={deleteTask}
-                                updateTask={updateTask}
                             />
                         )}
                     </DragOverlay>, document.body
@@ -110,17 +105,6 @@ function Board() {
 
     function deleteAllTask(id: Id) {
         dispatch(deleteAllTasksInColumn({ id }))
-    }
-
-
-    function updateTask(id: Id, content: string) {
-        // const newTasks = tasks.map((task) => {
-        //     if (task.id !== id) return task;
-        //     return { ...task, content };
-        // });
-
-        // console.log(newTasks);
-
     }
 
     function createNewColumn() {

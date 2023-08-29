@@ -3,25 +3,26 @@ import { CSS } from "@dnd-kit/utilities";
 import { XMarkIcon, ChartPieIcon } from '@heroicons/react/24/outline'
 import { Id, Task } from "../../types"
 import WrapOptions from "../../services/WrapOptions";
+import { useState } from "react";
+import Modal from "../../services/Modal";
 
 interface Props {
     task: Task;
     deleteTask: (id: Id) => void;
-    updateTask: (id: Id, content: string) => void;
 }
 
-function TaskCard({ task, deleteTask, updateTask }: Props) {
+function TaskCard({ task, deleteTask }: Props) {
 
-    //const [editMode] = useState(false);
-
+    const [isModal, setIsModal] = useState(false);
+    const handleShowModal = () => { setIsModal(!isModal) }
 
     const { setNodeRef, attributes, listeners, transform, transition, isDragging }
         = useSortable({
-            id: task.id, data: { type: "Task", task },
-            disabled: false,
+            id: task.id,
+            data: { type: "Task", task },
+            disabled: isModal,
         });
     const style = { transition, transform: CSS.Transform.toString(transform) };
-
     if (isDragging) {
         return (
             <div ref={setNodeRef} style={style}
@@ -29,7 +30,6 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
             />
         );
     }
-
     return (
         <div
             ref={setNodeRef}
@@ -43,11 +43,14 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
                 </span>
                 <span className='mr-2' >Draft</span>
             </div>
-            <div className='py-1 text-sm'>
-                <a href='#' className='hover:underline hover:text-[#0969da]' >
+            <div className=' text-sm'>
+                <span className='hover:underline hover:text-[#0969da] cursor-pointer py-1.5 inline-block'
+                    onClick={handleShowModal}
+                >
                     <span> {task.content}</span>
-                </a>
+                </span>
             </div>
+            <Modal isOpen={isModal} onRequestClose={handleShowModal} task={task} />
             <WrapOptions task={task} type={null} />
             <div className="hidden group-hover:block w-9 absolute right-[2px] top-5 -translate-y-1/2 text-[#656d76] p-2 
                             opacity-60 hover:opacity-100  hover:text-red-500 cursor-pointer "
@@ -55,7 +58,6 @@ function TaskCard({ task, deleteTask, updateTask }: Props) {
             >
                 <XMarkIcon />
             </div>
-
         </div>
     );
 }

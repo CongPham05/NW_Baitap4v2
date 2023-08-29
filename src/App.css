@@ -6,22 +6,46 @@
 }
 
 
-.pc-nav-active {
-    @apply relative bottom-[-1px] px-3 py-1.5 w-36 border border-b-[#fff] border-solid border-[#d0d7de] rounded-t-lg bg-white;
+.modal {
+    position        : fixed;
+    justify-content : flex-end;
+    top             : 0;
+    height          : 100%;
+    width           : 100%;
+    background-color: #afb8c133;
+    z-index         : 100000000;
+    display         : flex;
+    right           : -100%;
+    transition      : right 0.3s ease-in-out;
 }
 
-.pc-nav {
-    @apply border-[#f6f8fa] border-t-2 border-x-2 border-solid px-6 py-1.5 text-slate-950 cursor-pointer inline-block
+.modal.open {
+    right: 0;
 }
 
-.pc-border {
-    @apply border border-solid border-[#d0d7de] rounded-md
+.modal-content {
+    background-color   : white;
+    width              : 80%;
+    display            : flex;
+    flex-direction     : column;
+    border-radius      : 12px 0px 0px 12px;
+    overflow           : hidden;
+    box-shadow         : rgba(140, 149, 159, 0.2) 0px 8px 24px;
+    opacity            : 1;
+    transition-duration: 200ms;
+    transform          : translateX(0%);
+    transition         : transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
+    transition-property: opacity, transform;
 }
 
-.pc-dot-status {
-    @apply w-4 h-4 bg-[#0969da] rounded-lg
+.close-button {
+    align-self: flex-end;
+    margin    : 8px;
+    cursor    : pointer;
 }
 
-.pc-css-todo {
-    @apply py-3 pc-border px-4 flex flex-col justify-between bg-white shadow
+.modal-body {
+    /* flex: 1; */
+    padding    : 20px;
+    /* overflow: auto; */
 }
