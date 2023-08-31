@@ -17,9 +17,10 @@ interface Props {
     tasks: Task[];
 }
 
-function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks, deleteTask, deleteAllTask }: Props) {
+function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks, deleteAllTask }: Props) {
 
     const [editMode, setEditMode] = useState(false);
+    const [disabledDnDKit, setDisabledDnDKit] = useState(false);
     const tasksIds = useMemo(() => {
         return tasks.map((task) => task.id);
     }, [tasks]);
@@ -39,6 +40,10 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
             document.removeEventListener('mousedown', handleOutsideClick);
         };
     }, []);
+
+    const handleDisabledDnDKit = () => {
+        setDisabledDnDKit(!disabledDnDKit);
+    };
 
     const handleShowInput = () => {
         setShowInput(true);
@@ -60,7 +65,7 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
         = useSortable({
             id: column.id,
             data: { type: "Column", column },
-            disabled: editMode,
+            disabled: disabledDnDKit,
         });
 
     const style = { transition, transform: CSS.Transform.toString(transform) };
@@ -81,25 +86,28 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
 
             {/* Column title */}
             <div className=" py-2 px-4 flex items-center justify-between " >
-                <div onClick={() => { setEditMode(true) }}
-                    className=" gap-2 text-[17px] font-semibold flex items-center cursor-pointer hover:border-b hover:border-[#0969da] ">
-                    {!editMode && column.title}
-                    {editMode && (
-                        <input className="text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
-                            value={column.title}
-                            onChange={(e) => updateColumn(column.id, e.target.value)}
-                            autoFocus
-                            onBlur={() => {
-                                setEditMode(false);
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key !== "Enter") return;
-                                setEditMode(false);
-                            }}
-                        />
-                    )}
-                    <div className='w-5 h-5 bg-[#e8ebef]  rounded-xl flex items-center justify-center'>
-                        <span className='text-[#656d76] text-sm block'>{tasks.length}</span>
+                <div className="flex gap-2 items-center">
+                    <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                    <div onClick={() => { setEditMode(true) }}
+                        className=" gap-2 text-[17px] font-semibold flex items-center cursor-pointer hover:border-b hover:border-[#639ee1] ">
+                        {!editMode && column.title}
+                        {editMode && (
+                            <input className="text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
+                                value={column.title}
+                                onChange={(e) => updateColumn(column.id, e.target.value)}
+                                autoFocus
+                                onBlur={() => {
+                                    setEditMode(false);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key !== "Enter") return;
+                                    setEditMode(false);
+                                }}
+                            />
+                        )}
+                        <div className='w-4 h-4 bg-[#e8ebef]  rounded-xl flex items-center justify-center'>
+                            <span className='text-[#656d76] text-xs block'>{tasks.length}</span>
+                        </div>
                     </div>
                 </div>
                 <Dropdowns deleteColumn={deleteColumn} column={column} deleteAllTask={deleteAllTask} />
@@ -113,7 +121,7 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                         <TaskCard
                             key={task.id}
                             task={task}
-                            deleteTask={deleteTask}
+                            handleDisabledDnDKit={handleDisabledDnDKit}
                         />
                     ))}
                 </SortableContext>

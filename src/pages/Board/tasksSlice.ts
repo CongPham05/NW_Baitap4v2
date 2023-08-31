@@ -9,49 +9,49 @@ const initialState: Task[] = [
         id: "1",
         columnId: "new",
         content: "Bài 1",
-        description: null,
-        priority: "low",
-        size: "large"
+        description: "Xin Chào Việt Nam!",
+        priorityId: "low",
+        sizeId: "large"
     },
     {
         id: "2",
         columnId: "new",
         content: "Bài 2",
         description: null,
-        priority: "urgent",
-        size: "small"
+        priorityId: "urgent",
+        sizeId: "small"
     },
     {
         id: "3",
         columnId: "inProgress",
         content: "Bài 3",
         description: null,
-        priority: "high",
-        size: "xLarge"
+        priorityId: "high",
+        sizeId: "xLarge"
     },
     {
         id: "4",
         columnId: "inProgress",
         content: "Bài 4",
         description: null,
-        priority: "medium",
-        size: "mediumS"
+        priorityId: "medium",
+        sizeId: "mediumS"
     },
     {
         id: "5",
         columnId: "delay",
         content: "Bài 5",
-        description: null,
-        priority: null,
-        size: "tiny"
+        description: "medium",
+        priorityId: "",
+        sizeId: "tiny"
     },
     {
         id: "6",
         columnId: "done",
         content: "Bài 6",
         description: null,
-        priority: "low",
-        size: null
+        priorityId: "low",
+        sizeId: "large"
     },
 
     {
@@ -59,16 +59,16 @@ const initialState: Task[] = [
         columnId: "new",
         content: "Bài 8",
         description: null,
-        priority: "low",
-        size: "large"
+        priorityId: "low",
+        sizeId: "large"
     },
     {
         id: "10",
         columnId: "delay",
         content: "Bài 10",
         description: null,
-        priority: "low",
-        size: "large"
+        priorityId: "low",
+        sizeId: "large"
     },
 
 ];
@@ -83,8 +83,8 @@ export const dataSlice = createSlice({
                 columnId,
                 content: inputValue,
                 description: null,
-                priority: null,
-                size: null,
+                priorityId: uuidv4(),
+                sizeId: uuidv4(),
             };
             state.push(newTask);
         },

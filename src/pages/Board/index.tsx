@@ -24,6 +24,7 @@ import { addColumn, moveColumn, deleteCol, updateCol } from "./colsSlice";
 function Board() {
     const dispatch = useDispatch();
     const columns = useSelector(colsSelector)
+
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
     const tasks = useSelector(todosRemainningSelector)
@@ -83,10 +84,9 @@ function Board() {
                             />
                         )}
                         {activeTask && (
-                            <TaskCard
-                                task={activeTask}
-                                deleteTask={deleteTask}
-                            />
+                            <TaskCard task={activeTask} handleDisabledDnDKit={function (): void {
+                                throw new Error("Function not implemented.");
+                            }} />
                         )}
                     </DragOverlay>, document.body
                 )}

@@ -3,6 +3,7 @@ export type Id = string | number;
 export type Column = {
     id: Id;
     title: string;
+    colorId: string | null;
 };
 
 export type Task = {
@@ -10,6 +11,26 @@ export type Task = {
     columnId: Id;
     content: string;
     description: null | string,
-    priority: Id | null,
-    size: Id | null
+    priorityId: Id,
+    sizeId: Id
+};
+
+export type Priority = {
+    id: Id,
+    colorId: Id
+    title: string | null,
+};
+
+export type Size = {
+    id: Id,
+    colorId: Id
+    title: string | null,
+};
+
+export type ColorOptions = {
+    id: Id,
+    name: string,
+    colorBorder: string,
+    colorBg: string,
+    colorText: string,
 };

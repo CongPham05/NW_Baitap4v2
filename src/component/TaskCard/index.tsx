@@ -1,21 +1,27 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { XMarkIcon, ChartPieIcon } from '@heroicons/react/24/outline'
-import { Id, Task } from "../../types"
-import WrapOptions from "../../services/WrapOptions";
+import { Task } from "../../types"
+import WrapOptions from "../WrapOptions/WrapOptions";
 import { useState } from "react";
-import Modal from "../../services/Modal";
+import ModalEdit from "../../services/ModalEdit";
+import ModalDelete from "../../services/ModalDelete";
 
 
 
 interface Props {
     task: Task;
-    deleteTask: (id: Id) => void;
+    handleDisabledDnDKit: () => void;
 }
 
-function TaskCard({ task, deleteTask }: Props) {
+function TaskCard({ task, handleDisabledDnDKit }: Props) {
     const [isModal, setIsModal] = useState(false);
-    const handleShowModal = () => { setIsModal(!isModal) }
+    const [isModalDelete, setIsModalDelete] = useState(false);
+
+    const handleShowModal = () => {
+        handleDisabledDnDKit();
+        setIsModal(!isModal)
+    }
 
     const { setNodeRef, attributes, listeners, transform, transition, isDragging }
         = useSortable({
@@ -32,35 +38,41 @@ function TaskCard({ task, deleteTask }: Props) {
         );
     }
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            className="pc-css-todo hover:cursor-grab group hover:border-[#0969da] relative ">
-            <div className='flex items-center text-[#656d76] text-xs'>
-                <span className='inline-block w-5'>
-                    <ChartPieIcon />
-                </span>
-                <span className='mr-2' >Draft</span>
-            </div>
-            <div className=' text-sm'>
-                <span className='hover:underline hover:text-[#0969da] cursor-pointer py-1.5 inline-block'
-                    onClick={handleShowModal}
-                >
-                    <span> {task.content}</span>
-                </span>
-            </div>
-
-            <Modal isOpen={isModal} onRequestClose={handleShowModal} task={task} />
-            <WrapOptions task={task} type={null} />
-            <div className="hidden group-hover:block w-9 absolute right-[2px] top-5 -translate-y-1/2 text-[#656d76] p-2 
+        <>
+            <div
+                ref={setNodeRef}
+                style={style}
+                {...attributes}
+                {...listeners}
+                className="pc-css-todo hover:cursor-grab group hover:border-[#0969da] relative ">
+                <div className='flex items-center text-[#656d76] text-xs'>
+                    <span className='inline-block w-5'>
+                        <ChartPieIcon />
+                    </span>
+                    <span className='mr-2' >Draft</span>
+                </div>
+                <div className=' text-sm'>
+                    <span className='hover:underline hover:text-[#0969da] cursor-pointer py-1.5 inline-block'
+                        onClick={handleShowModal}
+                    >
+                        <span> {task.content}</span>
+                    </span>
+                </div>
+                {isModal && <ModalEdit onRequestClose={handleShowModal} task={task} />}
+                <div className="flex gap-2">
+                    <WrapOptions task={task} type={"PRIORITY"} />
+                    <WrapOptions task={task} type={"SIZE"} />
+                </div>
+                <div className="hidden group-hover:block w-9 absolute right-[2px] top-5 -translate-y-1/2 text-[#656d76] p-2 
                             opacity-60 hover:opacity-100  hover:text-red-500 cursor-pointer "
-                onClick={() => { deleteTask(task.id) }}
-            >
-                <XMarkIcon />
+                    onClick={() => setIsModalDelete(true)}
+                >
+                    <XMarkIcon />
+                </div>
+                <ModalDelete isOpen={isModalDelete} onClose={() => setIsModalDelete(false)} task={task} />
+
             </div>
-        </div>
+        </>
     );
 }
 

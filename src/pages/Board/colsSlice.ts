@@ -7,18 +7,22 @@ const initialState: Column[] = [
     {
         id: "new",
         title: "New",
+        colorId: "blue"
     },
     {
         id: "inProgress",
         title: "In progress",
+        colorId: "brown"
     },
     {
         id: 'delay',
-        title: "Delay"
+        title: "Delay",
+        colorId: "red"
     },
     {
         id: "done",
         title: "Done",
+        colorId: "green"
     },
 ];
 export const dataSlice = createSlice({
@@ -29,6 +33,7 @@ export const dataSlice = createSlice({
             const columnToAdd = {
                 id: uuidv4(),
                 title: `Column ${state.length + 1}`,
+                colorId: null,
             };
             state.push(columnToAdd);
         },

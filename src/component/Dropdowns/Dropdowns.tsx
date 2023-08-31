@@ -32,7 +32,7 @@ const Dropdowns: React.FC<DropdownsProps> = ({ deleteColumn, column, deleteAllTa
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="absolute right-2 z-10 mt-1 w-48 origin-top-right divide-y divide-gray-100 rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-2 z-10 top-9 w-48 origin-top-right divide-y divide-gray-100 rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         <span className='block text-xs  text-[#656d76] px-4 py-2 cursor-default font-semibold'>Items</span>
                         <Menu.Item >
