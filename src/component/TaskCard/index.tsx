@@ -69,7 +69,14 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
                 >
                     <XMarkIcon />
                 </div>
-                <ModalDelete isOpen={isModalDelete} onClose={() => setIsModalDelete(false)} task={task} />
+                <ModalDelete
+                    isOpen={isModalDelete}
+                    onClose={() => setIsModalDelete(false)}
+                    inputId={task}
+                    type="TASK"
+                    title="Delete item?"
+                    sub='Are you sure you want to delete this item from this project?'
+                />
 
             </div>
         </>

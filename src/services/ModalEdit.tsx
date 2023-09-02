@@ -4,6 +4,7 @@ import { ArchiveBoxIcon, EyeSlashIcon, SparklesIcon, TrashIcon, XMarkIcon } from
 import { useDispatch } from 'react-redux';
 import { updTask, updDesc } from '../pages/Board/tasksSlice'
 import WrapOptions from '../component/WrapOptions/WrapOptions';
+import ModalDelete from './ModalDelete';
 
 interface ModalProps {
     onRequestClose: () => void,
@@ -16,6 +17,7 @@ const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
     const [inputValue, setInputValue] = useState(task.content);
     const [showEditDesc, setShowEditDesc] = useState(false);
     const [descContent, setDescContent] = useState(task.description);
+    const [isModalDelete, setIsModalDelete] = useState(false);
 
     const handleShowInput = () => {
         setEditMode(!editMode)
@@ -190,10 +192,20 @@ const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                                     <ArchiveBoxIcon className="h-5 w-5 text-gray-500 ml-1.5" aria-hidden="true" />
                                     <a href="#" className=' pl-2 py-1.5 flex-grow text-sm '>Archive</a>
                                 </div>
-                                <div className='flex items-center text-red-600 hover:bg-[#ffebe9a3] border-solid border-[#d0d7de] rounded-lg'>
+                                <div className='flex items-center text-red-600 hover:bg-[#ffebe9a3] border-solid border-[#d0d7de] rounded-lg'
+                                    onClick={() => setIsModalDelete(true)}
+                                >
                                     <TrashIcon className="h-5 w-5  text-red-600 ml-1.5" aria-hidden="true" />
                                     <a href="#" className=' pl-2 py-1.5 flex-grow text-sm '>Delete from project </a>
                                 </div>
+                                <ModalDelete
+                                    isOpen={isModalDelete}
+                                    onClose={() => setIsModalDelete(false)}
+                                    inputId={task}
+                                    type={'TASK'}
+                                    title="Delete item?"
+                                    sub='Are you sure you want to delete this item from this project?'
+                                />
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import {
     PlusIcon,
-    ChartPieIcon
+    ChartPieIcon,
+    BarsArrowUpIcon,
+    BarsArrowDownIcon
 } from '@heroicons/react/24/outline'
 
 import { todosRemainningSelector } from "../../redux/selectors";
@@ -18,8 +20,14 @@ interface TableProps {
 const Table: React.FC<TableProps> = () => {
 
     const tasks = useSelector(todosRemainningSelector)
+
     const [isModal, setIsModal] = useState(false);
     const handleShowModal = () => { setIsModal(!isModal) }
+
+    const [isIcon, setIsIcon] = useState(false);
+    const handleShowIcon = () => { setIsIcon(!isIcon) }
+
+    const [reverseIcon, setReverseIcon] = useState(false);
 
     return (
         <div className="w-full mx-auto ">
@@ -32,7 +40,25 @@ const Table: React.FC<TableProps> = () => {
                                     border-blueGray-100  text-[14px]  border-l-0 border-r whitespace-nowrap font-semibold text-left">
                                     <div className='flex items-center justify-between'>
                                         <div>Title</div>
-                                        <TitleTable />
+                                        <div className='flex items-center gap-2 '>
+                                            <div className='flex-1'>
+                                                {isIcon ?
+                                                    <div className='p-1 rounded-md w-7  hover:bg-[#eeeff2] cursor-pointer'>
+                                                        {!reverseIcon &&
+                                                            <div onClick={() => setReverseIcon(!reverseIcon)}  >
+                                                                <BarsArrowUpIcon className="h-5 text-gray-500" />
+                                                            </div>
+                                                        }
+                                                        {reverseIcon &&
+                                                            <div onClick={() => setReverseIcon(!reverseIcon)}>
+                                                                <BarsArrowDownIcon className="h-5 text-gray-500" />
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    : <div className='p-3 w-7'> </div>}
+                                            </div>
+                                            <TitleTable handleShowIcon={handleShowIcon} reverseIcon={reverseIcon} />
+                                        </div>
                                     </div>
                                 </th>
                                 <th className="py-1 pr-6 pl-6 bg-blueGray-50 text-blueGray-500 align-middle border-2 border-solid 

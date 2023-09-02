@@ -6,28 +6,28 @@ import { Column, Id, Task } from '../../types';
 import PlusIcon from "../../icons/PlusIcon";
 import TaskCard from "../TaskCard";
 import Dropdowns from "../Dropdowns/Dropdowns";
+import ModalDelete from "../../services/ModalDelete";
 
 interface Props {
     column: Column;
-    deleteColumn: (id: Id) => void;
     updateColumn: (id: Id, title: string) => void;
     createTask: (columnId: Id, inputValue: string) => void;
-    deleteTask: (id: Id) => void;
-    deleteAllTask: (id: Id) => void;
     tasks: Task[];
 }
 
-function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks, deleteAllTask }: Props) {
+function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
 
+    const [isModalDelete, setIsModalDelete] = useState(false);
+    const [isModalDeleteAll, setIsModalDeleteAll] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [disabledDnDKit, setDisabledDnDKit] = useState(false);
-    const tasksIds = useMemo(() => {
-        return tasks.map((task) => task.id);
-    }, [tasks]);
-
     const [showInput, setShowInput] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const tasksIds = useMemo(() => {
+        return tasks.map((task) => task.id);
+    }, [tasks]);
 
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
@@ -48,6 +48,12 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
     const handleShowInput = () => {
         setShowInput(true);
     };
+    function deleteColumn() {
+        setIsModalDelete(true);
+    }
+    function deleteAllTask() {
+        setIsModalDeleteAll(true);
+    }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -112,6 +118,23 @@ function ColumnContainer({ column, deleteColumn, updateColumn, createTask, tasks
                 </div>
                 <Dropdowns deleteColumn={deleteColumn} column={column} deleteAllTask={deleteAllTask} />
             </div>
+            <ModalDelete
+                isOpen={isModalDeleteAll}
+                onClose={() => setIsModalDeleteAll(false)}
+                inputId={column}
+                type="ALLTASK"
+                title="Delete all items?"
+                sub='Are you sure you want to delete items from the project?'
+            />
+            <ModalDelete
+                isOpen={isModalDelete}
+                onClose={() => setIsModalDelete(false)}
+                inputId={column}
+                type="COLUMN"
+                title="Delete option?"
+                sub='This will permanently delete this option from the "Status" field. This cannot be undone.'
+            />
+
 
             {/* Column task container */}
 

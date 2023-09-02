@@ -1,6 +1,13 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { ArchiveBoxIcon, TrashIcon, PencilIcon, EyeSlashIcon, SparklesIcon } from '@heroicons/react/24/outline'
+import {
+    ArchiveBoxIcon,
+    TrashIcon,
+    PencilIcon,
+    EyeSlashIcon,
+    SparklesIcon,
+    EllipsisHorizontalIcon
+} from '@heroicons/react/24/outline'
 import { Column, Id } from '../../types';
 
 function classNames(...classes: string[]) {
@@ -17,10 +24,8 @@ const Dropdowns: React.FC<DropdownsProps> = ({ deleteColumn, column, deleteAllTa
     return (
         <Menu as="div" className="relative inline-block text-left ">
             <div>
-                <Menu.Button className="hover:bg-[#f3f4f6] p-1 rounded-lg font-semibold text-[#656d76]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6   ">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                    </svg>
+                <Menu.Button className="hover:bg-[#a6a6a841] p-1 rounded-lg font-semibold text-[#656d76]">
+                    < EllipsisHorizontalIcon className='w-5' />
                 </Menu.Button>
             </div>
             <Transition
@@ -32,7 +37,7 @@ const Dropdowns: React.FC<DropdownsProps> = ({ deleteColumn, column, deleteAllTa
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="absolute right-2 z-10 top-9 w-48 origin-top-right divide-y divide-gray-100 rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 z-10 top-8 w-48 origin-top-right divide-y divide-gray-100 rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         <span className='block text-xs  text-[#656d76] px-4 py-2 cursor-default font-semibold'>Items</span>
                         <Menu.Item >
@@ -93,7 +98,6 @@ const Dropdowns: React.FC<DropdownsProps> = ({ deleteColumn, column, deleteAllTa
 
                             )}
                         </Menu.Item>
-
                         <Menu.Item >
                             {({ active }) => (
                                 <div onClick={() => { deleteColumn(column.id) }}
@@ -103,7 +107,6 @@ const Dropdowns: React.FC<DropdownsProps> = ({ deleteColumn, column, deleteAllTa
                                     <TrashIcon className="h-5 w-5  text-red-600" aria-hidden="true" />
                                     <a href="#" className=' pl-2 py-2 flex-grow  text-sm '> Delete</a>
                                 </div>
-
                             )}
                         </Menu.Item>
                     </div>

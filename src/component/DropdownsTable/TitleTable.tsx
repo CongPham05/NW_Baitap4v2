@@ -1,15 +1,23 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/outline'
+import { BarsArrowDownIcon, BarsArrowUpIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 interface DropdownsProps {
-
+    handleShowIcon: () => void,
+    reverseIcon: boolean
 }
 
-const Dropdowns: React.FC<DropdownsProps> = () => {
+const Dropdowns: React.FC<DropdownsProps> = ({ handleShowIcon, reverseIcon }) => {
+    const [iconX, setIconX] = useState(reverseIcon);
+    console.log(iconX);
+
+    const handleSortUp = () => {
+        setIconX(!iconX);
+        handleShowIcon();
+    }
 
     return (
         <Menu as="div" className="relative inline-block text-left ">
@@ -33,11 +41,16 @@ const Dropdowns: React.FC<DropdownsProps> = () => {
                     <div className="py-1">
                         <Menu.Item>
                             {({ active }) => (
-                                <div className={classNames(
-                                    active ? 'bg-gray-100 text-gray-900 ' : ' text-gray-700', 'flex items-center pl-4 '
-                                )}>
+                                <div onClick={handleSortUp}
+                                    className={classNames(
+                                        active ? 'bg-gray-100 text-gray-900 ' : ' text-gray-700', 'flex items-center pl-4 '
+                                    )}>
                                     <BarsArrowUpIcon className="h-5 text-gray-500" aria-hidden="true" />
-                                    <a href="#" className=' pl-2 py-2 flex-grow block '>Sort ascending</a>
+                                    <div className=' flex items-center justify-between flex-1'>
+                                        <a href="#" className=' pl-2 py-2 flex-grow block '>
+                                            Sort ascending</a>
+                                        {iconX && <XMarkIcon className="h-4 mx-3 text-gray-500 " />}
+                                    </div>
                                 </div>
                             )}
                         </Menu.Item>
@@ -48,7 +61,12 @@ const Dropdowns: React.FC<DropdownsProps> = () => {
                                         active ? 'bg-gray-100 text-gray-900' : ' text-gray-700', 'flex items-center pl-4'
                                     )}>
                                     <BarsArrowDownIcon className="h-5 text-gray-500" aria-hidden="true" />
-                                    <a href="#" className=' pl-2 py-2 flex-grow '>Sort descending</a>
+                                    <div onClick={handleSortUp}
+                                        className=' flex items-center justify-between flex-1'>
+                                        <a href="#" className=' pl-2 py-2 flex-grow block '>
+                                            Sort descending</a>
+                                        {/* {!iconX && <XMarkIcon className="h-4 mx-3 text-gray-500 " />} */}
+                                    </div>
                                 </div>
                             )}
                         </Menu.Item>

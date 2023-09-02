@@ -17,8 +17,8 @@ import ColumnContainer from "../../component/ColumnContainer";
 import PlusIcon from "../../icons/PlusIcon";
 import TaskCard from "../../component/TaskCard";
 import { colsSelector, todosRemainningSelector } from "../../redux/selectors";
-import { addTask, moveTaskToColumn, reorderTasks, delTask, deleteAllTasksInColumn } from "./tasksSlice";
-import { addColumn, moveColumn, deleteCol, updateCol } from "./colsSlice";
+import { addTask, moveTaskToColumn, reorderTasks } from "./tasksSlice";
+import { addColumn, moveColumn, updateCol } from "./colsSlice";
 
 
 function Board() {
@@ -52,11 +52,8 @@ function Board() {
                             <ColumnContainer
                                 key={col.id}
                                 column={col}
-                                deleteColumn={deleteColumn}
                                 updateColumn={updateColumn}
                                 createTask={createTask}
-                                deleteTask={deleteTask}
-                                deleteAllTask={deleteAllTask}
                                 tasks={tasks.filter((task) => task.columnId === col.id)}
                             />
                         ))}
@@ -75,11 +72,8 @@ function Board() {
                         {activeColumn && (
                             <ColumnContainer
                                 column={activeColumn}
-                                deleteColumn={deleteColumn}
                                 updateColumn={updateColumn}
                                 createTask={createTask}
-                                deleteTask={deleteTask}
-                                deleteAllTask={deleteAllTask}
                                 tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
                             />
                         )}
@@ -99,21 +93,8 @@ function Board() {
         dispatch(addTask({ columnId, inputValue }))
     }
 
-    function deleteTask(id: Id) {
-        dispatch(delTask({ id }))
-    }
-
-    function deleteAllTask(id: Id) {
-        dispatch(deleteAllTasksInColumn({ id }))
-    }
-
     function createNewColumn() {
         dispatch(addColumn())
-    }
-
-    function deleteColumn(id: Id) {
-        dispatch(deleteCol({ id }))
-        dispatch(deleteAllTasksInColumn({ id }))
     }
 
     function updateColumn(id: Id, title: string) {

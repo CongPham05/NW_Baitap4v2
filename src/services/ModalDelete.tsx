@@ -2,27 +2,41 @@ import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useDispatch } from 'react-redux';
-import { Task } from '../types'
-import { delTask } from '../pages/Board/tasksSlice';
+import { Task, Column } from '../types'
+import { delTask, deleteAllTasksInColumn } from '../pages/Board/tasksSlice';
+import { deleteCol } from '../pages/Board/colsSlice';
 
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    task: Task;
+    inputId: Task | Column;
+    type: string;
+    title: string;
+    sub: string;
 }
 
-const ModalDelete: React.FC<Props> = ({ isOpen, onClose, task }) => {
+const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, title, sub }) => {
     const dispatch = useDispatch();
     const cancelButtonRef = useRef(null)
 
     const handleDelete = () => {
-        dispatch(delTask({ id: task.id }));
+        if (type === "TASK") {
+            dispatch(delTask({ id: inputId.id }));
+
+        }
+        else if (type === "COLUMN") {
+            dispatch(deleteCol({ id: inputId.id }));
+
+        }
+        else if (type === "ALLTASK") {
+            dispatch(deleteAllTasksInColumn({ id: inputId.id }))
+        }
         onClose();
     }
     return (
         <Transition.Root show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={() => onClose()}>
+            <Dialog as="div" className="relative z-[1000]" initialFocus={cancelButtonRef} onClose={() => onClose()}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -54,11 +68,11 @@ const ModalDelete: React.FC<Props> = ({ isOpen, onClose, task }) => {
                                         </div>
                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                             <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
-                                                Delete items?
+                                                {title}
                                             </Dialog.Title>
                                             <div className="mt-2">
                                                 <p className="text-sm text-gray-500">
-                                                    Are you sure you want to delete this item from this project?
+                                                    {sub}
                                                 </p>
                                             </div>
                                         </div>
