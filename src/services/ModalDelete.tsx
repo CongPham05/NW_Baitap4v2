@@ -27,6 +27,7 @@ const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, title, s
         }
         else if (type === "COLUMN") {
             dispatch(deleteCol({ id: inputId.id }));
+            dispatch(deleteAllTasksInColumn({ id: inputId.id }))
 
         }
         else if (type === "ALLTASK") {

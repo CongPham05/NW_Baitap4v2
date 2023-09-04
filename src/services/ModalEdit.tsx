@@ -10,7 +10,7 @@ interface ModalProps {
     onRequestClose: () => void,
     task: Task,
 }
-const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
+const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
 
     const dispatch = useDispatch();
     const [editMode, setEditMode] = useState(false);
@@ -19,6 +19,11 @@ const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
     const [descContent, setDescContent] = useState(task.description);
     const [isModalDelete, setIsModalDelete] = useState(false);
 
+
+    const handleShowModalDel = () => {
+        setIsModalDelete(false);
+        onRequestClose();
+    }
     const handleShowInput = () => {
         setEditMode(!editMode)
         setInputValue(task.content);
@@ -65,7 +70,7 @@ const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                         {!editMode && <div className='flex justify-between items-center h-[35px]'>
                             <span className='text-2xl font-medium'> {inputValue} </span>
                             <button onClick={handleShowInput}>
-                                <span className='text-xs px-2.5 py-2 font-medium  border-[#d0d7de] rounded-md hover:bg-[#afb8c11d]'>
+                                <span className='text-xs px-2.5 py-2 font-medium border-[#d0d7de] rounded-md hover:bg-[#afb8c11d]'>
                                     Edit title
                                 </span>
                             </button>
@@ -129,7 +134,6 @@ const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                                     onChange={handelChangeDesc}
                                 />
 
-
                                 <div className='flex items-center justify-end gap-2'>
                                     <button className='px-2 h-7 text-xs border opacity-80 hover:opacity-100 font-medium 
                                                      border-solid border-[#d0d7de] rounded-md bg-[#afb8c133]'
@@ -141,7 +145,7 @@ const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                                                       border-solid border-[#d0d7de] rounded-md text-white bg-[#1f883d]'
                                         onClick={handleSaveDesc}
                                     >
-                                        <span className=' '>Update comment</span>
+                                        <span >Update comment</span>
                                     </button>
 
                                 </div>
@@ -200,7 +204,8 @@ const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                                 </div>
                                 <ModalDelete
                                     isOpen={isModalDelete}
-                                    onClose={() => setIsModalDelete(false)}
+                                    // onClose={() => setIsModalDelete(false)}
+                                    onClose={handleShowModalDel}
                                     inputId={task}
                                     type={'TASK'}
                                     title="Delete item?"
@@ -214,4 +219,4 @@ const Modal: React.FC<ModalProps> = ({ onRequestClose, task }) => {
         </div >
     )
 }
-export default Modal;
+export default ModalEdit;

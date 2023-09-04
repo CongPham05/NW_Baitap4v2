@@ -4,7 +4,7 @@ import columnsReducer from '../pages/Board/colsSlice';
 import filterReducer from '../component/SearchFilters/filtersSlice'
 import priorityReducer from '../component/WrapOptions/prioritySlice';
 import sizeReducer from '../component/WrapOptions/sizeSlice';
-import colorReducer from '../component/WrapOptions/colorOptions';
+import colorReducer from '../component/WrapOptions/colorSlice';
 
 
 export const store = configureStore({

@@ -19,9 +19,11 @@ const WrapOptions: React.FC<WrapOptionsProps> = ({ task, type }) => {
 
     if (type === 'STATUS' && typeof task === 'object' && 'columnId' in task) {
         targetOption = columns.find(col => col.id === task.columnId) || null;
-    } else if (type === 'PRIORITY' && typeof task === 'object' && 'priorityId' in task) {
+    }
+    else if (type === 'PRIORITY' && typeof task === 'object' && 'priorityId' in task) {
         targetOption = optionsPriority.find(option => option.id === task.priorityId) || null;
-    } else if (type === 'SIZE' && typeof task === 'object' && 'sizeId' in task) {
+    }
+    else if (type === 'SIZE' && typeof task === 'object' && 'sizeId' in task) {
         targetOption = optionsSize.find(option => option.id === task.sizeId) || null;
     }
 

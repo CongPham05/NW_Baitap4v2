@@ -10,25 +10,71 @@ import {
 import { todosRemainningSelector } from "../../redux/selectors";
 import WrapOptions from '../../component/WrapOptions/WrapOptions';
 import ColTable from '../../component/DropdownsTable/ColTable';
-import TitleTable from '../../component/DropdownsTable/TitleTable';
+import clsx from 'clsx';
+import ModalEdit from '../../services/ModalEdit';
+import { Task } from "../../types"
+
+const headTable = [
+    {
+        id: 'title',
+        title: "Tilte",
+        optionUp: "Sort ascending",
+        optionDown: "Sort descending"
+    },
+    {
+        id: 'status',
+        title: "Status",
+        optionUp: "Sort ascending",
+        optionDown: "Sort descending",
+        optionGroup: "Group by values"
+    },
+    {
+        id: 'inProgress',
+        title: "In progress",
+        optionUp: "Sort ascending",
+        optionDown: "Sort descending",
+        optionGroup: "Group by values"
+    },
+    {
+        id: 'size',
+        title: "Size",
+        optionUp: "Sort ascending",
+        optionDown: "Sort descending",
+        optionGroup: "Group by values"
+    },
+]
 
 
 interface TableProps {
 }
 
-
 const Table: React.FC<TableProps> = () => {
 
     const tasks = useSelector(todosRemainningSelector)
-
     const [isModal, setIsModal] = useState(false);
-    const handleShowModal = () => { setIsModal(!isModal) }
+    const [modalTask, setModalTask] = useState<Task | null>(null);
 
-    const [isIcon, setIsIcon] = useState(false);
-    const handleShowIcon = () => { setIsIcon(!isIcon) }
+    const handleShowModal = (selectedTask: Task) => {
+        setIsModal(true);
+        setModalTask(selectedTask);
+    }
 
-    const [reverseIcon, setReverseIcon] = useState(false);
+    const [isBarsArrowUpIcon, setBarsArrowUpIcon] = useState(false);
+    const [isBarsArrowDownIcon, setBarsArrowDownIcon] = useState(false);
 
+    const handleBarsArrowUpIcon = () => {
+        setBarsArrowUpIcon(!isBarsArrowUpIcon);
+        setBarsArrowDownIcon(false);
+    }
+
+    const handleBarsArrowDownIcon = () => {
+        setBarsArrowDownIcon(!isBarsArrowDownIcon);
+        setBarsArrowUpIcon(false);
+    }
+    const handleReverseIcon = () => {
+        setBarsArrowUpIcon(!isBarsArrowUpIcon);
+        setBarsArrowDownIcon(!isBarsArrowDownIcon);
+    }
     return (
         <div className="w-full mx-auto ">
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
@@ -36,58 +82,40 @@ const Table: React.FC<TableProps> = () => {
                     <table className="items-center bg-transparent w-full border-collapse font-semibold text-[#656d76]">
                         <thead >
                             <tr>
-                                <th className="py-1 pr-6 pl-20 bg-blueGray-50 text-blueGray-500 align-middle border-2 border-solid 
-                                    border-blueGray-100  text-[14px]  border-l-0 border-r whitespace-nowrap font-semibold text-left">
-                                    <div className='flex items-center justify-between'>
-                                        <div>Title</div>
-                                        <div className='flex items-center gap-2 '>
-                                            <div className='flex-1'>
-                                                {isIcon ?
-                                                    <div className='p-1 rounded-md w-7  hover:bg-[#eeeff2] cursor-pointer'>
-                                                        {!reverseIcon &&
-                                                            <div onClick={() => setReverseIcon(!reverseIcon)}  >
-                                                                <BarsArrowUpIcon className="h-5 text-gray-500" />
+                                {headTable.map((headCol, index) => {
+                                    return (
+                                        <th key={index} className="py-1 pr-6 pl-20 bg-blueGray-50 text-blueGray-500 align-middle border-2 border-solid 
+                                                                border-blueGray-100  text-[14px]  border-l-0 border-r whitespace-nowrap font-semibold text-left">
+                                            <div className='flex items-center justify-between'>
+                                                <div>{headCol.title}</div>
+                                                <div className='flex items-center gap-2 '>
+                                                    <div className='flex-1'>
+                                                        <div className={clsx('p-1 rounded-md w-7', isBarsArrowUpIcon && 'hover:bg-[#eeeff2] cursor-pointer')} >
+                                                            <div onClick={handleReverseIcon}  >
+                                                                {isBarsArrowUpIcon && <BarsArrowUpIcon className="h-5 text-gray-500" />}
                                                             </div>
-                                                        }
-                                                        {reverseIcon &&
-                                                            <div onClick={() => setReverseIcon(!reverseIcon)}>
-                                                                <BarsArrowDownIcon className="h-5 text-gray-500" />
+                                                            <div onClick={handleReverseIcon} >
+                                                                {isBarsArrowDownIcon && <BarsArrowDownIcon className="h-5 text-gray-500" />}
                                                             </div>
-                                                        }
+                                                        </div>
                                                     </div>
-                                                    : <div className='p-3 w-7'> </div>}
+                                                    <ColTable
+                                                        handleBarsArrowUpIcon={handleBarsArrowUpIcon}
+                                                        isBarsArrowUpIcon={isBarsArrowUpIcon}
+                                                        isBarsArrowDownIcon={isBarsArrowDownIcon}
+                                                        handleBarsArrowDownIcon={handleBarsArrowDownIcon}
+                                                        headCol={headCol}
+                                                    />
+                                                </div>
                                             </div>
-                                            <TitleTable handleShowIcon={handleShowIcon} reverseIcon={reverseIcon} />
-                                        </div>
-                                    </div>
-                                </th>
-                                <th className="py-1 pr-6 pl-6 bg-blueGray-50 text-blueGray-500 align-middle border-2 border-solid 
-                                    border-blueGray-100  text-[14px]  border-l-0 border-r whitespace-nowrap font-semibold text-left">
-                                    <div className='flex items-center justify-between'>
-                                        <div>Status</div>
-                                        <ColTable />
-                                    </div>
-                                </th>
-                                <th className="py-1 pr-6 pl-6 bg-blueGray-50 text-blueGray-500 align-middle border-2 border-solid 
-                                    border-blueGray-100  text-[14px]  border-l-0 border-r whitespace-nowrap font-semibold text-left">
-                                    <div className='flex items-center justify-between'>
-                                        <div>Priority</div>
-                                        <ColTable />
-                                    </div>
-                                </th>
-                                <th className="py-1 pr-6 pl-6 bg-blueGray-50 text-blueGray-500 align-middle border-2 border-solid 
-                                    border-blueGray-100  text-[14px]  border-l-0 border-r whitespace-nowrap font-semibold text-left">
-                                    <div className='flex items-center justify-between'>
-                                        <div>Size</div>
-                                        <ColTable />
-                                    </div>
-                                </th>
+                                        </th>
+                                    )
+                                })}
                                 <th className="bg-blueGray-50 text-blueGray-500 align-middle border-2 border-solid 
                                                 border-blueGray-100  text-[14px]  border-l-0 border-r whitespace-nowrap font-semibold text-left">
                                     <div className='py-2 px-4 w-[52px]  hover:bg-[#eeeff2] '>
                                         <PlusIcon />
                                     </div>
-
                                 </th>
                             </tr>
                         </thead>
@@ -104,9 +132,11 @@ const Table: React.FC<TableProps> = () => {
                                                 <ChartPieIcon />
                                             </span>
                                             <span className='inline-block hover:underline hover:text-[#0969da] cursor-pointer'
-                                                onClick={handleShowModal}>
+                                                onClick={() => handleShowModal(task)}
+                                            >
                                                 {task.content}
                                             </span>
+
                                         </div>
                                     </th>
                                     <td className=" border-t-0 px-6 align-middle border-l-0 border-r text-sm whitespace-nowrap p-2 ">
@@ -122,10 +152,14 @@ const Table: React.FC<TableProps> = () => {
                                     </td>
                                 </tr>
                             ))}
+
                         </tbody>
                     </table>
                 </div>
             </div>
+            {isModal && modalTask && (
+                <ModalEdit onRequestClose={() => setIsModal(false)} task={modalTask} />
+            )}
         </div>
 
 
