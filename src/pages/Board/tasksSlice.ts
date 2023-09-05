@@ -14,12 +14,12 @@ const initialState: Task[] = [
         sizeId: "large"
     },
     {
-        id: "2",
-        columnId: "new",
-        content: "Bài 2",
+        id: "6",
+        columnId: "done",
+        content: "Bài 6",
         description: null,
-        priorityId: "urgent",
-        sizeId: "small"
+        priorityId: "low",
+        sizeId: "large"
     },
     {
         id: "3",
@@ -38,6 +38,14 @@ const initialState: Task[] = [
         sizeId: "mediumS"
     },
     {
+        id: "2",
+        columnId: "new",
+        content: "Bài 2",
+        description: null,
+        priorityId: "urgent",
+        sizeId: "small"
+    },
+    {
         id: "5",
         columnId: "delay",
         content: "Bài 5",
@@ -45,15 +53,6 @@ const initialState: Task[] = [
         priorityId: "",
         sizeId: "tiny"
     },
-    {
-        id: "6",
-        columnId: "done",
-        content: "Bài 6",
-        description: null,
-        priorityId: "low",
-        sizeId: "large"
-    },
-
     {
         id: "8",
         columnId: "new",
@@ -72,6 +71,26 @@ const initialState: Task[] = [
     },
 
 ];
+
+function sortByKey<Task>(
+    state: Task[],
+    key: keyof Task,
+    order: 'ascending' | 'descending'
+): Task[] {
+    return state.sort((a, b) => {
+        const valueA = String(a[key]);
+        const valueB = String(b[key]);
+
+        if (order === 'ascending') {
+            return valueA.localeCompare(valueB);
+        } else if (order === 'descending') {
+            return valueB.localeCompare(valueA);
+        } else {
+            throw new Error('Invalid order parameter. Use "ascending" or "descending".');
+        }
+    });
+}
+
 export const dataSlice = createSlice({
     name: 'tasks',
     initialState,
@@ -120,6 +139,33 @@ export const dataSlice = createSlice({
             const { id } = action.payload;
             return state.filter((task) => task.columnId !== id);
         },
+        sortContentAscending: (state) => {
+            return state.sort((a, b) => a.content.localeCompare(b.content));
+        },
+        sortContentDescending: (state) => {
+            return state.sort((a, b) => b.content.localeCompare(a.content));
+        },
+        sortStatusAscending: (state) => {
+            return sortByKey(state, 'columnId', 'ascending');
+        },
+        sortStatusDescending: (state) => {
+            return sortByKey(state, 'columnId', 'descending');
+        },
+        sortInprogressAscending: (state) => {
+            return sortByKey(state, 'priorityId', 'ascending');
+        },
+        sortInprogressDescending: (state) => {
+            return sortByKey(state, 'priorityId', 'descending');
+        },
+        sortSizeAscending: (state) => {
+            return sortByKey(state, 'sizeId', 'ascending');
+        },
+        sortSizeDescending: (state) => {
+            return sortByKey(state, 'sizeId', 'descending');
+        },
+        sortDefault: () => {
+            return initialState;
+        },
 
         //Action for reordering tasks within the same column
         reorderTasks: (state, action) => {
@@ -155,7 +201,26 @@ export const dataSlice = createSlice({
     },
 })
 
-export const { addTask, updTask, delTask, deleteAllTasksInColumn, moveTaskToColumn, reorderTasks, updDesc } = dataSlice.actions
+export const
+    {
+        addTask,
+        updTask,
+        delTask,
+        deleteAllTasksInColumn,
+        moveTaskToColumn,
+        sortContentAscending,
+        sortContentDescending,
+        sortDefault,
+        reorderTasks,
+        sortStatusAscending,
+        sortStatusDescending,
+        sortInprogressAscending,
+        sortInprogressDescending,
+        sortSizeDescending,
+        sortSizeAscending,
+        updDesc
+    }
+        = dataSlice.actions
 export default dataSlice.reducer
 
 

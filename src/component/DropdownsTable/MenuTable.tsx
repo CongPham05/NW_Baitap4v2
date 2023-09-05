@@ -5,38 +5,46 @@ import { BarsArrowDownIcon, BarsArrowUpIcon, XMarkIcon, EllipsisHorizontalIcon, 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
-interface DropdownsProps {
-    handleBarsArrowUpIcon: () => void,
-    isBarsArrowUpIcon: boolean,
-    handleBarsArrowDownIcon: () => void,
-    isBarsArrowDownIcon: boolean,
+interface MenuTableProps {
+    showArrowUpIcon: () => void;
+    isArrowUp: boolean;
+    showArrowDownIcon: () => void;
+    isArrowDown: boolean;
+    showGroupIcon: () => void;
+    isGroup: boolean | undefined;
     headCol: {
         id: string;
         title: string;
         optionUp: string;
         optionDown: string;
         optionGroup?: string | undefined;
-    }
+    };
 }
-const ColTable: React.FC<DropdownsProps> = ({
-    handleBarsArrowUpIcon,
-    isBarsArrowUpIcon,
-    handleBarsArrowDownIcon,
-    isBarsArrowDownIcon,
-    headCol
+const MenuTable: React.FC<MenuTableProps> = ({
+    showArrowUpIcon,
+    isArrowUp,
+    showArrowDownIcon,
+    isArrowDown,
+    showGroupIcon,
+    isGroup,
+    headCol,
 }) => {
 
     const handleSortAscending = () => {
-        handleBarsArrowUpIcon();
+        showArrowUpIcon();
     }
     const handleSortDescending = () => {
-        handleBarsArrowDownIcon();
+        showArrowDownIcon();
+    }
+    const handleShowGroupIcon = () => {
+        showGroupIcon();
     }
 
     return (
         <Menu as="div" className="relative inline-block text-left ">
             <div>
-                <Menu.Button className="hover:bg-[#f3f4f6] p-1 rounded-lg font-semibold text-[#656d76]">
+                <Menu.Button
+                    className="hover:bg-[#f3f4f6] p-1 rounded-lg font-semibold text-[#656d76]">
                     <EllipsisHorizontalIcon className='w-5' />
                 </Menu.Button>
             </div>
@@ -63,7 +71,7 @@ const ColTable: React.FC<DropdownsProps> = ({
                                         <a href="#" className=' pl-2 py-2 flex-grow block '>
                                             {headCol.optionUp}
                                         </a>
-                                        {isBarsArrowUpIcon && <XMarkIcon className="h-4 mx-3 text-gray-500 " />}
+                                        {isArrowUp && <XMarkIcon className="h-4 mx-3 text-gray-500 " />}
                                     </div>
                                 </div>
                             )}
@@ -80,27 +88,27 @@ const ColTable: React.FC<DropdownsProps> = ({
                                         <a href="#" className=' pl-2 py-2 flex-grow block '>
                                             {headCol.optionDown}
                                         </a>
-                                        {isBarsArrowDownIcon && <XMarkIcon className="h-4 mx-3 text-gray-500 " />}
+                                        {isArrowDown && <XMarkIcon className="h-4 mx-3 text-gray-500 " />}
                                     </div>
                                 </div>
                             )}
                         </Menu.Item>
                         {
                             headCol.optionGroup &&
-                            <div className="py-1">
-                                <Menu.Item >
-                                    {({ active }) => (
-                                        <div className={classNames(
+                            <Menu.Item >
+                                {({ active }) => (
+                                    <div onClick={handleShowGroupIcon}
+                                        className={classNames(
                                             active ? 'bg-gray-100 text-gray-900 ' : ' text-gray-700', 'flex items-center pl-4 '
                                         )}>
-                                            <Bars2Icon className="h-5 w-5 text-gray-500" aria-hidden="true" />
-                                            <a href="#" className=' pl-2 py-2 flex-grow  text-sm '>
-                                                {headCol.optionGroup}
-                                            </a>
-                                        </div>
-                                    )}
-                                </Menu.Item>
-                            </div>
+                                        <Bars2Icon className="h-5 w-5 text-gray-500" aria-hidden="true" />
+                                        <a href="#" className=' pl-2 py-2 flex-grow  text-sm '>
+                                            {headCol.optionGroup}
+                                        </a>
+                                        {isGroup && <XMarkIcon className="h-4 mx-3 text-gray-500 " />}
+                                    </div>
+                                )}
+                            </Menu.Item>
                         }
                     </div>
                 </Menu.Items>
@@ -109,4 +117,4 @@ const ColTable: React.FC<DropdownsProps> = ({
     );
 };
 
-export default ColTable;
+export default MenuTable;
