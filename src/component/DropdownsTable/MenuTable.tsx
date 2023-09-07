@@ -7,11 +7,11 @@ function classNames(...classes: string[]) {
 }
 interface MenuTableProps {
     showArrowUpIcon: () => void;
-    isArrowUp: boolean;
+    isArrowUp: null | boolean;
     showArrowDownIcon: () => void;
-    isArrowDown: boolean;
+    isArrowDown: null | boolean;
     showGroupIcon: () => void;
-    isGroup: boolean | undefined;
+    isGroup: boolean | null;
     headCol: {
         id: string;
         title: string;

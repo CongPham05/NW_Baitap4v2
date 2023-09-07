@@ -11,14 +11,14 @@ const initialState: Task[] = [
         content: "Bài 1",
         description: "Xin Chào Việt Nam!",
         priorityId: "low",
-        sizeId: "large"
+        sizeId: "mediumS"
     },
     {
         id: "6",
         columnId: "done",
         content: "Bài 6",
         description: null,
-        priorityId: "low",
+        priorityId: "urgent",
         sizeId: "large"
     },
     {
@@ -59,37 +59,19 @@ const initialState: Task[] = [
         content: "Bài 8",
         description: null,
         priorityId: "low",
-        sizeId: "large"
+        sizeId: "small"
     },
     {
         id: "10",
         columnId: "delay",
         content: "Bài 10",
         description: null,
-        priorityId: "low",
+        priorityId: "high",
         sizeId: "large"
     },
 
 ];
 
-function sortByKey<Task>(
-    state: Task[],
-    key: keyof Task,
-    order: 'ascending' | 'descending'
-): Task[] {
-    return state.sort((a, b) => {
-        const valueA = String(a[key]);
-        const valueB = String(b[key]);
-
-        if (order === 'ascending') {
-            return valueA.localeCompare(valueB);
-        } else if (order === 'descending') {
-            return valueB.localeCompare(valueA);
-        } else {
-            throw new Error('Invalid order parameter. Use "ascending" or "descending".');
-        }
-    });
-}
 
 export const dataSlice = createSlice({
     name: 'tasks',
@@ -139,32 +121,39 @@ export const dataSlice = createSlice({
             const { id } = action.payload;
             return state.filter((task) => task.columnId !== id);
         },
-        sortContentAscending: (state) => {
-            return state.sort((a, b) => a.content.localeCompare(b.content));
+        sortAscending: (state, action) => {
+
+            if (action.payload === 'title') {
+                return state.sort((a, b) => a.content.localeCompare(b.content));
+            }
+            if (action.payload === 'status') {
+                return state.sort((a, b) => String(a.columnId).localeCompare(String(b.columnId)));
+            }
+            if (action.payload === 'inProgress') {
+                return state.sort((a, b) => String(a.priorityId).localeCompare(String(b.priorityId)));
+            }
+            if (action.payload === 'size') {
+                return state.sort((a, b) => String(a.sizeId).localeCompare(String(b.sizeId)));
+            }
+
         },
-        sortContentDescending: (state) => {
-            return state.sort((a, b) => b.content.localeCompare(a.content));
+        sortDescending: (state, action) => {
+            if (action.payload === 'title') {
+                return state.sort((a, b) => b.content.localeCompare(a.content));
+            }
+            if (action.payload === 'status') {
+                return state.sort((a, b) => String(b.columnId).localeCompare(String(a.columnId)));
+            }
+            if (action.payload === 'inProgress') {
+                return state.sort((a, b) => String(b.priorityId).localeCompare(String(a.priorityId)));
+            }
+            if (action.payload === 'size') {
+                return state.sort((a, b) => String(b.sizeId).localeCompare(String(a.sizeId)));
+            }
         },
-        sortStatusAscending: (state) => {
-            return sortByKey(state, 'columnId', 'ascending');
-        },
-        sortStatusDescending: (state) => {
-            return sortByKey(state, 'columnId', 'descending');
-        },
-        sortInprogressAscending: (state) => {
-            return sortByKey(state, 'priorityId', 'ascending');
-        },
-        sortInprogressDescending: (state) => {
-            return sortByKey(state, 'priorityId', 'descending');
-        },
-        sortSizeAscending: (state) => {
-            return sortByKey(state, 'sizeId', 'ascending');
-        },
-        sortSizeDescending: (state) => {
-            return sortByKey(state, 'sizeId', 'descending');
-        },
-        sortDefault: () => {
-            return initialState;
+        sortDefault: (state, action) => {
+            const { array } = action.payload;
+            return state = array;
         },
 
         //Action for reordering tasks within the same column
@@ -208,16 +197,10 @@ export const
         delTask,
         deleteAllTasksInColumn,
         moveTaskToColumn,
-        sortContentAscending,
-        sortContentDescending,
+        sortAscending,
+        sortDescending,
         sortDefault,
         reorderTasks,
-        sortStatusAscending,
-        sortStatusDescending,
-        sortInprogressAscending,
-        sortInprogressDescending,
-        sortSizeDescending,
-        sortSizeAscending,
         updDesc
     }
         = dataSlice.actions

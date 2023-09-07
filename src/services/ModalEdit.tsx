@@ -22,7 +22,6 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
 
     const handleShowModalDel = () => {
         setIsModalDelete(false);
-        onRequestClose();
     }
     const handleShowInput = () => {
         setEditMode(!editMode)
@@ -204,7 +203,6 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                                 </div>
                                 <ModalDelete
                                     isOpen={isModalDelete}
-                                    // onClose={() => setIsModalDelete(false)}
                                     onClose={handleShowModalDel}
                                     inputId={task}
                                     type={'TASK'}
