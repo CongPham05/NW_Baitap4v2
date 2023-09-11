@@ -33,9 +33,8 @@ const WrapOptions: React.FC<WrapOptionsProps> = ({ task, type }) => {
         const finalOption = { ...targetOption, ...colorOption };
 
         return (
-            <div className='flex gap-1'>
-                <div className={`px-2 py-[1px] text-xs font-medium border rounded-xl
-                                hover:cursor-pointer hover:shadow-md transition-all `}
+            <div className='flex  gap-1'>
+                <div className={`px-2 py-[1px] text-xs font-medium border rounded-xl`}
                     style={{
                         borderColor: `${finalOption.colorBorder}`,
                         backgroundColor: `${finalOption.colorBg}`,

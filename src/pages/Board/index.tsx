@@ -39,7 +39,7 @@ function Board() {
         })
     );
     return (
-        <div className='pt-1 pb-8 pl-8 flex flex-grow overflow-y-hidden gap-2 '>
+        <div className='dark:bg-slate-700 pt-1 pb-8 pl-8 flex flex-grow overflow-y-hidden gap-2 bg-white '>
             <DndContext
                 sensors={sensors}
                 onDragStart={onDragStart}
@@ -59,7 +59,7 @@ function Board() {
                         ))}
 
                         <div onClick={() => { createNewColumn() }}
-                            className='hover:bg-[#fff] flex-shrink-0  cursor-pointer w-11 h-11  bg-[#f6f8fa] 
+                            className='dark:bg-slate-800 dark:border-slate-600  dark:text-white dark:hover:bg-slate-700 hover:bg-[#fff] flex-shrink-0  cursor-pointer w-11 h-11  bg-[#f6f8fa] 
                                     border border-solid border-[#d0d7de] rounded-md flex items-center justify-center'
                         >
                             <PlusIcon />

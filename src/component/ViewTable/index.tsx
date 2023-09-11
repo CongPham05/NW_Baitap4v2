@@ -1,15 +1,10 @@
-import { Bars2Icon, BarsArrowDownIcon, BarsArrowUpIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { Bars2Icon, BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react'
 import MenuTable from '../DropdownsTable/MenuTable';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    sortAscending,
-    sortDefault,
-    sortDescending,
-} from '../../pages/Board/tasksSlice';
+import { useSelector } from 'react-redux';
 import { todosRemainningSelector } from '../../redux/selectors';
-import GroupTable from '../GroupTable';
 import BodyTable from '../BodyTable';
+import GroupTable from '../GroupTable';
 
 interface HeadTableProps {
 }
@@ -51,9 +46,9 @@ interface ColumnState {
 
 const ViewTable: React.FC<HeadTableProps> = () => {
 
-    const tasks = useSelector(todosRemainningSelector)
-    const [array] = useState([...tasks]);
-    const dispatch = useDispatch();
+    const tasks = useSelector(todosRemainningSelector);
+    const [dataList, setdDataList] = useState(tasks);
+
 
     const [columnStates, setColumnStates] = useState<Record<string, ColumnState>>({
         title: {
@@ -86,16 +81,39 @@ const ViewTable: React.FC<HeadTableProps> = () => {
             title.isArrowDown || title.isArrowUp ||
             status.isArrowDown || status.isArrowUp || status.isGroup ||
             inProgress.isArrowDown || inProgress.isArrowUp || inProgress.isGroup ||
-            size.isArrowDown || size.isArrowUp || size.isGroup
-        );
+            size.isArrowDown || size.isArrowUp || size.isGroup);
 
         if (isAllDefault) {
-            dispatch(sortDefault({ array }));
+            setdDataList(tasks)
         }
-    }, [array, columnStates, dispatch]);
 
+    }, [columnStates, dataList.length, tasks]);
+
+
+    const sortTasks = (columnId: string, ascending: boolean) => {
+        const sortedTasks = [...tasks].sort((a, b) => {
+            if (columnId === 'title') {
+                return ascending ? a.content.localeCompare(b.content) : b.content.localeCompare(a.content);
+            } else if (columnId === 'status') {
+                return ascending
+                    ? String(a.columnId).localeCompare(String(b.columnId))
+                    : String(b.columnId).localeCompare(String(a.columnId));
+            } else if (columnId === 'inProgress') {
+                return ascending
+                    ? String(a.priorityId).localeCompare(String(b.priorityId))
+                    : String(b.priorityId).localeCompare(String(a.priorityId));
+            } else if (columnId === 'size') {
+                return ascending
+                    ? String(a.sizeId).localeCompare(String(b.sizeId))
+                    : String(b.sizeId).localeCompare(String(a.sizeId));
+            }
+            return 0;
+        });
+
+        setdDataList(sortedTasks);
+    };
     const showArrowUpIcon = (columnId: string) => {
-        dispatch(sortAscending(columnId))
+        sortTasks(columnId, true);
         resetOtherArrowStates(columnId);
         setColumnStates(prevStates => ({
             ...prevStates,
@@ -107,7 +125,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         }));
     };
     const showArrowDownIcon = (columnId: string) => {
-        dispatch(sortDescending(columnId))
+        sortTasks(columnId, false);
         resetOtherArrowStates(columnId);
         setColumnStates(prevStates => ({
             ...prevStates,
@@ -119,7 +137,6 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         }));
     };
     const showGroupIcon = (columnId: string) => {
-        dispatch(sortDescending(columnId));
         setColCurren(columnId);
         resetOtherGroupIcon(columnId);
         setIsDataGroup(!columnStates[columnId].isGroup);
@@ -156,30 +173,30 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         });
     };
     return (
-        <>
-            <div className='flex border-y min-w-max  '>
+        < >
+            <div className='flex border-y min-w-max dark:bg-slate-800 dark:border-slate-600 '>
                 <div className='px-10'></div>
-                <div className=' flex items-center text-[#656d76] ' >
+                <div className=' flex items-center text-[#656d76]  dark:text-white' >
                     {headTable.map((headCol, index) => {
                         return (
-                            <div key={index} className="border-r border-solid text-[14px] w-[300px] font-semibold px-2 py-1">
+                            <div key={index} className="dark:border-slate-600  border-r border-solid text-[14px] w-[300px] font-semibold px-2 py-1">
                                 <div className='flex items-center justify-between'>
                                     <div>{headCol.title}</div>
                                     <div className='flex items-center'>
                                         {columnStates[headCol.id].isGroup &&
-                                            <div className='px-1'><Bars2Icon className="w-5 text-gray-500" /></div>
+                                            <div className='px-1 '><Bars2Icon className=" dark:text-white w-5 text-gray-500" /></div>
                                         }
                                         {columnStates[headCol.id].isArrowUp &&
-                                            <div className='hover:bg-[#eeeff2] cursor-pointer p-1 rounded-md '
+                                            <div className='dark:hover:bg-slate-600 hover:bg-[#eeeff2] cursor-pointer p-1 rounded-md '
                                                 onClick={() => showArrowDownIcon(headCol.id)}  >
-                                                <BarsArrowUpIcon className="w-5 text-gray-500" />
+                                                <BarsArrowUpIcon className=" dark:text-white w-5 text-gray-500" />
                                             </div>
                                         }
                                         {
                                             columnStates[headCol.id].isArrowDown &&
-                                            <div className='hover:bg-[#eeeff2] cursor-pointer p-1 rounded-md '
+                                            <div className='dark:hover:bg-slate-600 hover:bg-[#eeeff2] cursor-pointer p-1 rounded-md '
                                                 onClick={() => showArrowUpIcon(headCol.id)} >
-                                                <BarsArrowDownIcon className="w-5 text-gray-500" />
+                                                <BarsArrowDownIcon className=" dark:text-white w-5 text-gray-500" />
                                             </div>
                                         }
                                         <MenuTable
@@ -196,18 +213,16 @@ const ViewTable: React.FC<HeadTableProps> = () => {
                             </div>
                         )
                     })}
-                    <div className=" border-solid font-semibold flex justify-start">
-                        <div className='p-2 hover:bg-[#eeeff2] '>
+                    {/* <div className="  flex justify-start">
+                        <div className='p-2 dark:hover:bg-slate-600 hover:bg-[#eeeff2] '>
                             <PlusIcon className='w-[21px]' />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
-            {!isDataGroup ? <BodyTable /> : <GroupTable colCurren={colCurren} />}
+            {!isDataGroup ? <BodyTable dataList={dataList} /> : <GroupTable dataList={dataList} colCurren={colCurren} />}
 
         </>
-
-
     );
 };
 

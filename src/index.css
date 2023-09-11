@@ -7,7 +7,7 @@
 }
 
 .pc-nav {
-    @apply border-[#f6f8fa] border-t-2 border-x-2 border-solid px-6 py-1.5 text-slate-950 cursor-pointer inline-block
+    @apply border-transparent border-t-2 border-x-2 border-solid px-6 py-1.5 text-slate-950 cursor-pointer inline-block
 }
 
 .pc-border {

@@ -10,7 +10,7 @@ interface NewViewProps {
 
 const NewView: React.FC<NewViewProps> = () => {
     return (
-        <div className='flex justify-between items-center gap-2 cursor-pointer 
+        <div className='flex justify-between items-center gap-2 cursor-pointer  dark:hover:bg-slate-700 dark:text-white
                         rounded-lg text-sm text-[#656d76] hover:bg-[#eeeff2]  hover:text-black  px-4 '>
             {newView.icon} {newView.title}
         </div>

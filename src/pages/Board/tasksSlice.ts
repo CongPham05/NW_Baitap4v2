@@ -50,7 +50,7 @@ const initialState: Task[] = [
         columnId: "delay",
         content: "Bài 5",
         description: "medium",
-        priorityId: "",
+        priorityId: null,
         sizeId: "tiny"
     },
     {
@@ -84,8 +84,20 @@ export const dataSlice = createSlice({
                 columnId,
                 content: inputValue,
                 description: null,
-                priorityId: uuidv4(),
-                sizeId: uuidv4(),
+                priorityId: null,
+                sizeId: null,
+            };
+            state.push(newTask);
+        },
+        addTaskTable: (state, action) => {
+            const { inputValue } = action.payload;
+            const newTask: Task = {
+                id: uuidv4(),
+                columnId: 'new',
+                content: inputValue,
+                description: null,
+                priorityId: null,
+                sizeId: null,
             };
             state.push(newTask);
         },
@@ -112,6 +124,10 @@ export const dataSlice = createSlice({
                 }
                 return task;
             });
+        },
+        updCol: (state, action) => {
+            const { id, newTask } = action.payload;
+            return state.map((task) => (task.id === id ? newTask : task));
         },
         delTask: (state, action) => {
             const { id } = action.payload;
@@ -151,9 +167,8 @@ export const dataSlice = createSlice({
                 return state.sort((a, b) => String(b.sizeId).localeCompare(String(a.sizeId)));
             }
         },
-        sortDefault: (state, action) => {
-            const { array } = action.payload;
-            return state = array;
+        sortDefault: (state) => {
+            return state;
         },
 
         //Action for reordering tasks within the same column
@@ -195,6 +210,8 @@ export const
         addTask,
         updTask,
         delTask,
+        updCol,
+        addTaskTable,
         deleteAllTasksInColumn,
         moveTaskToColumn,
         sortAscending,

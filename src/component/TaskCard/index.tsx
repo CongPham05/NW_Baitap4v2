@@ -44,18 +44,19 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
                 style={style}
                 {...attributes}
                 {...listeners}
-                className="pc-css-todo hover:cursor-grab group hover:border-[#0969da] relative ">
+                className="dark:bg-slate-700 dark:border-slate-600  dark:hover:border-[#0969da] pc-css-todo 
+                hover:cursor-grab group hover:border-[#0969da] relative ">
                 <div className='flex items-center text-[#656d76] text-xs'>
                     <span className='inline-block w-5'>
                         <ChartPieIcon />
                     </span>
-                    <span className='mr-2' >Draft</span>
+                    <span className='mr-2 ' >Draft</span>
                 </div>
                 <div className=' text-sm'>
                     <span className='hover:underline hover:text-[#0969da] cursor-pointer py-1.5 inline-block'
                         onClick={handleShowModal}
                     >
-                        <span> {task.content}</span>
+                        <span className=" dark:text-white"> {task.content}</span>
                     </span>
                 </div>
                 {isModal && <ModalEdit onRequestClose={handleShowModal} task={task} />}

@@ -1,8 +1,7 @@
 .App {
-    height          : 100vh;
-    background-color: white;
-    display         : flex;
-    flex-direction  : column;
+    height        : 100vh;
+    display       : flex;
+    flex-direction: column;
 }
 
 
@@ -42,10 +41,4 @@
     align-self: flex-end;
     margin    : 8px;
     cursor    : pointer;
-}
-
-.modal-body {
-    /* flex: 1; */
-    /* padding    : 20px; */
-    /* overflow: auto; */
 }

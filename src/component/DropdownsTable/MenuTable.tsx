@@ -44,7 +44,7 @@ const MenuTable: React.FC<MenuTableProps> = ({
         <Menu as="div" className="relative inline-block text-left ">
             <div>
                 <Menu.Button
-                    className="hover:bg-[#f3f4f6] p-1 rounded-lg font-semibold text-[#656d76]">
+                    className=" dark:hover:bg-slate-600 dark:text-white hover:bg-[#f3f4f6] p-1 rounded-lg font-semibold text-[#656d76]">
                     <EllipsisHorizontalIcon className='w-5' />
                 </Menu.Button>
             </div>
@@ -57,7 +57,7 @@ const MenuTable: React.FC<MenuTableProps> = ({
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="absolute font-normal right-2 z-10 top-9 w-48 origin-top-right divide-y divide-gray-100 
+                <Menu.Items className="absolute font-normal py-1.5 right-2 z-10 top-9 w-48 origin-top-right divide-y divide-gray-100 
                                         rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         <Menu.Item >

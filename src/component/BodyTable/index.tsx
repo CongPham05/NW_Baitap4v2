@@ -1,67 +1,114 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
-import { ChartPieIcon, } from '@heroicons/react/24/outline'
-import { todosRemainningSelector } from "../../redux/selectors";
-import WrapOptions from '../../component/WrapOptions/WrapOptions';
+import React, { useEffect, useRef, useState } from 'react'
+import { ChartPieIcon, PlusIcon, } from '@heroicons/react/24/outline';
+import { useDispatch } from 'react-redux';
 import ModalEdit from '../../services/ModalEdit';
-import { Task } from "../../types"
+import { Task } from '../../types';
+import OptionsTable from '../OptionsTable/OptionsTable';
+import { addTaskTable } from '../../pages/Board/tasksSlice';
 
 interface BodyTableProps {
+    dataList: Task[];
 }
+const type = {
+    status: 'STATUS',
+    priority: 'PRIORITY',
+    size: 'SIZE'
+}
+const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
+    console.log(dataList);
 
-const BodyTable: React.FC<BodyTableProps> = () => {
+    const dispatch = useDispatch();
+    const [showInput, setShowInput] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const tasks = useSelector(todosRemainningSelector)
+    const handleClickOutside = (e: MouseEvent) => {
+        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+            setShowInput(false);
+            setInputValue('');
+        }
+    };
 
-    const [isModal, setIsModal] = useState(false);
-    const [modalTask, setModalTask] = useState<Task | null>(null);
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
-    const handleShowModal = (selectedTask: Task) => {
-        setIsModal(true);
-        setModalTask(selectedTask);
+    const [isModalList, setIsModalList] = useState<boolean[]>(Array(dataList.length).fill(false));
+    const handleShowModal = (index: number) => {
+        const updatedIsModalList = [...isModalList];
+        updatedIsModalList[index] = true;
+        setIsModalList(updatedIsModalList);
     }
+    const handleShowInput = () => {
+        setShowInput(true);
+    };
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+    };
+    const handleInputEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter' && inputValue.length > 0) {
+            dispatch(addTaskTable({ inputValue }));
+            setInputValue('');
+            setShowInput(false);
+        }
+    };
     return (
-        <div className="flex-1 min-w-max">
+        <div className="flex-1 min-w-max dark:bg-slate-700 pb-40">
             {
-                tasks.map((task, index) => (
-                    <div key={task.id} className='flex border-b border-solid  text-[#656d76] '>
-                        <div className="flex justify-center items-center w-20 min-w-[80px] ">
-                            <span className="text-sm ">{index + 1}</span>
+                dataList.map((task, index) => (
+                    <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700 flex border-b border-solid hover:bg-[#f6f8fa]'>
+                        <div className="flex justify-center items-center w-20 min-w-[80px]  text-[#656d76]">
+                            <span className="text-sm  dark:text-white">{index + 1}</span>
                         </div>
 
-                        <div className='flex items-center border-r border-solid text-sm w-[300px] min-w-[300px]  font-semibold p-2'>
+                        <div className='flex items-center dark:border-slate-600  border-r text-sm w-[300px] min-w-[300px]  text-[#656d76]  font-semibold p-2'>
                             <span className=' w-5 mr-1.5'>
                                 <ChartPieIcon />
                             </span>
-                            <span className=' hover:underline hover:text-[#0969da] cursor-pointer font-normal'
-                                onClick={() => handleShowModal(task)}
+                            <span className=' dark:text-white hover:underline hover:text-[#0969da] cursor-pointer font-normal'
+                                onClick={() => handleShowModal(index)}
                             >
                                 {task.content}
                             </span>
+                        </div>
+                        {isModalList[index] && (
+                            <ModalEdit onRequestClose={() => setIsModalList(prevState => prevState.map((_, i) => i === index ? false : _))}
+                                task={task}
+                            />
+                        )}
+                        <OptionsTable task={task} typeOption={type.status} />
+                        <OptionsTable task={task} typeOption={type.priority} />
+                        <OptionsTable task={task} typeOption={type.size} />
 
-                        </div>
-                        <div className='flex items-center border-r border-solid text-sm w-[300px] min-w-[300px]  font-semibold p-2'>
-                            <WrapOptions task={task} type={"STATUS"} />
-                        </div>
-                        <div className='flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] font-semibold p-2'>
-                            <WrapOptions task={task} type={"PRIORITY"} />
-                        </div>
-                        <div className='flex items-center border-r border-solid text-sm w-[300px] min-w-[300px]  font-semibold p-2'>
-                            <WrapOptions task={task} type={"SIZE"} />
-                        </div>
-                        <div className=" border-solid font-semibold flex justify-start">
-                            <div className='p-5 hover:bg-[#eeeff2] '>
-
-                            </div>
-                        </div>
                     </div>
                 ))
             }
-            {isModal && modalTask && (
-                <ModalEdit onRequestClose={() => setIsModal(false)} task={modalTask} />
-            )}
+            <div className='flex gap-2 items-center border-b dark:bg-slate-800 dark:border-b-slate-600  '>
+                <div className='ml-5 dark:text-white'>
+                    <PlusIcon className='w-5' />
+                </div>
+                <div className='flex-1 relative py-2 cursor-pointer flex items-center' onClick={handleShowInput}>
+                    <div className=" rounded-md text-[#656d76]"> You can use Enter to add an item</div>
+                    {showInput && (
+                        <input className="w-full px-5 absolute top-0  h-full  border cursor-auto dark:focus:border-[#218bff]
+                        focus:border-[#218bff] outline-none "
+                            ref={inputRef}
+                            autoFocus
+                            type="text"
+                            placeholder='Start typing to create a draft, or type # to select a repository'
+                            value={inputValue}
+                            onChange={handleInputChange}
+                            onKeyDown={handleInputEnter}
+                        />
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
 
 export default BodyTable;
+

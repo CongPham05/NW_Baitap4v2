@@ -1,4 +1,5 @@
 export type Id = string | number;
+export type IdCol = string | number | null;
 
 export type Column = {
     id: Id;
@@ -11,8 +12,8 @@ export type Task = {
     columnId: Id;
     content: string;
     description: null | string,
-    priorityId: Id,
-    sizeId: Id
+    priorityId: IdCol,
+    sizeId: IdCol
 };
 
 export type Priority = {

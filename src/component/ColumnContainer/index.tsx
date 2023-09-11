@@ -7,6 +7,8 @@ import PlusIcon from "../../icons/PlusIcon";
 import TaskCard from "../TaskCard";
 import Dropdowns from "../Dropdowns/Dropdowns";
 import ModalDelete from "../../services/ModalDelete";
+import { useSelector } from "react-redux";
+import { colorOptionSelector } from "../../redux/selectors";
 
 interface Props {
     column: Column;
@@ -16,6 +18,10 @@ interface Props {
 }
 
 function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
+
+
+    const colorCol = useSelector(colorOptionSelector)
+    const colorCurren = colorCol.find(item => item.id === column.colorId)
 
     const [isModalDelete, setIsModalDelete] = useState(false);
     const [isModalDeleteAll, setIsModalDeleteAll] = useState(false);
@@ -87,18 +93,22 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
         <div ref={setNodeRef} style={style}
             {...attributes}
             {...listeners}
-            className="flex-col flex w-[350px] h-full bg-[#f6f8fa] pc-border hover:cursor-grab relative "
+            className=" dark:bg-slate-800 dark:border-slate-600  flex-col flex w-[350px] h-full bg-[#f6f8fa] pc-border hover:cursor-grab relative "
         >
 
             {/* Column title */}
             <div className=" py-2 px-4 flex items-center justify-between " >
                 <div className="flex gap-2 items-center">
-                    <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                    <div className='w-4 h-4 border rounded-full'
+                        style={{
+                            borderColor: `${colorCurren?.colorBorder}`,
+                            backgroundColor: `${colorCurren?.colorBg}`,
+                        }}> </div>
                     <div onClick={() => { setEditMode(true) }}
-                        className=" gap-2 text-[17px] font-semibold flex items-center cursor-pointer hover:border-b hover:border-[#639ee1] ">
+                        className=" dark:text-white gap-2 text-[17px] font-semibold flex items-center cursor-pointer hover:border-b hover:border-[#639ee1] ">
                         {!editMode && column.title}
                         {editMode && (
-                            <input className="text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
+                            <input className=" dark:text-black text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
                                 value={column.title}
                                 onChange={(e) => updateColumn(column.id, e.target.value)}
                                 autoFocus
@@ -150,14 +160,17 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
                 </SortableContext>
             </div>
             {/* Column footer */}
-            <button className="flex gap-2 items-center rounded-md p-2.5 hover:bg-[#eeeff2] text-[#656d76] "
+            <button className="dark:hover:bg-slate-700 dark:hover:text-white flex gap-2 items-center 
+            rounded-md p-2.5 hover:bg-[#eeeff2] text-[#656d76] "
                 onClick={handleShowInput}
             >
                 <PlusIcon />
                 Add item
             </button>
             {showInput && (
-                <input ref={inputRef} autoFocus type="text" className=" absolute bottom-0 w-full h-12 border-none cursor-auto outline-blue-500 px-4"
+                <input ref={inputRef} autoFocus type="text"
+                    className="dark:border-slate-600 absolute 
+                    bottom-0 w-full py-2.5 focus:outline-[#218bff] outline-none rounded-md cursor-auto  px-4"
                     value={inputValue}
                     onChange={handleInputChange}
                     onKeyDown={handleInputEnter}

@@ -1,15 +1,22 @@
 import { useState } from 'react';
-import { Task } from '../types'
+import { Task } from '../types';
 import { ArchiveBoxIcon, EyeSlashIcon, SparklesIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useDispatch } from 'react-redux';
-import { updTask, updDesc } from '../pages/Board/tasksSlice'
-import WrapOptions from '../component/WrapOptions/WrapOptions';
+import { updTask, updDesc } from '../pages/Board/tasksSlice';
 import ModalDelete from './ModalDelete';
+import DropdownsEdit from '../component/DropdownsEdit';
 
 interface ModalProps {
     onRequestClose: () => void,
     task: Task,
 }
+
+const type = {
+    status: 'STATUS',
+    priority: 'PRIORITY',
+    size: 'SIZE'
+}
+
 const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
 
     const dispatch = useDispatch();
@@ -19,9 +26,9 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
     const [descContent, setDescContent] = useState(task.description);
     const [isModalDelete, setIsModalDelete] = useState(false);
 
-
     const handleShowModalDel = () => {
         setIsModalDelete(false);
+        onRequestClose();
     }
     const handleShowInput = () => {
         setEditMode(!editMode)
@@ -161,22 +168,22 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                                         <span className='text-sm font-normal'>Add assignees...</span>
                                     </div>
                                 </div>
-                                <div className='flex my-1 items-center' onClick={() => alert("okok")}>
+                                <div className='flex my-1 items-center' >
                                     <div className='w-1/3'>Status</div>
-                                    <div className='w-2/3 p-1.5  hover:bg-[#f6f8fa] rounded-sm cursor-pointer'>
-                                        <WrapOptions task={task} type='STATUS' />
+                                    <div className='hover:bg-[#f6f8fa] rounded-sm cursor-pointer w-2/3 '>
+                                        <DropdownsEdit task={task} typeOption={type.status} />
                                     </div>
                                 </div>
-                                <div className='flex my-1 items-center'>
+                                <div className='flex my-1 items-center' >
                                     <div className='w-1/3'>Prioriry</div>
-                                    <div className='w-2/3 p-1.5  hover:bg-[#f6f8fa] rounded-sm cursor-pointer'>
-                                        <WrapOptions task={task} type='PRIORITY' />
+                                    <div className='hover:bg-[#f6f8fa] rounded-sm cursor-pointer w-2/3'>
+                                        <DropdownsEdit task={task} typeOption={type.priority} />
                                     </div>
                                 </div>
-                                <div className='flex my-1 items-center'>
+                                <div className='flex my-1 items-center' >
                                     <div className='w-1/3'>Size</div>
-                                    <div className='w-2/3 p-1.5  hover:bg-[#f6f8fa] rounded-sm cursor-pointer'>
-                                        <WrapOptions task={task} type='SIZE' />
+                                    <div className='hover:bg-[#f6f8fa] rounded-sm cursor-pointer w-2/3'>
+                                        <DropdownsEdit task={task} typeOption={type.size} />
                                     </div>
                                 </div>
                             </div>
