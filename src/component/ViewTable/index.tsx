@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import MenuTable from '../DropdownsTable/MenuTable';
 import { useSelector } from 'react-redux';
-import { todosRemainningSelector } from '../../redux/selectors';
+import { colIdSelector, todosRemainningSelector } from '../../redux/selectors';
 import BodyTable from '../BodyTable';
 import GroupTable from '../GroupTable';
 import { sortTable } from '../../pages/Board/tasksSlice';
-import { selectGroupType, setSortStatus } from '../../pages/Board/dataSlice';
+import { selectGroupType, setSortStatus, setDefaultSortTable } from '../../pages/Board/dataSlice';
+import { ColumnState } from '../../types';
 
 interface HeadTableProps {
 }
@@ -41,17 +42,11 @@ const headTable = [
     }
 ]
 
-interface ColumnState {
-    isArrowUp: null | boolean;
-    isArrowDown: null | boolean;
-    isGroup: null | boolean;
-}
-
 const ViewTable: React.FC<HeadTableProps> = () => {
     const dispatch = useDispatch();
     const tasks = useSelector(todosRemainningSelector);
+    const columnIdSort = useSelector(colIdSelector);
     // const dataSortAndGroup = useSelector(dataSelector);
-
     const [dataList, setdDataList] = useState(tasks);
 
     const [columnStates, setColumnStates] = useState<Record<string, ColumnState>>({
@@ -80,17 +75,17 @@ const ViewTable: React.FC<HeadTableProps> = () => {
     const [colCurren, setColCurren] = useState<string | null>(null);
 
     useEffect(() => {
-        const { title, status, inProgress, size } = columnStates;
-        const isAllDefault = !(
-            title.isArrowDown || title.isArrowUp ||
-            status.isArrowDown || status.isArrowUp || status.isGroup ||
-            inProgress.isArrowDown || inProgress.isArrowUp || inProgress.isGroup ||
-            size.isArrowDown || size.isArrowUp || size.isGroup);
-
-        if (isAllDefault) {
-            setdDataList(tasks)
-        }
-
+        // const { title, status, inProgress, size } = columnStates;
+        // console.log("columnIdSort::", columnIdSort)
+        // const isAllDefault = !(
+        //     title.isArrowDown || title.isArrowUp ||
+        //     status.isArrowDown || status.isArrowUp || status.isGroup ||
+        //     inProgress.isArrowDown || inProgress.isArrowUp || inProgress.isGroup ||
+        //     size.isArrowDown || size.isArrowUp || size.isGroup);
+        // console.log("columnIdSort::", columnIdSort)
+        // if (!columnIdSort) {
+        //     setdDataList(tasks)
+        // }
     }, [columnStates, dataList.length, tasks]);
 
     useEffect(() => {
@@ -98,6 +93,10 @@ const ViewTable: React.FC<HeadTableProps> = () => {
     }, [tasks])
 
     const sortTasks = (columnId: string, ascending: boolean) => {
+        console.log("columnIdSort::", columnIdSort)
+        if (!columnIdSort) {
+            setdDataList(tasks)
+        }
         dispatch(setSortStatus({ columnId, ascending }));
         dispatch(sortTable({ columnId, ascending }));
     };
@@ -126,10 +125,14 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         }));
     };
     const showGroupIcon = (columnId: string) => {
+
+        console.log(columnId);
+
         dispatch(selectGroupType(columnId))
         setColCurren(columnId);
         resetOtherGroupIcon(columnId);
         setIsDataGroup(!columnStates[columnId].isGroup);
+
         setColumnStates(prevStates => ({
             ...prevStates,
             [columnId]: {
@@ -164,9 +167,9 @@ const ViewTable: React.FC<HeadTableProps> = () => {
     };
     return (
         < >
-            <div className='flex border-y min-w-max dark:bg-slate-800 dark:border-slate-600 '>
+            <div className='flex border-y min-w-max dark:bg-slate-800 dark:border-slate-600  '>
                 <div className='px-10'></div>
-                <div className=' flex items-center text-[#656d76]  dark:text-white' >
+                <div className=' flex items-center text-[#656d76]  dark:text-white ' >
                     {headTable.map((headCol, index) => {
                         return (
                             <div key={index} className="dark:border-slate-600  border-r border-solid text-[14px] w-[300px] font-semibold px-2 py-1">
@@ -210,8 +213,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
                     </div> */}
                 </div>
             </div>
-            {!isDataGroup ? <BodyTable dataList={dataList} /> : <GroupTable dataList={dataList} colCurren={colCurren} />}
-
+            {!isDataGroup ? <BodyTable dataList={dataList} /> : <GroupTable dataList={dataList} colCurren={colCurren} columnStates={columnStates} />}
         </>
     );
 };

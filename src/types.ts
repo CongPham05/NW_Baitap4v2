@@ -1,12 +1,19 @@
 export type Id = string | number;
 export type IdCol = string | number | null;
-
+export type PropTasks = {
+    defaultTaskList: Task[],
+    taskList: Task[],
+}
 export type Column = {
     id: Id;
     title: string;
     colorId: string | null;
 };
-
+export type ColumnState = {
+    isArrowUp: null | boolean;
+    isArrowDown: null | boolean;
+    isGroup: null | boolean;
+}
 export type Task = {
     id: Id;
     columnId: Id;

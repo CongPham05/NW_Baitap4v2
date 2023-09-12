@@ -18,7 +18,6 @@ const type = {
 }
 
 const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
-
     const dispatch = useDispatch();
     const [editMode, setEditMode] = useState(false);
     const [inputValue, setInputValue] = useState(task.content);

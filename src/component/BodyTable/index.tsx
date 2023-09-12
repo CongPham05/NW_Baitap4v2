@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ChartPieIcon, PlusIcon, } from '@heroicons/react/24/outline';
+import { ChartPieIcon, PlusIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { useDispatch } from 'react-redux';
 import ModalEdit from '../../services/ModalEdit';
 import { Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
-import { addTaskTable } from '../../pages/Board/tasksSlice';
+import { addTaskTable, updTask } from '../../pages/Board/tasksSlice';
 
 interface BodyTableProps {
     dataList: Task[];
@@ -18,6 +18,7 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
 
     const dispatch = useDispatch();
     const [showInput, setShowInput] = useState(false);
+    const [editTitleTask, setEditTitleTask] = useState('');
     const [inputValue, setInputValue] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -36,10 +37,31 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
     }, []);
 
     const [isModalList, setIsModalList] = useState<boolean[]>(Array(dataList.length).fill(false));
+    const [isEditNameTask, setEditNameTask] = useState<boolean[]>(Array(dataList.length).fill(false));
+
     const handleShowModal = (index: number) => {
         const updatedIsModalList = [...isModalList];
         updatedIsModalList[index] = true;
         setIsModalList(updatedIsModalList);
+
+    }
+    const changeTitleTask = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEditTitleTask(e.target.value);
+
+    }
+    const editNameTask = (index: number) => {
+        const updatedIsEditNameTask = [...isEditNameTask];
+        updatedIsEditNameTask[index] = true;
+        setEditNameTask(updatedIsEditNameTask);
+        setEditTitleTask(dataList[index].content);
+    }
+    const saveTitleTask = (index: number) => {
+        const updatedIsEditNameTask = [...isEditNameTask];
+        updatedIsEditNameTask[index] = false;
+        setEditNameTask(updatedIsEditNameTask);
+        (editTitleTask.length) && dispatch(updTask({ id: dataList[index].id, content: editTitleTask }))
+
+
     }
     const handleShowInput = () => {
         setShowInput(true);
@@ -55,24 +77,60 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         }
     };
     return (
-        <div className="flex-1 min-w-max dark:bg-slate-700 pb-40">
+        <div className="flex-1 overflow-x-hidden min-w-max dark:bg-slate-700  pb-40">
             {
                 dataList.map((task, index) => (
-                    <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700 flex border-b border-solid hover:bg-[#f6f8fa]'>
+                    <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700
+                     flex border-b border-solid hover:bg-[#f6f8fa]'>
                         <div className="flex justify-center items-center w-20 min-w-[80px]  text-[#656d76]">
                             <span className="text-sm  dark:text-white">{index + 1}</span>
                         </div>
-
-                        <div className='flex items-center dark:border-slate-600  border-r text-sm w-[300px] min-w-[300px]  text-[#656d76]  font-semibold p-2'>
-                            <span className=' w-5 mr-1.5'>
-                                <ChartPieIcon />
-                            </span>
-                            <span className=' dark:text-white hover:underline hover:text-[#0969da] cursor-pointer font-normal'
-                                onClick={() => handleShowModal(index)}
+                        {!isEditNameTask[index] &&
+                            <div className='flex items-center dark:border-slate-600  border-r text-sm w-[300px] 
+                            min-w-[300px]  text-[#656d76]  font-semibold pl-2 cursor-pointer  group'
+                                onClick={() => editNameTask(index)}
                             >
-                                {task.content}
-                            </span>
-                        </div>
+                                <span className=' w-5 mr-1.5'>
+                                    <ChartPieIcon />
+                                </span>
+                                <div className='flex-1 flex items-center w-full h-full group:hover:border-[#0969da] '>
+                                    <span className=' dark:text-white hover:underline hover:text-[#0969da] cursor-pointer pl-2 font-normal '
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleShowModal(index);
+                                        }}
+                                    >
+                                        {task.content}
+                                    </span>
+                                    <div className='flex flex-1 items-center justify-end  pr-5'>
+                                        <PencilIcon className='w-3 opacity-30 group-hover:opacity-100' />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        {isEditNameTask[index] && (
+                            <div className='flex items-center gap-2 dark:border-slate-600  border-r text-sm 
+                            w-[300px] min-w-[300px]  text-[#656d76]  font-semibold pl-2' >
+                                <span className=' w-5 mr-1.5'>
+                                    <ChartPieIcon />
+                                </span>
+                                <div className='flex-1 w-full  h-full'>
+                                    <input className=" dark:text-black text-sm  font-normal w-full pl-2 h-full outline-[#0969da]"
+                                        value={editTitleTask || task.content}
+                                        onChange={changeTitleTask}
+                                        autoFocus
+                                        onBlur={() => {
+                                            saveTitleTask(index)
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key !== "Enter") return;
+                                            saveTitleTask(index)
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+                        )}
                         {isModalList[index] && (
                             <ModalEdit onRequestClose={() => setIsModalList(prevState => prevState.map((_, i) => i === index ? false : _))}
                                 task={task}
