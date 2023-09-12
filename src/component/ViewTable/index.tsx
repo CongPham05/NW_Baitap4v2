@@ -1,10 +1,13 @@
 import { Bars2Icon, BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import MenuTable from '../DropdownsTable/MenuTable';
 import { useSelector } from 'react-redux';
 import { todosRemainningSelector } from '../../redux/selectors';
 import BodyTable from '../BodyTable';
 import GroupTable from '../GroupTable';
+import { sortTable } from '../../pages/Board/tasksSlice';
+import { selectGroupType, setSortStatus } from '../../pages/Board/dataSlice';
 
 interface HeadTableProps {
 }
@@ -45,10 +48,11 @@ interface ColumnState {
 }
 
 const ViewTable: React.FC<HeadTableProps> = () => {
-
+    const dispatch = useDispatch();
     const tasks = useSelector(todosRemainningSelector);
-    const [dataList, setdDataList] = useState(tasks);
+    // const dataSortAndGroup = useSelector(dataSelector);
 
+    const [dataList, setdDataList] = useState(tasks);
 
     const [columnStates, setColumnStates] = useState<Record<string, ColumnState>>({
         title: {
@@ -89,28 +93,13 @@ const ViewTable: React.FC<HeadTableProps> = () => {
 
     }, [columnStates, dataList.length, tasks]);
 
+    useEffect(() => {
+        setdDataList(tasks);
+    }, [tasks])
 
     const sortTasks = (columnId: string, ascending: boolean) => {
-        const sortedTasks = [...tasks].sort((a, b) => {
-            if (columnId === 'title') {
-                return ascending ? a.content.localeCompare(b.content) : b.content.localeCompare(a.content);
-            } else if (columnId === 'status') {
-                return ascending
-                    ? String(a.columnId).localeCompare(String(b.columnId))
-                    : String(b.columnId).localeCompare(String(a.columnId));
-            } else if (columnId === 'inProgress') {
-                return ascending
-                    ? String(a.priorityId).localeCompare(String(b.priorityId))
-                    : String(b.priorityId).localeCompare(String(a.priorityId));
-            } else if (columnId === 'size') {
-                return ascending
-                    ? String(a.sizeId).localeCompare(String(b.sizeId))
-                    : String(b.sizeId).localeCompare(String(a.sizeId));
-            }
-            return 0;
-        });
-
-        setdDataList(sortedTasks);
+        dispatch(setSortStatus({ columnId, ascending }));
+        dispatch(sortTable({ columnId, ascending }));
     };
     const showArrowUpIcon = (columnId: string) => {
         sortTasks(columnId, true);
@@ -137,6 +126,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         }));
     };
     const showGroupIcon = (columnId: string) => {
+        dispatch(selectGroupType(columnId))
         setColCurren(columnId);
         resetOtherGroupIcon(columnId);
         setIsDataGroup(!columnStates[columnId].isGroup);

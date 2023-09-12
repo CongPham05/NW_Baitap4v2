@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { colorOptionSelector, colsSelector, prioritySelector, sizeSelector } from '../../redux/selectors';
+import { colorOptionSelector, colsSelector, prioritySelector, sizeSelector, dataSelector } from '../../redux/selectors';
 import { useSelector } from 'react-redux';
 import PlusIcon from '../../icons/PlusIcon';
 import { ChartPieIcon } from '@heroicons/react/24/outline';
@@ -26,7 +26,6 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
             setInputValue('');
         }
     };
-
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -51,6 +50,8 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
     const columns = useSelector(colsSelector)
     const prioritys = useSelector(prioritySelector)
     const sizes = useSelector(sizeSelector)
+    const dataSortAndGroup = useSelector(dataSelector)
+    console.log("groupType::", dataSortAndGroup.groupType)
 
     const [isModal, setIsModal] = useState(false);
     const [modalTask, setModalTask] = useState<Task | null>(null);
@@ -70,6 +71,8 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                 color: colorTasks,
             };
         });
+        console.log(newColumns);
+
         return (
             <div className='overflow-x-hidden dark:bg-slate-800 pb-40 '>
                 {newColumns.map((column) => (
@@ -102,9 +105,9 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                                                 {task.content}
                                             </span>
                                         </div>
-                                        <OptionsTable task={task} typeOption={type.status} />
-                                        <OptionsTable task={task} typeOption={type.priority} />
-                                        <OptionsTable task={task} typeOption={type.size} />
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.priority} /></div>
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.size} /></div>
                                     </div>
                                 ))
                             }
@@ -164,9 +167,9 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                                                 {task.content}
                                             </span>
                                         </div>
-                                        <OptionsTable task={task} typeOption={type.status} />
-                                        <OptionsTable task={task} typeOption={type.priority} />
-                                        <OptionsTable task={task} typeOption={type.size} />
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.priority} /></div>
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.size} /></div>
                                         <div className=" border-solid font-semibold flex justify-start">
                                             <div className='p-5 hover:bg-[#eeeff2] '>
                                             </div>
@@ -236,9 +239,9 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                                                 {task.content}
                                             </span>
                                         </div>
-                                        <OptionsTable task={task} typeOption={type.status} />
-                                        <OptionsTable task={task} typeOption={type.priority} />
-                                        <OptionsTable task={task} typeOption={type.size} />
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.priority} /></div>
+                                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.size} /></div>
                                         <div className="  font-semibold flex justify-start">
                                             <div className='p-5 hover:bg-[#eeeff2] '>
                                             </div>
@@ -249,9 +252,7 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                             {isModal && modalTask && (
                                 <ModalEdit onRequestClose={() => setIsModal(false)} task={modalTask} />
                             )}
-
                         </div>
-
                         <div className='flex gap-2 items-center border-b'>
                             <div className='ml-5 w-5'>
                                 <PlusIcon />

@@ -5,6 +5,7 @@ import type { RootState } from '../redux/store'
 export const prioritySelector = (state: RootState) => state.priority;
 export const sizeSelector = (state: RootState) => state.size;
 export const colorOptionSelector = (state: RootState) => state.colorOption;
+export const dataSelector = (state: RootState) => state.data;
 
 export const tasksSelector = (state: RootState) => state.tasks;
 export const colsSelector = (state: RootState) => state.columns;

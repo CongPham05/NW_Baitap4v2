@@ -3,7 +3,6 @@ import { Task } from '../../types';
 import { arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from 'uuid';
 
-
 const initialState: Task[] = [
     {
         id: "1",
@@ -77,6 +76,12 @@ export const dataSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
+        updateArr: (state, action?) => {
+
+            const { sortedTasks } = action.payload;
+            state = sortedTasks
+            return state;
+        },
         addTask: (state, action) => {
             const { columnId, inputValue } = action.payload;
             const newTask: Task = {
@@ -137,40 +142,6 @@ export const dataSlice = createSlice({
             const { id } = action.payload;
             return state.filter((task) => task.columnId !== id);
         },
-        sortAscending: (state, action) => {
-
-            if (action.payload === 'title') {
-                return state.sort((a, b) => a.content.localeCompare(b.content));
-            }
-            if (action.payload === 'status') {
-                return state.sort((a, b) => String(a.columnId).localeCompare(String(b.columnId)));
-            }
-            if (action.payload === 'inProgress') {
-                return state.sort((a, b) => String(a.priorityId).localeCompare(String(b.priorityId)));
-            }
-            if (action.payload === 'size') {
-                return state.sort((a, b) => String(a.sizeId).localeCompare(String(b.sizeId)));
-            }
-
-        },
-        sortDescending: (state, action) => {
-            if (action.payload === 'title') {
-                return state.sort((a, b) => b.content.localeCompare(a.content));
-            }
-            if (action.payload === 'status') {
-                return state.sort((a, b) => String(b.columnId).localeCompare(String(a.columnId)));
-            }
-            if (action.payload === 'inProgress') {
-                return state.sort((a, b) => String(b.priorityId).localeCompare(String(a.priorityId)));
-            }
-            if (action.payload === 'size') {
-                return state.sort((a, b) => String(b.sizeId).localeCompare(String(a.sizeId)));
-            }
-        },
-        sortDefault: (state) => {
-            return state;
-        },
-
         //Action for reordering tasks within the same column
         reorderTasks: (state, action) => {
             const { activeId, overId } = action.payload;
@@ -202,11 +173,37 @@ export const dataSlice = createSlice({
             })
             return arrayMove(updatedTasks, activeIndex, activeIndex);
         },
+        sortTable: (state, action) => {
+
+            const { columnId, ascending } = action.payload;
+
+            const sortedTasks = [...state].sort((a, b) => {
+                if (columnId === 'title') {
+                    return ascending ? a.content.localeCompare(b.content) : b.content.localeCompare(a.content);
+                } else if (columnId === 'status') {
+                    return ascending
+                        ? String(a.columnId).localeCompare(String(b.columnId))
+                        : String(b.columnId).localeCompare(String(a.columnId));
+                } else if (columnId === 'inProgress') {
+                    return ascending
+                        ? String(a.priorityId).localeCompare(String(b.priorityId))
+                        : String(b.priorityId).localeCompare(String(a.priorityId));
+                } else if (columnId === 'size') {
+                    return ascending
+                        ? String(a.sizeId).localeCompare(String(b.sizeId))
+                        : String(b.sizeId).localeCompare(String(a.sizeId));
+                }
+                return 0;
+            });
+            state = sortedTasks;
+            return state
+        }
     },
 })
 
 export const
     {
+        updateArr,
         addTask,
         updTask,
         delTask,
@@ -214,11 +211,9 @@ export const
         addTaskTable,
         deleteAllTasksInColumn,
         moveTaskToColumn,
-        sortAscending,
-        sortDescending,
-        sortDefault,
         reorderTasks,
-        updDesc
+        updDesc,
+        sortTable,
     }
         = dataSlice.actions
 export default dataSlice.reducer

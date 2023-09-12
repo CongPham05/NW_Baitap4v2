@@ -24,10 +24,10 @@ import { addColumn, moveColumn, updateCol } from "./colsSlice";
 function Board() {
     const dispatch = useDispatch();
     const columns = useSelector(colsSelector)
+    const tasks = useSelector(todosRemainningSelector)
 
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-    const tasks = useSelector(todosRemainningSelector)
     const [activeTask, setActiveTask] = useState<Task | null>(null);
 
     const [activeColumn, setActiveColumn] = useState<Column | null>(null);
@@ -85,7 +85,6 @@ function Board() {
                     </DragOverlay>, document.body
                 )}
             </DndContext>
-
         </div>
     );
 

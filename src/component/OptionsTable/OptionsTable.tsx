@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { colsSelector, prioritySelector, sizeSelector } from '../../redux/selectors';
+import { colsSelector, dataSelector, prioritySelector, sizeSelector } from '../../redux/selectors';
 import { Menu, Transition } from '@headlessui/react';
 import { Column, Priority, Task } from '../../types';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { updCol } from '../../pages/Board/tasksSlice';
+import { sortTable, updCol } from '../../pages/Board/tasksSlice';
 import WrapOptions from '../WrapOptions/WrapOptions';
 
 interface OptionsTableProps {
@@ -17,6 +17,7 @@ const OptionsTable: React.FC<OptionsTableProps> = ({ task, typeOption }) => {
     const columns = useSelector(colsSelector);
     const prioritys = useSelector(prioritySelector);
     const sizes = useSelector(sizeSelector);
+    const sortStatus = useSelector(dataSelector);
 
     const options = typeOption === 'STATUS' ? columns : typeOption === 'PRIORITY' ? prioritys : sizes;
     const propertyToUpdate = typeOption === 'STATUS' ? 'columnId' : typeOption === 'PRIORITY' ? 'priorityId' : 'sizeId';
@@ -28,12 +29,13 @@ const OptionsTable: React.FC<OptionsTableProps> = ({ task, typeOption }) => {
             [propertyToUpdate]: option.id,
         };
         dispatch(updCol({ id, newTask }));
+        dispatch(sortTable(sortStatus));
     };
 
     return (
-        <Menu as="div" className="relative dark:border-slate-600  border-r ">
+        <Menu as="div" className="relative dark:border-slate-600  border-r px-3 ">
             <Menu.Button className="w-full ">
-                <div className='flex items-center group  text-sm w-[299px] min-w-[299px] font-semibold px-2  '>
+                <div className='flex items-center group  text-sm  font-semibold '>
                     <WrapOptions task={task} type={typeOption} />
                     <div className='flex-1 flex items-center  justify-end py-3'>
                         <ChevronDownIcon className='dark:text-white w-3 opacity-30 group-hover:opacity-100 mr-2' />

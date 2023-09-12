@@ -5,10 +5,12 @@ import filterReducer from '../component/SearchFilters/filtersSlice'
 import priorityReducer from '../component/WrapOptions/prioritySlice';
 import sizeReducer from '../component/WrapOptions/sizeSlice';
 import colorReducer from '../component/WrapOptions/colorSlice';
+import dataReducer from '../pages/Board/dataSlice'
 
 
 export const store = configureStore({
     reducer: {
+        data: dataReducer,
         tasks: tasksReducer,
         columns: columnsReducer,
         filters: filterReducer,

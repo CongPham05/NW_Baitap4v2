@@ -33,7 +33,7 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
     if (isDragging) {
         return (
             <div ref={setNodeRef} style={style}
-                className="bg-white opacity-50 rounded-lg border border-[#0969da] min-h-[90px] h-[90px]"
+                className="dark:bg-slate-700 bg-white opacity-50 rounded-lg border border-[#0969da] min-h-[90px] h-[90px]"
             />
         );
     }

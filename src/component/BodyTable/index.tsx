@@ -15,7 +15,6 @@ const type = {
     size: 'SIZE'
 }
 const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
-    console.log(dataList);
 
     const dispatch = useDispatch();
     const [showInput, setShowInput] = useState(false);
@@ -79,9 +78,9 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                                 task={task}
                             />
                         )}
-                        <OptionsTable task={task} typeOption={type.status} />
-                        <OptionsTable task={task} typeOption={type.priority} />
-                        <OptionsTable task={task} typeOption={type.size} />
+                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>
+                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.priority} /></div>
+                        <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.size} /></div>
 
                     </div>
                 ))
