@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { colorOptionSelector, colsSelector, prioritySelector, sizeSelector } from '../../redux/selectors';
 import { useSelector } from 'react-redux';
 import PlusIcon from '../../icons/PlusIcon';
-import { ChartPieIcon } from '@heroicons/react/24/outline';
+import { ChartPieIcon, PencilIcon } from '@heroicons/react/24/outline';
 import ModalEdit from '../../services/ModalEdit';
 import { ColumnState, Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
@@ -17,22 +17,39 @@ const type = {
     priority: 'PRIORITY',
     size: 'SIZE'
 }
-const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
+const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList, columnStates }) => {
+    console.log({ colCurren, dataList });
+
+    const colorCol = useSelector(colorOptionSelector)
+    const columns = useSelector(colsSelector)
+    const prioritys = useSelector(prioritySelector)
+    const sizes = useSelector(sizeSelector)
+    const dataSortAndGroup = useSelector(dataSelector)
+    console.log("groupType::", dataSortAndGroup.groupType)
+
     const [showInput, setShowInput] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const handleClickOutside = (e: MouseEvent) => {
-        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
-            setShowInput(false);
-            setInputValue('');
-        }
-    };
+    const [showEditTitle, setShowEditTitle] = useState<boolean>(false);
+
+
+    const [isModal, setIsModal] = useState(false);
+    const [modalTask, setModalTask] = useState<Task | null>(null);
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    const handleClickOutside = (e: MouseEvent) => {
+        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+            setShowInput(false);
+            setInputValue('');
+        }
+    };
+
     const handleShowInput = () => {
         setShowInput(true);
     };
@@ -46,17 +63,6 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
             setShowInput(false);
         }
     };
-
-    const colorCol = useSelector(colorOptionSelector)
-    const columns = useSelector(colsSelector)
-    const prioritys = useSelector(prioritySelector)
-    const sizes = useSelector(sizeSelector)
-    const dataSortAndGroup = useSelector(dataSelector)
-    console.log("groupType::", dataSortAndGroup.groupType)
-
-    const [isModal, setIsModal] = useState(false);
-    const [modalTask, setModalTask] = useState<Task | null>(null);
-
     const handleShowModal = (selectedTask: Task) => {
         setIsModal(true);
         setModalTask(selectedTask);
@@ -72,14 +78,15 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                 color: colorTasks,
             };
         });
-        console.log(newColumns);
+        // if (columnStates[colCurren].isGroup || (columnStates[colCurren].isGroup && columnStates[colCurren].isArrowDown)) {
+        //     return newColumns.sort((a, b) => a.title.localeCompare(b.title))
 
         // }
         // if (columnStates[colCurren].isGroup && columnStates[colCurren].isArrowUp) {
         //     return newColumns.sort((a, b) => b.title.localeCompare(a.title))
         // }
         return (
-            <div className='overflow-x-hidden dark:bg-slate-800 pb-40 '>
+            <div className='overflow-x-hidden dark:bg-slate-800  '>
                 {newColumns.map((column) => (
                     <div key={column.id} className='dark:border-slate-600  border-t'>
                         <div className='dark:border-slate-600 flex items-center gap-3 border-b py-2  pl-6  '>
@@ -96,20 +103,60 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                         <div >
                             {
                                 column.dataList.map((task, index) => (
-                                    <div key={task.id} className=' dark:border-slate-600 flex border-b border-solid  text-[#656d76] '>
+                                    <div key={task.id} className=' dark:border-slate-600 dark:hover:bg-slate-700 hover:bg-[#f6f8fa] flex border-b border-solid 
+                                     text-[#656d76]  '>
                                         <div className="dark:text-white flex justify-center items-center w-20 min-w-[80px] ">
                                             <span className="text-sm ">{index + 1}</span>
                                         </div>
-                                        <div className='dark:border-slate-600 flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] font-semibold p-2'>
-                                            <span className=' w-5 mr-1.5'>
-                                                <ChartPieIcon />
-                                            </span>
-                                            <span className='dark:text-white hover:underline hover:text-[#0969da] cursor-pointer font-normal'
-                                                onClick={() => handleShowModal(task)}
+                                        {!showEditTitle &&
+                                            <div className='dark:border-slate-600 flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] 
+                                            font-semibold group'
+                                                onClick={() => setShowEditTitle(!showEditTitle)}
                                             >
-                                                {task.content}
-                                            </span>
-                                        </div>
+                                                <span className=' w-5 mr-1.5'>
+                                                    <ChartPieIcon />
+                                                </span>
+                                                <div className='flex-1 flex items-center w-full h-full group:hover:border-[#0969da] '>
+                                                    <span className=' dark:text-white hover:underline hover:text-[#0969da] cursor-pointer pl-2 font-normal '
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleShowModal(task);
+                                                        }}
+                                                    >
+                                                        {task.content}
+                                                    </span>
+                                                    <div className='flex flex-1 items-center justify-end  pr-5'>
+                                                        <PencilIcon className='w-3 opacity-30 dark:text-white group-hover:opacity-100' />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        }
+                                        {showEditTitle && (
+                                            <div className='flex items-center gap-2 dark:border-slate-600  border-r text-sm  w-[300px] min-w-[300px]  
+                                            text-[#656d76]  font-semibold pl-2' >
+                                                <span className=' w-5 mr-1.5'>
+                                                    <ChartPieIcon />
+                                                </span>
+                                                <div className='flex-1 w-full h-full'>
+                                                    <input className=" dark:text-black text-sm  font-normal w-full pl-2 h-full outline-[#0969da]"
+                                                        value={task.content}
+                                                        // onChange={changeTitleTask}
+                                                        autoFocus
+                                                        onBlur={() => {
+                                                            // saveTitleTask(index)
+                                                        }}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key !== "Enter") return;
+                                                            // saveTitleTask(index)
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                        )}
+
+
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.priority} /></div>
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.size} /></div>
@@ -179,7 +226,6 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                                 <ModalEdit onRequestClose={() => setIsModal(false)} task={modalTask} />
                             )}
                         </div>
-
                         <div className="border-b border-solid font-normal text-xs  flex items-center justify-start">
                             <div className='p-2 hover:bg-[#eeeff2] '>
                                 <PlusIcon />

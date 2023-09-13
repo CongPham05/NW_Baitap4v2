@@ -93,7 +93,8 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
         <div ref={setNodeRef} style={style}
             {...attributes}
             {...listeners}
-            className=" dark:bg-slate-800 dark:border-slate-600 bg-white flex-col flex w-[350px] h-full  pc-border hover:cursor-grab relative "
+            className=" dark:bg-slate-800 dark:border-slate-600 bg-[#f6f8fa] flex-col flex w-[350px]
+             h-full  pc-border hover:cursor-grab relative "
         >
             {/* Column title */}
             <div className=" py-2 px-4 flex items-center justify-between " >
