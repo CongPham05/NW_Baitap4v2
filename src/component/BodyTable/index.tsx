@@ -59,8 +59,6 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         updatedIsEditNameTask[index] = false;
         setEditNameTask(updatedIsEditNameTask);
         (editTitleTask.length) && dispatch(updTask({ id: dataList[index].id, content: editTitleTask }))
-
-
     }
     const handleShowInput = () => {
         setShowInput(true);
@@ -76,11 +74,11 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         }
     };
     return (
-        <div className="flex-1 overflow-x-hidden min-w-max dark:bg-slate-700  pb-40">
+        <div className="flex-1 overflow-x-hidden min-w-max dark:bg-slate-700 bg-[#f6f8fa]  pb-40">
             {
                 dataList?.map((task, index) => (
                     <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700
-                     flex border-b border-solid hover:bg-[#f6f8fa]'>
+                     flex border-b bg-white border-solid hover:bg-[#f6f8fa]'>
                         <div className="flex justify-center items-center w-20 min-w-[80px]  text-[#656d76]">
                             <span className="text-sm  dark-text">{index + 1}</span>
                         </div>

@@ -162,12 +162,12 @@ const ViewTable: React.FC<HeadTableProps> = () => {
     };
     return (
         < >
-            <div className='flex border-y min-w-max dark:bg-slate-800 dark:border-slate-600  '>
+            <div className='flex border-y min-w-max dark:bg-slate-800 dark:border-slate-600   '>
                 <div className='px-10'></div>
-                <div className=' flex items-center text-[#656d76]  dark:text-white ' >
+                <div className=' flex items-center text-[#656d76]   dark:text-white ' >
                     {headTable.map((headCol, index) => {
                         return (
-                            <div key={index} className="dark-border  border-r border-solid text-[14px] w-[300px] font-semibold px-2 py-1">
+                            <div key={index} className="dark-border   border-r border-solid text-[14px] w-[300px] font-semibold px-2 py-1">
                                 <div className='flex items-center justify-between'>
                                     <div>{headCol.title}</div>
                                     <div className='flex items-center'>
