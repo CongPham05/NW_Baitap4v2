@@ -24,7 +24,7 @@ const Dropdowns: React.FC<DropdownsProps> = ({ deleteColumn, column, deleteAllTa
     return (
         <Menu as="div" className="relative inline-block text-left ">
             <div>
-                <Menu.Button className="dark:text-white hover:bg-[#a6a6a841] p-1 rounded-lg font-semibold text-[#656d76]">
+                <Menu.Button className="dark-text hover:bg-[#a6a6a841] p-1 rounded-lg font-semibold text-[#656d76]">
                     < EllipsisHorizontalIcon className='w-5' />
                 </Menu.Button>
             </div>

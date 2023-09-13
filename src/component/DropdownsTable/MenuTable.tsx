@@ -44,7 +44,7 @@ const MenuTable: React.FC<MenuTableProps> = ({
         <Menu as="div" className="relative inline-block text-left ">
             <div>
                 <Menu.Button
-                    className=" dark:hover:bg-slate-600 dark:text-white hover:bg-[#f3f4f6] p-1 rounded-lg font-semibold text-[#656d76]">
+                    className=" dark:hover:bg-slate-600 dark-text hover:bg-[#f3f4f6] p-1 rounded-lg font-semibold text-[#656d76]">
                     <EllipsisHorizontalIcon className='w-5' />
                 </Menu.Button>
             </div>

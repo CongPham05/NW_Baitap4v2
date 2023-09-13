@@ -33,12 +33,12 @@ const OptionsTable: React.FC<OptionsTableProps> = ({ task, typeOption }) => {
     };
 
     return (
-        <Menu as="div" className="relative dark:border-slate-600  border-r px-3 ">
+        <Menu as="div" className="relative dark-border  border-r px-3 ">
             <Menu.Button className="w-full ">
                 <div className='flex items-center group  text-sm  font-semibold '>
                     <WrapOptions task={task} type={typeOption} />
                     <div className='flex-1 flex items-center  justify-end py-3'>
-                        <ChevronDownIcon className='dark:text-white w-3 opacity-30 group-hover:opacity-100 mr-2' />
+                        <ChevronDownIcon className='dark-text w-3 opacity-30 group-hover:opacity-100 mr-2' />
                     </div>
                 </div>
             </Menu.Button>

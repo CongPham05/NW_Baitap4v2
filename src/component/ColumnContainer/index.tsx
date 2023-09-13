@@ -93,7 +93,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
         <div ref={setNodeRef} style={style}
             {...attributes}
             {...listeners}
-            className=" dark:bg-slate-800 dark:border-slate-600 bg-white flex-col flex w-[350px] h-full  pc-border hover:cursor-grab relative "
+            className=" dark-bg  dark-border bg-white flex-col flex w-[350px] h-full  pc-border hover:cursor-grab relative "
         >
 
             {/* Column title */}
@@ -105,10 +105,10 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
                             backgroundColor: `${colorCurren?.colorBg}`,
                         }}> </div>
                     <div onClick={() => { setEditMode(true) }}
-                        className=" dark:text-white gap-2 text-[17px] font-semibold flex items-center cursor-pointer hover:border-b hover:border-[#639ee1] ">
+                        className=" dark-text gap-2 text-[17px] font-semibold flex items-center cursor-pointer hover:border-b hover:border-[#639ee1] ">
                         {!editMode && column.title}
                         {editMode && (
-                            <input className=" dark:text-black text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
+                            <input className=" dark-text-black text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
                                 value={column.title}
                                 onChange={(e) => updateColumn(column.id, e.target.value)}
                                 autoFocus
@@ -169,7 +169,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
             </button>
             {showInput && (
                 <input ref={inputRef} autoFocus type="text"
-                    className="dark:border-slate-600 absolute 
+                    className="dark-border absolute 
                     bottom-0 w-full py-2.5 focus:outline-[#218bff] outline-none rounded-md cursor-auto  px-4"
                     value={inputValue}
                     onChange={handleInputChange}

@@ -8,7 +8,7 @@ const ToggleTheme: React.FC<HeaderProps> = ({ enabled, handleToggle }) => {
 
 
     return (
-        <div className="dark:bg-slate-800  pr-10">
+        <div className="dark-bg   pr-10">
             <Switch
                 checked={enabled}
                 onChange={handleToggle}

@@ -33,7 +33,7 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
     if (isDragging) {
         return (
             <div ref={setNodeRef} style={style}
-                className="dark:bg-slate-700 bg-white opacity-50 rounded-lg border border-[#0969da] min-h-[90px] h-[90px]"
+                className="dark-bg_sub bg-white opacity-50 rounded-lg border border-[#0969da] min-h-[90px] h-[90px]"
             />
         );
     }
@@ -44,7 +44,7 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
                 style={style}
                 {...attributes}
                 {...listeners}
-                className="dark:bg-slate-700 dark:border-slate-600  dark:hover:border-[#0969da] pc-css-todo 
+                className="dark-bg_sub dark-border  dark:hover:border-[#0969da] pc-css-todo 
                 hover:cursor-grab group hover:border-[#0969da] relative ">
                 <div className='flex items-center text-[#656d76] text-xs'>
                     <span className='inline-block w-5'>
@@ -56,7 +56,7 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
                     <span className='hover:underline hover:text-[#0969da] cursor-pointer py-1.5 inline-block'
                         onClick={handleShowModal}
                     >
-                        <span className=" dark:text-white"> {task.content}</span>
+                        <span className=" dark-text"> {task.content}</span>
                     </span>
                 </div>
                 {isModal && <ModalEdit onRequestClose={handleShowModal} task={task} />}

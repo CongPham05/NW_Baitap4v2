@@ -42,16 +42,16 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
         console.log(newCol);
 
         return (
-            <div className='overflow-x-hidden dark:bg-slate-800 pb-40 flex flex-col gap-3.5 bg-[#f6f8fa]'>
+            <div className='overflow-x-hidden dark-bg  pb-40 flex flex-col gap-3.5 bg-[#f6f8fa]'>
                 {newCol.map((column) => (
-                    <div key={column.id} className='dark:border-slate-600 dark:bg-slate-700 border-t bg-white shadow-sm '>
-                        <div className='dark:border-slate-600 flex items-center gap-3 border-b py-2  pl-6  '>
+                    <div key={column.id} className='dark-border dark-bg_sub border-t bg-white shadow-sm '>
+                        <div className='dark-border flex items-center gap-3 border-b py-2  pl-6  '>
                             <div className='w-4 h-4 border rounded-full '
                                 style={{
                                     borderColor: `${column.color.colorBorder}`,
                                     backgroundColor: `${column.color.colorBg}`,
                                 }}> </div>
-                            <div className='font-medium dark:text-white '> {column.title}</div>
+                            <div className='font-medium dark-text '> {column.title}</div>
                             <div className='w-4 h-4 bg-[#e8ebef]  rounded-xl flex items-center justify-center'>
                                 <span className='text-[#656d76] text-xs block'>{column.dataList.length}</span>
                             </div>
@@ -59,15 +59,15 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                         <div >
                             {
                                 column.dataList.map((task, index) => (
-                                    <div key={task.id} className=' dark:border-slate-600 flex border-b border-solid  text-[#656d76] '>
-                                        <div className="dark:text-white flex justify-center items-center w-20 min-w-[80px] ">
+                                    <div key={task.id} className=' dark-border flex border-b border-solid dark-hover  hover:bg-[#f6f8fa] text-[#656d76] '>
+                                        <div className="dark-text flex justify-center items-center w-20 min-w-[80px] ">
                                             <span className="text-sm ">{index + 1}</span>
                                         </div>
-                                        <div className='dark:border-slate-600 flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] font-semibold p-2'>
+                                        <div className='dark-border flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] font-semibold p-2'>
                                             <span className=' w-5 mr-1.5'>
                                                 <ChartPieIcon />
                                             </span>
-                                            <span className='dark:text-white hover:underline hover:text-[#0969da] cursor-pointer font-normal'
+                                            <span className='dark-text hover:underline hover:text-[#0969da] cursor-pointer font-normal'
                                                 onClick={() => handleShowModal(task)}
                                             >
                                                 {task.content}
@@ -101,16 +101,16 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
         });
 
         return (
-            <div className='overflow-x-hidden dark:bg-slate-800 pb-40 flex flex-col gap-3.5 bg-[#f6f8fa]'>
+            <div className='overflow-x-hidden dark-bg  pb-40 flex flex-col gap-3.5 bg-[#f6f8fa]'>
                 {newCol.map((column) => (
-                    <div key={column.id} className='dark:border-slate-600  border-t bg-white shadow-sm '>
-                        <div className='dark:border-slate-600 flex items-center gap-3 border-b py-2  pl-6  '>
+                    <div key={column.id} className='dark-border  dark-bg_sub border-t bg-white shadow-sm '>
+                        <div className='dark-border flex items-center gap-3 border-b py-2  pl-6  '>
                             <div className='w-4 h-4 border rounded-full '
                                 style={{
                                     borderColor: `${column.color.colorBorder}`,
                                     backgroundColor: `${column.color.colorBg}`,
                                 }}> </div>
-                            <div className='font-medium dark:text-white '> {column.title}</div>
+                            <div className='font-medium dark-text '> {column.title}</div>
                             <div className='w-4 h-4 bg-[#e8ebef]  rounded-xl flex items-center justify-center'>
                                 <span className='text-[#656d76] text-xs block'>{column.dataList.length}</span>
                             </div>
@@ -118,15 +118,15 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                         <div >
                             {
                                 column.dataList.map((task, index) => (
-                                    <div key={task.id} className=' dark:border-slate-600 flex border-b border-solid  text-[#656d76] '>
-                                        <div className="dark:text-white flex justify-center items-center w-20 min-w-[80px] ">
+                                    <div key={task.id} className=' dark-border flex border-b border-solid dark-hover hover:bg-[#f6f8fa]  text-[#656d76] '>
+                                        <div className="dark-text flex justify-center items-center w-20 min-w-[80px] ">
                                             <span className="text-sm ">{index + 1}</span>
                                         </div>
-                                        <div className='dark:border-slate-600 flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] font-semibold p-2'>
+                                        <div className='dark-border flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] font-semibold p-2'>
                                             <span className=' w-5 mr-1.5'>
                                                 <ChartPieIcon />
                                             </span>
-                                            <span className='dark:text-white hover:underline hover:text-[#0969da] cursor-pointer font-normal'
+                                            <span className='dark-text hover:underline hover:text-[#0969da] cursor-pointer font-normal'
                                                 onClick={() => handleShowModal(task)}
                                             >
                                                 {task.content}
@@ -161,16 +161,16 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
         });
 
         return (
-            <div className='overflow-x-hidden dark:bg-slate-800 pb-40 flex flex-col gap-3.5 bg-[#f6f8fa]'>
+            <div className='overflow-x-hidden dark-bg  pb-40 flex flex-col gap-3.5 bg-[#f6f8fa]'>
                 {newCol.map((column) => (
-                    <div key={column.id} className='dark:border-slate-600  border-t bg-white shadow-sm '>
-                        <div className='dark:border-slate-600 flex items-center gap-3 border-b py-2  pl-6  '>
+                    <div key={column.id} className='dark-border  dark-bg_sub border-t bg-white shadow-sm '>
+                        <div className='dark-border flex items-center gap-3 border-b py-2  pl-6  '>
                             <div className='w-4 h-4 border rounded-full '
                                 style={{
                                     borderColor: `${column.color.colorBorder}`,
                                     backgroundColor: `${column.color.colorBg}`,
                                 }}> </div>
-                            <div className='font-medium dark:text-white '> {column.title}</div>
+                            <div className='font-medium dark-text '> {column.title}</div>
                             <div className='w-4 h-4 bg-[#e8ebef]  rounded-xl flex items-center justify-center'>
                                 <span className='text-[#656d76] text-xs block'>{column.dataList.length}</span>
                             </div>
@@ -178,15 +178,15 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList }) => {
                         <div >
                             {
                                 column.dataList.map((task, index) => (
-                                    <div key={task.id} className=' dark:border-slate-600 flex border-b border-solid  text-[#656d76] '>
-                                        <div className="dark:text-white flex justify-center items-center w-20 min-w-[80px] ">
+                                    <div key={task.id} className=' dark-border flex border-b border-solid hover:bg-[#f6f8fa] dark-hover text-[#656d76] '>
+                                        <div className="dark-text flex justify-center items-center w-20 min-w-[80px] ">
                                             <span className="text-sm ">{index + 1}</span>
                                         </div>
-                                        <div className='dark:border-slate-600 flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] font-semibold p-2'>
+                                        <div className='dark-border flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] font-semibold p-2'>
                                             <span className=' w-5 mr-1.5'>
                                                 <ChartPieIcon />
                                             </span>
-                                            <span className='dark:text-white hover:underline hover:text-[#0969da] cursor-pointer font-normal'
+                                            <span className='dark-text hover:underline hover:text-[#0969da] cursor-pointer font-normal'
                                                 onClick={() => handleShowModal(task)}
                                             >
                                                 {task.content}

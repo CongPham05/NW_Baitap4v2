@@ -71,15 +71,15 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         }
     };
     return (
-        <div className="flex-1 bg-[#f6f8fa] min-w-max overflow-x-hidden dark:bg-slate-700 pb-40">
+        <div className="flex-1 bg-[#f6f8fa] min-w-max overflow-x-hidden dark-bg_sub pb-40">
             {
                 dataList.map((task, index) => (
-                    <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700 flex border-b border-solid bg-white hover:bg-[#f6f8fa]'>
+                    <div key={task.id} className='dark-bg  dark-border dark-hover flex border-b border-solid bg-white hover:bg-[#f6f8fa]'>
                         <div className="flex justify-center items-center w-20 min-w-[80px]  text-[#656d76]">
-                            <span className="text-sm  dark:text-white">{index + 1}</span>
+                            <span className="text-sm  dark-text">{index + 1}</span>
                         </div>
                         {!isEditNameTask[index] &&
-                            <div className='flex items-center dark:border-slate-600  border-r text-sm w-[300px] 
+                            <div className='flex items-center dark-border  border-r text-sm w-[300px] 
                             min-w-[300px]  text-[#656d76]  font-semibold pl-2 cursor-pointer  group'
                                 onClick={() => editNameTask(index)}
                             >
@@ -87,7 +87,7 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                                     <ChartPieIcon />
                                 </span>
                                 <div className='flex-1 flex items-center w-full h-full group:hover:border-[#0969da] '>
-                                    <span className=' dark:text-white hover:underline hover:text-[#0969da] cursor-pointer pl-2 font-normal '
+                                    <span className=' dark-text hover:underline hover:text-[#0969da] cursor-pointer pl-2 font-normal '
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             handleShowModal(index);
@@ -95,20 +95,20 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                                     >
                                         {task.content}
                                     </span>
-                                    <div className='flex flex-1 items-center justify-end  pr-5'>
-                                        <PencilIcon className='w-3 opacity-30 group-hover:opacity-100' />
+                                    <div className='flex flex-1 items-center justify-end dark-text pr-5'>
+                                        <PencilIcon className='w-3 opacity-25 group-hover:opacity-100' />
                                     </div>
                                 </div>
                             </div>
                         }
                         {isEditNameTask[index] && (
-                            <div className='flex items-center gap-2 dark:border-slate-600  border-r text-sm 
+                            <div className='flex items-center gap-2 dark-border  border-r text-sm 
                             w-[300px] min-w-[300px]  text-[#656d76]  font-semibold pl-2' >
                                 <span className=' w-5 mr-1.5'>
                                     <ChartPieIcon />
                                 </span>
                                 <div className='flex-1 w-full h-full border '>
-                                    <input className=" dark:text-black text-sm font-normal w-full pl-2 h-full outline-[#0969da]"
+                                    <input className=" dark-text-black text-sm font-normal w-full pl-2 h-full outline-[#0969da]"
                                         value={editTitleTask || task.content}
                                         onChange={changeTitleTask}
                                         autoFocus
@@ -122,7 +122,6 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                                     />
                                 </div>
                             </div>
-
                         )}
                         {isModalList[index] && (
                             <ModalEdit onRequestClose={() => setIsModalList(prevState => prevState.map((_, i) => i === index ? false : _))}
@@ -132,12 +131,11 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>
                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.priority} /></div>
                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.size} /></div>
-
                     </div>
                 ))
             }
-            <div className='flex gap-2 items-center border-b bg-white shadow-sm dark:bg-slate-800 dark:border-b-slate-600  '>
-                <div className='ml-5 dark:text-white'>
+            <div className='flex gap-2 items-center border-b bg-white shadow-sm dark-bg  dark:border-b-slate-600  '>
+                <div className='ml-5 dark-text'>
                     <PlusIcon className='w-5' />
                 </div>
                 <div className='flex-1 relative py-2 cursor-pointer flex items-center' onClick={handleShowInput}>

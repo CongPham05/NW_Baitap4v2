@@ -13,8 +13,8 @@ function App() {
     setEnabled(!enabled)
   }
   return (
-    <div className={clsx('App dark:bg-slate-800 bg-[#f6f8fa]', enabled && 'dark')}>
-      <div className='flex items-center justify-between dark:bg-slate-800 '>
+    <div className={clsx('App bg-[#f6f8fa]', enabled && 'dark')}>
+      <div className='flex items-center justify-between  dark-bg '>
         <Header title="@CongPham05's untitled project" />
         <ToggleTheme enabled={enabled} handleToggle={handleToggle} />
       </div>

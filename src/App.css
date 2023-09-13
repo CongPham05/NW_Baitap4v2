@@ -1,9 +1,41 @@
+:root {
+    --bg-color-dark    : #0f172a;
+    --bgSub-color-dark : #1e293b;
+    --text-color-dark  : #FFFFFF;
+    --border-color-dark: #3a485d;
+    --hover-color-dark : #293548;
+
+}
+
+.dark .dark-hover:hover {
+    background-color: var(--hover-color-dark)
+}
+
+.dark .dark-bg {
+    background-color: var(--bg-color-dark)
+}
+
+.dark .dark-bg_sub {
+    background-color: var(--bgSub-color-dark)
+}
+
+.dark .dark-text {
+    color: var(--text-color-dark)
+}
+
+.dark .dark-border {
+    border-color: var(--border-color-dark)
+}
+
+.dark .dark-borderBottom {
+    border-bottom-color: var(--bgSub-color-dark)
+}
+
 .App {
     height        : 100vh;
     display       : flex;
     flex-direction: column;
 }
-
 
 .modal {
     position        : fixed;

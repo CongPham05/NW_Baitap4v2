@@ -22,16 +22,16 @@ interface NavbProps {
 const Navb: React.FC<NavbProps> = () => {
     const location = useLocation();
     return (
-        <nav className=' pl-8 flex dark:bg-slate-800 '>
+        <nav className=' pl-8 flex dark-bg  '>
             {nav__links.map((item, index) => {
                 return (
-                    <NavLink to={item.path} key={index} className={({ isActive }) => isActive ? "pc-nav-active dark:border-slate-600 dark:border-b-slate-700  dark:bg-slate-700 dark:text-white" : " pc-nav dark:bg-slate-800 dark:text-white  "} >
+                    <NavLink to={item.path} key={index} className={({ isActive }) => isActive ? "pc-nav-active dark-border dark-borderBottom  dark-bg_sub dark-text" : " pc-nav dark-bg   dark-text  "} >
                         <div className='flex justify-between   '>
                             <div className='flex gap-2'>
                                 {item.icon}
-                                <span className=' dark:text-white inline-block text-sm '>{item.display}</span>
+                                <span className=' dark-text inline-block text-sm '>{item.display}</span>
                             </div>
-                            <div className={item.path === location.pathname ? ' pc-border p-[5px]' : 'hidden'} >
+                            <div className={item.path === location.pathname ? ' pc-border dark-border p-[5px]' : 'hidden'} >
                                 <ChevronDownIcon className='w-3' />
                             </div>
                         </div>
