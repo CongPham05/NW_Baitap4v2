@@ -62,7 +62,7 @@ function Board() {
                         ))}
 
                         <div onClick={() => { createNewColumn() }}
-                            className='dark-bg  dark-border  dark-text dark:hover:bg-slate-700 hover:bg-[#fff] flex-shrink-0  cursor-pointer w-11 h-11  bg-[#f6f8fa] 
+                            className='dark-bg  dark-border  dark-text dark-hover hover:bg-[#fff] flex-shrink-0  cursor-pointer w-11 h-11  bg-[#f6f8fa] 
                                     border border-solid border-[#d0d7de] rounded-md flex items-center justify-center'
                         >
                             <PlusIcon />

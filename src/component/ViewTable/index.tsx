@@ -1,4 +1,4 @@
-import { Bars2Icon, BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/outline';
+import { Bars2Icon, BarsArrowDownIcon, BarsArrowUpIcon, PlusIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import MenuTable from '../DropdownsTable/MenuTable';
@@ -120,9 +120,6 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         }));
     };
     const showGroupIcon = (columnId: string) => {
-
-        console.log(columnId);
-
         dispatch(selectGroupType(columnId))
         setColCurren(columnId);
         resetOtherGroupIcon(columnId);
@@ -162,7 +159,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
     };
     return (
         < >
-            <div className='flex border-y min-w-max dark:bg-slate-800 dark:border-slate-600   '>
+            <div className='flex border-y min-w-max dark-bg dark-border   '>
                 <div className='px-10'></div>
                 <div className=' flex items-center text-[#656d76]   dark:text-white ' >
                     {headTable.map((headCol, index) => {
@@ -201,14 +198,16 @@ const ViewTable: React.FC<HeadTableProps> = () => {
                             </div>
                         )
                     })}
-                    {/* <div className="  flex justify-start">
+                    <div className="  flex justify-start">
                         <div className='p-2 dark:hover:bg-slate-600 hover:bg-[#eeeff2] '>
                             <PlusIcon className='w-[21px]' />
                         </div>
-                    </div> */}
+                    </div>
                 </div>
             </div>
-            {!isDataGroup ? <BodyTable dataList={dataList} /> : <GroupTable dataList={dataList} colCurren={colCurren} columnStates={columnStates} />}
+            {!isDataGroup ?
+                <BodyTable dataList={dataList} />
+                : <GroupTable dataList={dataList} colCurren={colCurren} columnStates={columnStates} />}
         </>
     );
 };

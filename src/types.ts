@@ -42,3 +42,11 @@ export type ColorOptions = {
     colorBg: string,
     colorText: string,
 };
+
+export type ColumnGroup = {
+    dataList: Task[];
+    color: ColorOptions;
+    id: Id;
+    colorId: Id | null;
+    title: string | null;
+};

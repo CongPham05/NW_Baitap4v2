@@ -44,7 +44,7 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
                 style={style}
                 {...attributes}
                 {...listeners}
-                className="dark-bg_sub dark-border  dark:hover:border-[#0969da] pc-css-todo 
+                className="dark-bg_sub dark-border dark-bg   dark:hover:border-[#0969da] pc-css-todo 
                 hover:cursor-grab group hover:border-[#0969da] relative ">
                 <div className='flex items-center text-[#656d76] text-xs'>
                     <span className='inline-block w-5'>

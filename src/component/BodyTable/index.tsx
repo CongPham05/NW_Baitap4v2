@@ -74,16 +74,16 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         }
     };
     return (
-        <div className="flex-1 overflow-x-hidden min-w-max dark:bg-slate-700 bg-[#f6f8fa]  pb-40">
+        <div className="flex-1 overflow-x-hidden min-w-max dark-bg_sub bg-[#f6f8fa]  pb-40">
             {
                 dataList?.map((task, index) => (
-                    <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700
+                    <div key={task.id} className='dark-bg dark-border dark-hover
                      flex border-b bg-white border-solid hover:bg-[#f6f8fa]'>
                         <div className="flex justify-center items-center w-20 min-w-[80px]  text-[#656d76]">
                             <span className="text-sm  dark-text">{index + 1}</span>
                         </div>
                         {!isEditNameTask[index] &&
-                            <div className='flex items-center dark:border-slate-600  border-r text-sm w-[300px] 
+                            <div className='flex items-center dark-border  border-r text-sm w-[300px] 
                             min-w-[300px]  text-[#656d76]  font-semibold pl-2 cursor-pointer  group'
                                 onClick={() => editNameTask(index)}
                             >
@@ -106,7 +106,7 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                             </div>
                         }
                         {isEditNameTask[index] && (
-                            <div className='flex items-center gap-2 dark:border-slate-600  border-r text-sm 
+                            <div className='flex items-center gap-2 dark-border  border-r text-sm 
                             w-[300px] min-w-[300px]  text-[#656d76]  font-semibold pl-2' >
                                 <span className=' w-5 mr-1.5'>
                                     <ChartPieIcon />

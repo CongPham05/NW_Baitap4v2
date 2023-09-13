@@ -93,7 +93,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
         <div ref={setNodeRef} style={style}
             {...attributes}
             {...listeners}
-            className=" dark:bg-slate-800 dark:border-slate-600 bg-[#f6f8fa] flex-col flex w-[350px]
+            className=" dark-border dark-bg bg-[#f6f8fa] flex-col flex w-[350px]
              h-full  pc-border hover:cursor-grab relative "
         >
             {/* Column title */}
@@ -160,7 +160,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
                 </SortableContext>
             </div>
             {/* Column footer */}
-            <button className="dark:hover:bg-slate-700 dark:hover:text-white flex gap-2 items-center 
+            <button className="dark-hover dark:hover:text-white flex gap-2 items-center 
             rounded-md p-2.5 hover:bg-[#eeeff2] text-[#656d76] "
                 onClick={handleShowInput}
             >

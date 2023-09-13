@@ -1,5 +1,5 @@
 import { Switch } from '@headlessui/react';
-import { SunIcon } from '@heroicons/react/24/solid';
+import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
 interface HeaderProps {
     enabled: boolean;
     handleToggle: () => void;
@@ -26,6 +26,25 @@ const ToggleTheme: React.FC<HeaderProps> = ({ enabled, handleToggle }) => {
                     < SunIcon />
                 </span>
             </Switch>
+            {/* <div className=''
+                onChange={handleToggle}>
+                <span
+                    aria-hidden="true"
+                    className={`${enabled ? 'translate-x-4' : 'translate-x-0'} 
+            pointer-events-none inline-block h-[30px] w-[30px] transform rounded-full text-gray-400 bg-[#f6f8fa]
+            shadow-lg ring-0 transition duration-200 ease-in-out`}
+                >
+                    < MoonIcon className='' />
+                </span>
+                <span
+                    aria-hidden="true"
+                    className={`${enabled ? 'translate-x-4' : 'translate-x-0'} 
+            pointer-events-none inline-block h-[30px] w-[30px] transform  text-yellow-500 bg-[#f6f8fa]
+            shadow-lg ring-0 transition duration-200 ease-in-out`}
+                >
+                    < SunIcon className='bg-transparent' />
+                </span>
+            </div> */}
         </div>
     )
 }
