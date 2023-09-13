@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Task } from '../../types';
+import { PropTasks, Task } from '../../types';
 import { arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from 'uuid';
 
-const initialState: Task[] = [
-    {
+const initialState: PropTasks = {
+
+    defaultTaskList: [{
         id: "1",
         columnId: "new",
         content: "Bài 1",
@@ -67,21 +68,76 @@ const initialState: Task[] = [
         description: null,
         priorityId: "high",
         sizeId: "large"
+    },],
+    taskList: [{
+        id: "1",
+        columnId: "new",
+        content: "Bài 1",
+        description: "Xin Chào Việt Nam!",
+        priorityId: "low",
+        sizeId: "mediumS"
     },
-
-];
-
-
+    {
+        id: "6",
+        columnId: "done",
+        content: "Bài 6",
+        description: null,
+        priorityId: "urgent",
+        sizeId: "large"
+    },
+    {
+        id: "3",
+        columnId: "inProgress",
+        content: "Bài 3",
+        description: null,
+        priorityId: "high",
+        sizeId: "xLarge"
+    },
+    {
+        id: "4",
+        columnId: "inProgress",
+        content: "Bài 4",
+        description: null,
+        priorityId: "medium",
+        sizeId: "mediumS"
+    },
+    {
+        id: "2",
+        columnId: "new",
+        content: "Bài 2",
+        description: null,
+        priorityId: "urgent",
+        sizeId: "small"
+    },
+    {
+        id: "5",
+        columnId: "delay",
+        content: "Bài 5",
+        description: "medium",
+        priorityId: null,
+        sizeId: "tiny"
+    },
+    {
+        id: "8",
+        columnId: "new",
+        content: "Bài 8",
+        description: null,
+        priorityId: "low",
+        sizeId: "small"
+    },
+    {
+        id: "10",
+        columnId: "delay",
+        content: "Bài 10",
+        description: null,
+        priorityId: "high",
+        sizeId: "large"
+    },],
+}
 export const dataSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        updateArr: (state, action?) => {
-
-            const { sortedTasks } = action.payload;
-            state = sortedTasks
-            return state;
-        },
         addTask: (state, action) => {
             const { columnId, inputValue } = action.payload;
             const newTask: Task = {
@@ -92,7 +148,9 @@ export const dataSlice = createSlice({
                 priorityId: null,
                 sizeId: null,
             };
-            state.push(newTask);
+            state.taskList.push(newTask);
+            state.defaultTaskList.push(newTask);
+            return state;
         },
         addTaskTable: (state, action) => {
             const { inputValue } = action.payload;
@@ -104,11 +162,13 @@ export const dataSlice = createSlice({
                 priorityId: null,
                 sizeId: null,
             };
-            state.push(newTask);
+            state.taskList.push(newTask);
+            state.defaultTaskList.push(newTask);
+            return state;
         },
         updTask: (state, action) => {
             const { id, content } = action.payload;
-            return state.map((task) => {
+            const updatedTaskList = state.taskList.map((task) => {
                 if (task.id === id) {
                     return {
                         ...task,
@@ -117,10 +177,26 @@ export const dataSlice = createSlice({
                 }
                 return task;
             });
+            const updatedDefaultTaskList = state.defaultTaskList.map((task) => {
+                if (task.id === id) {
+                    return {
+                        ...task,
+                        content
+                    };
+                }
+                return task;
+            });
+            return {
+                ...state,
+                taskList: updatedTaskList,
+                defaultTaskList: updatedDefaultTaskList
+            };
         },
+
         updDesc: (state, action) => {
             const { id, description } = action.payload;
-            return state.map((task) => {
+
+            const updatedTaskList = state.taskList.map((task) => {
                 if (task.id === id) {
                     return {
                         ...task,
@@ -129,55 +205,59 @@ export const dataSlice = createSlice({
                 }
                 return task;
             });
+
+            const updatedDefaultTaskList = state.defaultTaskList.map((task) => {
+                if (task.id === id) {
+                    return {
+                        ...task,
+                        description
+                    };
+                }
+                return task;
+            });
+
+            return {
+                ...state,
+                taskList: updatedTaskList,
+                defaultTaskList: updatedDefaultTaskList
+            };
         },
+
         updCol: (state, action) => {
             const { id, newTask } = action.payload;
-            return state.map((task) => (task.id === id ? newTask : task));
+            const newTaskLst = state.taskList.map((task) => (task.id === id ? newTask : task));
+            const newDefaultTaskLst = state.defaultTaskList.map((task) => (task.id === id ? newTask : task));
+            return {
+                ...state,
+                defaultTaskList: newDefaultTaskLst,
+                taskList: newTaskLst
+            };
         },
         delTask: (state, action) => {
             const { id } = action.payload;
-            return state.filter(task => task.id !== id);
+            const newTaskLst = state.taskList.filter(task => task.id !== id);
+            const newDefaultTaskLst = state.defaultTaskList.filter(task => task.id !== id);
+            return {
+                ...state,
+                defaultTaskList: newDefaultTaskLst,
+                taskList: newTaskLst
+            };
         },
         deleteAllTasksInColumn: (state, action) => {
             const { id } = action.payload;
-            return state.filter((task) => task.columnId !== id);
-        },
-        //Action for reordering tasks within the same column
-        reorderTasks: (state, action) => {
-            const { activeId, overId } = action.payload;
-
-            const activeIndex = state.findIndex((t) => t.id === activeId);
-            const overIndex = state.findIndex((t) => t.id === overId);
-
-            if (state[activeIndex].columnId !== state[overIndex].columnId) {
-
-                const updatedTasks = state.map((task, index) => {
-                    if (index === activeIndex) {
-                        return { ...task, columnId: state[overIndex].columnId };
-                    }
-                    return task;
-                });
-                return arrayMove(updatedTasks, activeIndex, overIndex - 1);
-            }
-            return arrayMove(state, activeIndex, overIndex);
-        },
-        // Action for moving a task to another column
-        moveTaskToColumn: (state, action) => {
-            const { activeId, overId } = action.payload;
-            const activeIndex = state.findIndex((t) => t.id === activeId);
-            const updatedTasks = state.map((task, index) => {
-                if (index === activeIndex) {
-                    return { ...task, columnId: overId };
-                }
-                return task;
-            })
-            return arrayMove(updatedTasks, activeIndex, activeIndex);
+            const newTaskLst = state.taskList.filter((task) => task.columnId !== id);
+            const newDefaultTaskLst = state.defaultTaskList.filter((task) => task.columnId !== id);
+            return {
+                ...state,
+                defaultTaskList: newDefaultTaskLst,
+                taskList: newTaskLst
+            };
         },
         sortTable: (state, action) => {
 
             const { columnId, ascending } = action.payload;
 
-            const sortedTasks = [...state].sort((a, b) => {
+            const sortedTasks = [...state.taskList].sort((a, b) => {
                 if (columnId === 'title') {
                     return ascending ? a.content.localeCompare(b.content) : b.content.localeCompare(a.content);
                 } else if (columnId === 'status') {
@@ -195,15 +275,52 @@ export const dataSlice = createSlice({
                 }
                 return 0;
             });
-            state = sortedTasks;
+            state.taskList = sortedTasks;
             return state
-        }
+        },
+        //Action for reordering tasks within the same column
+        reorderTasks: (state, action) => {
+            const { activeId, overId } = action.payload;
+
+            const activeIndex = state.taskList.findIndex((t) => t.id === activeId);
+            const overIndex = state.taskList.findIndex((t) => t.id === overId);
+
+            if (state.taskList[activeIndex].columnId !== state.taskList[overIndex].columnId) {
+
+                const updatedTasks = state.taskList.map((task, index) => {
+                    if (index === activeIndex) {
+                        return { ...task, columnId: state.taskList[overIndex].columnId };
+                    }
+                    return task;
+                });
+
+                state.taskList = arrayMove(updatedTasks, activeIndex, overIndex - 1);
+                state.defaultTaskList = arrayMove(updatedTasks, activeIndex, overIndex - 1);
+            }
+            state.taskList = arrayMove(state.taskList, activeIndex, overIndex);
+            state.defaultTaskList = arrayMove(state.taskList, activeIndex, overIndex);
+            return state;
+        },
+        // Action for moving a task to another column
+        moveTaskToColumn: (state, action) => {
+            const { activeId, overId } = action.payload;
+            const activeIndex = state.taskList.findIndex((t) => t.id === activeId);
+            const updatedTasks = state.taskList.map((task, index) => {
+                if (index === activeIndex) {
+                    return { ...task, columnId: overId };
+                }
+                return task;
+            })
+            state.taskList = arrayMove(updatedTasks, activeIndex, activeIndex);
+            state.defaultTaskList = arrayMove(updatedTasks, activeIndex, activeIndex);
+            return state;
+        },
+
     },
 })
 
 export const
     {
-        updateArr,
         addTask,
         updTask,
         delTask,

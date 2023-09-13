@@ -18,6 +18,12 @@ export const dataSlice = createSlice({
                 ascending: ascending
             }
         },
+        setDefaultSortTable: (state) => {
+            return {
+                ...state,
+                columnId: ''
+            }
+        },
         selectGroupType: (state, action) => {
             return {
                 ...state,
@@ -27,7 +33,7 @@ export const dataSlice = createSlice({
     },
 })
 
-export const { setSortStatus, selectGroupType } = dataSlice.actions
+export const { setSortStatus, selectGroupType, setDefaultSortTable } = dataSlice.actions
 export default dataSlice.reducer
 
 

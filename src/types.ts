@@ -1,6 +1,9 @@
 export type Id = string | number;
 export type IdCol = string | number | null;
-
+export type PropTasks = {
+    defaultTaskList: Task[],
+    taskList: Task[],
+}
 export type Column = {
     id: Id;
     title: string;

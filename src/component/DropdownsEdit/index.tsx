@@ -1,11 +1,11 @@
 import { Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { colsSelector, prioritySelector, sizeSelector } from '../../redux/selectors';
+import { useDispatch, useSelector, } from 'react-redux';
+import { colsSelector, dataSelector, prioritySelector, sizeSelector } from '../../redux/selectors';
 import { Menu, Transition } from '@headlessui/react';
 import { Column, Priority, Task } from '../../types';
 import WrapOptions from '../WrapOptions/WrapOptions';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { updCol } from '../../pages/Board/tasksSlice';
+import { sortTable, updCol } from '../../pages/Board/tasksSlice';
 
 interface DropdownsProps {
     task: Task;
@@ -17,6 +17,7 @@ const Dropdowns: React.FC<DropdownsProps> = ({ task, typeOption }) => {
     const columns = useSelector(colsSelector);
     const prioritys = useSelector(prioritySelector);
     const sizes = useSelector(sizeSelector);
+    const sortStatus = useSelector(dataSelector);
 
     const options = typeOption === 'STATUS' ? columns : typeOption === 'PRIORITY' ? prioritys : sizes;
     const propertyToUpdate = typeOption === 'STATUS' ? 'columnId' : typeOption === 'PRIORITY' ? 'priorityId' : 'sizeId';
@@ -28,8 +29,8 @@ const Dropdowns: React.FC<DropdownsProps> = ({ task, typeOption }) => {
             [propertyToUpdate]: option.id,
         };
         dispatch(updCol({ id, newTask }));
+        dispatch(sortTable(sortStatus));
     };
-
     return (
         <Menu as="div" className="relative inline-block text-left w-full">
             <Menu.Button className="w-full">
