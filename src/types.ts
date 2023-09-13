@@ -6,7 +6,11 @@ export type Column = {
     title: string;
     colorId: string | null;
 };
-
+export type ColumnState = {
+    isArrowUp: null | boolean;
+    isArrowDown: null | boolean;
+    isGroup: null | boolean;
+}
 export type Task = {
     id: Id;
     columnId: Id;

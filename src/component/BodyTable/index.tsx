@@ -28,7 +28,6 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
             setInputValue('');
         }
     };
-
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -40,7 +39,6 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
     const [isEditNameTask, setEditNameTask] = useState<boolean[]>(Array(dataList.length).fill(false));
     const changeTitleTask = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditTitleTask(e.target.value);
-
     }
     const editNameTask = (index: number) => {
         const updatedIsEditNameTask = [...isEditNameTask];
@@ -53,8 +51,6 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         updatedIsEditNameTask[index] = false;
         setEditNameTask(updatedIsEditNameTask);
         (editTitleTask.length) && dispatch(updTask({ id: dataList[index].id, content: editTitleTask }))
-
-
     }
     const handleShowModal = (index: number) => {
         const updatedIsModalList = [...isModalList];
@@ -75,14 +71,13 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         }
     };
     return (
-        <div className="flex-1 min-w-max overflow-x-hidden dark:bg-slate-700 pb-40">
+        <div className="flex-1 bg-[#f6f8fa] min-w-max overflow-x-hidden dark:bg-slate-700 pb-40">
             {
                 dataList.map((task, index) => (
-                    <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700 flex border-b border-solid hover:bg-[#f6f8fa]'>
+                    <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700 flex border-b border-solid bg-white hover:bg-[#f6f8fa]'>
                         <div className="flex justify-center items-center w-20 min-w-[80px]  text-[#656d76]">
                             <span className="text-sm  dark:text-white">{index + 1}</span>
                         </div>
-
                         {!isEditNameTask[index] &&
                             <div className='flex items-center dark:border-slate-600  border-r text-sm w-[300px] 
                             min-w-[300px]  text-[#656d76]  font-semibold pl-2 cursor-pointer  group'
@@ -141,7 +136,7 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                     </div>
                 ))
             }
-            <div className='flex gap-2 items-center border-b dark:bg-slate-800 dark:border-b-slate-600  '>
+            <div className='flex gap-2 items-center border-b bg-white shadow-sm dark:bg-slate-800 dark:border-b-slate-600  '>
                 <div className='ml-5 dark:text-white'>
                     <PlusIcon className='w-5' />
                 </div>

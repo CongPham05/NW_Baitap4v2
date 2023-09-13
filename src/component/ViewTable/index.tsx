@@ -8,6 +8,7 @@ import BodyTable from '../BodyTable';
 import GroupTable from '../GroupTable';
 import { sortTable } from '../../pages/Board/tasksSlice';
 import { selectGroupType, setSortStatus } from '../../pages/Board/dataSlice';
+import { ColumnState } from '../../types';
 
 interface HeadTableProps {
 }
@@ -41,17 +42,10 @@ const headTable = [
     }
 ]
 
-interface ColumnState {
-    isArrowUp: null | boolean;
-    isArrowDown: null | boolean;
-    isGroup: null | boolean;
-}
 
 const ViewTable: React.FC<HeadTableProps> = () => {
     const dispatch = useDispatch();
     const tasks = useSelector(todosRemainningSelector);
-    // const dataSortAndGroup = useSelector(dataSelector);
-
     const [dataList, setdDataList] = useState(tasks);
 
     const [columnStates, setColumnStates] = useState<Record<string, ColumnState>>({
