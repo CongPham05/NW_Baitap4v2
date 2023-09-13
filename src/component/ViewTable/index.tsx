@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import MenuTable from '../DropdownsTable/MenuTable';
 import { useSelector } from 'react-redux';
-import { colIdSelector, todosRemainningSelector } from '../../redux/selectors';
+import { colIdSelector, tasksSelector, todosRemainningSelector } from '../../redux/selectors';
 import BodyTable from '../BodyTable';
 import GroupTable from '../GroupTable';
 import { sortTable } from '../../pages/Board/tasksSlice';
-import { selectGroupType, setSortStatus, setDefaultSortTable } from '../../pages/Board/dataSlice';
+import { selectGroupType, setSortStatus } from '../../pages/Table/currenColTable';
 import { ColumnState } from '../../types';
 
 interface HeadTableProps {
@@ -45,7 +45,11 @@ const headTable = [
 const ViewTable: React.FC<HeadTableProps> = () => {
     const dispatch = useDispatch();
     const tasks = useSelector(todosRemainningSelector);
+    const taskRoot = useSelector(tasksSelector);
+
     const columnIdSort = useSelector(colIdSelector);
+
+
     // const dataSortAndGroup = useSelector(dataSelector);
     const [dataList, setdDataList] = useState(tasks);
 
@@ -75,25 +79,16 @@ const ViewTable: React.FC<HeadTableProps> = () => {
     const [colCurren, setColCurren] = useState<string | null>(null);
 
     useEffect(() => {
-        // const { title, status, inProgress, size } = columnStates;
-        // console.log("columnIdSort::", columnIdSort)
-        // const isAllDefault = !(
-        //     title.isArrowDown || title.isArrowUp ||
-        //     status.isArrowDown || status.isArrowUp || status.isGroup ||
-        //     inProgress.isArrowDown || inProgress.isArrowUp || inProgress.isGroup ||
-        //     size.isArrowDown || size.isArrowUp || size.isGroup);
-        // console.log("columnIdSort::", columnIdSort)
-        // if (!columnIdSort) {
-        //     setdDataList(tasks)
-        // }
-    }, [columnStates, dataList.length, tasks]);
-
-    useEffect(() => {
-        setdDataList(tasks);
-    }, [tasks])
-
+        if (!columnStates[columnIdSort]?.isArrowDown &&
+            !columnStates[columnIdSort]?.isArrowUp &&
+            !columnStates[columnIdSort]?.isGroup) {
+            setdDataList(taskRoot.defaultTaskList)
+        }
+        else {
+            setdDataList(tasks);
+        }
+    }, [columnIdSort, tasks, columnStates, dispatch, taskRoot.defaultTaskList])
     const sortTasks = (columnId: string, ascending: boolean) => {
-        console.log("columnIdSort::", columnIdSort)
         if (!columnIdSort) {
             setdDataList(tasks)
         }

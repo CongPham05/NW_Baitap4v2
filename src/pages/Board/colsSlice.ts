@@ -49,7 +49,6 @@ export const dataSlice = createSlice({
             return state.filter((col) => col.id !== id);
         },
         moveColumn: (state, action) => {
-
             const { activeId, overId } = action.payload;
             const activeColumnIndex = state.findIndex((col) => col.id === activeId);
             const overColumnIndex = state.findIndex((col) => col.id === overId);

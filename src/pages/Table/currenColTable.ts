@@ -18,11 +18,10 @@ export const dataSlice = createSlice({
                 ascending: ascending
             }
         },
-        setDefaultSortTable: (state, action) => {
-            console.log('setDefaultSortTable')
+        setDefaultSortTable: (state) => {
             return {
                 ...state,
-                columnId: action.payload
+                columnId: ''
             }
         },
         selectGroupType: (state, action) => {

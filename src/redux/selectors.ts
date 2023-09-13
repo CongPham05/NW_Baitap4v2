@@ -20,14 +20,15 @@ export const todosRemainningSelector = createSelector(
     sizeSelector,
     filterSearchSelector,
 
-    (todoLst, colsLst, priority, size, searchText) => {
-        return todoLst.taskList.filter(todo => {
-            const columnTitle = colsLst.find(column => column.id === todo.columnId)?.title || "";
-            const priorityTitle = priority.find(item => item.id === todo.priorityId)?.title || "";
-            const sizeTitle = size.find(item => item.id === todo.sizeId)?.title || "";
+    (tasksList, colsLst, priority, size, searchText) => {
+        return tasksList.taskList.filter(task => {
+
+            const columnTitle = colsLst.find(column => column.id === task.columnId)?.title || "";
+            const priorityTitle = priority.find(item => item.id === task.priorityId)?.title || "";
+            const sizeTitle = size.find(item => item.id === task.sizeId)?.title || "";
 
 
-            return todo.content.includes(searchText) ||
+            return task.content.includes(searchText) ||
                 columnTitle.includes(searchText) ||
                 priorityTitle.includes(searchText) ||
                 sizeTitle.includes(searchText)

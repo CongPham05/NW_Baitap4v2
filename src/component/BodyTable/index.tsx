@@ -36,8 +36,8 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         };
     }, []);
 
-    const [isModalList, setIsModalList] = useState<boolean[]>(Array(dataList.length).fill(false));
-    const [isEditNameTask, setEditNameTask] = useState<boolean[]>(Array(dataList.length).fill(false));
+    const [isModalList, setIsModalList] = useState<boolean[]>(Array(dataList?.length).fill(false));
+    const [isEditNameTask, setEditNameTask] = useState<boolean[]>(Array(dataList?.length).fill(false));
 
     const handleShowModal = (index: number) => {
         const updatedIsModalList = [...isModalList];
@@ -79,7 +79,7 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
     return (
         <div className="flex-1 overflow-x-hidden min-w-max dark:bg-slate-700  pb-40">
             {
-                dataList.map((task, index) => (
+                dataList?.map((task, index) => (
                     <div key={task.id} className='dark:bg-slate-800 dark:border-slate-600 dark:hover:bg-slate-700
                      flex border-b border-solid hover:bg-[#f6f8fa]'>
                         <div className="flex justify-center items-center w-20 min-w-[80px]  text-[#656d76]">
@@ -114,7 +114,7 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                                 <span className=' w-5 mr-1.5'>
                                     <ChartPieIcon />
                                 </span>
-                                <div className='flex-1 w-full  h-full'>
+                                <div className='flex-1 w-full border h-full'>
                                     <input className=" dark:text-black text-sm  font-normal w-full pl-2 h-full outline-[#0969da]"
                                         value={editTitleTask || task.content}
                                         onChange={changeTitleTask}
