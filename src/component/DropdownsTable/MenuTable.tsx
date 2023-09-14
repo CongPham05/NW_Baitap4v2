@@ -1,10 +1,7 @@
 import { Fragment } from 'react'
-// import { useDispatch } from 'react-redux'
 import { Menu, Transition } from '@headlessui/react'
 import { BarsArrowDownIcon, BarsArrowUpIcon, XMarkIcon, EllipsisHorizontalIcon, Bars2Icon } from '@heroicons/react/24/outline'
-// import { setDefaultSortTable } from '../../pages/Board/dataSlice'
-// import { colIdSelector } from '../../redux/selectors'
-// import { useSelector } from 'react-redux'
+
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -33,27 +30,16 @@ const MenuTable: React.FC<MenuTableProps> = ({
     isGroup,
     headCol,
 }) => {
-    // const dispatch = useDispatch();
-    // const columnIdSort = useSelector(colIdSelector);
 
     const handleSortAscending = () => {
-        // if (isArrowUp) {
-        //     dispatch(setDefaultSortTable())
-        // }
         showArrowUpIcon();
     }
     const handleSortDescending = () => {
-        // console.log("isArrowDown", isArrowDown)
-        // if (isArrowDown) {
-        //     dispatch(setDefaultSortTable(''))
-        // }
-        // console.log("11columnIdSort::", columnIdSort)
         showArrowDownIcon();
     }
     const handleShowGroupIcon = () => {
         showGroupIcon();
     }
-
     return (
         <Menu as="div" className="relative inline-block text-left ">
             <div>

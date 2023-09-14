@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ChartPieIcon, PlusIcon, PencilIcon } from '@heroicons/react/24/outline';
-import { useDispatch } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import ModalEdit from '../../services/ModalEdit';
 import { Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
@@ -17,17 +17,14 @@ const type = {
 const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
 
     const dispatch = useDispatch();
-    const [showInput, setShowInput] = useState(false);
-    const [editTitleTask, setEditTitleTask] = useState('');
     const [inputValue, setInputValue] = useState('');
+    const [editTitleTask, setEditTitleTask] = useState('');
+    const [showInput, setShowInput] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [isModalList, setIsModalList] = useState<boolean[]>(Array(dataList?.length).fill(false));
+    const [isEditNameTask, setEditNameTask] = useState<boolean[]>(Array(dataList?.length).fill(false));
 
-    const handleClickOutside = (e: MouseEvent) => {
-        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
-            setShowInput(false);
-            setInputValue('');
-        }
-    };
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -35,9 +32,13 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         };
     }, []);
 
-    const [isModalList, setIsModalList] = useState<boolean[]>(Array(dataList?.length).fill(false));
-    const [isEditNameTask, setEditNameTask] = useState<boolean[]>(Array(dataList?.length).fill(false));
 
+    const handleClickOutside = (e: MouseEvent) => {
+        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+            setShowInput(false);
+            setInputValue('');
+        }
+    };
     const handleShowModal = (index: number) => {
         const updatedIsModalList = [...isModalList];
         updatedIsModalList[index] = true;
@@ -46,7 +47,6 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
     }
     const changeTitleTask = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditTitleTask(e.target.value);
-
     }
     const editNameTask = (index: number) => {
         const updatedIsEditNameTask = [...isEditNameTask];
@@ -73,6 +73,8 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
             setShowInput(false);
         }
     };
+
+
     return (
         <div className="flex-1 overflow-x-hidden min-w-max dark-bg_sub bg-[#f6f8fa]  pb-40">
             {

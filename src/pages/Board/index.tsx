@@ -16,7 +16,7 @@ import { Column, Id, Task } from "../../types"
 import ColumnContainer from "../../component/ColumnContainer";
 import PlusIcon from "../../icons/PlusIcon";
 import TaskCard from "../../component/TaskCard";
-import { colsSelector, tasksSelector, todosRemainningSelector } from "../../redux/selectors";
+import { colsSelector, todosRemainningSelector } from "../../redux/selectors";
 import { addTask, moveTaskToColumn, reorderTasks } from "./tasksSlice";
 import { addColumn, moveColumn, updateCol } from "./colsSlice";
 
@@ -25,10 +25,6 @@ function Board() {
     const dispatch = useDispatch();
     const columns = useSelector(colsSelector)
     const tasks = useSelector(todosRemainningSelector)
-    const task = useSelector(tasksSelector)
-    console.log(tasks);
-    console.log(task);
-
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
     const [activeTask, setActiveTask] = useState<Task | null>(null);

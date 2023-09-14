@@ -8,6 +8,7 @@ export const colorOptionSelector = (state: RootState) => state.colorOption;
 
 export const dataSelector = (state: RootState) => state.data;
 export const colIdSelector = (state: RootState) => state.data.columnId;
+export const colIdGroupActive = (state: RootState) => state.data.groupType;
 
 export const statusIconSelector = (state: RootState) => state.statusIconsTable;
 

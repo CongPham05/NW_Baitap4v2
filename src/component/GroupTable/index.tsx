@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { colorOptionSelector, colsSelector, prioritySelector, sizeSelector } from '../../redux/selectors';
+import { colIdGroupActive, colorOptionSelector, colsSelector, prioritySelector, sizeSelector, statusIconSelector } from '../../redux/selectors';
 import { useSelector } from 'react-redux';
 import PlusIcon from '../../icons/PlusIcon';
 import { ChartPieIcon, PencilIcon } from '@heroicons/react/24/outline';
 import ModalEdit from '../../services/ModalEdit';
-import { ColumnGroup, ColumnState, Id, Task } from '../../types';
+import { ColumnGroup, Id, Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
 import { addTaskTitleGroup, updTask } from '../../pages/Board/tasksSlice';
 import { useDispatch } from 'react-redux';
 
 interface GroupTableProps {
     dataList: Task[];
-    colCurren: string | null;
-    columnStates: Record<string, ColumnState>;
 }
 
 const type = {
@@ -20,12 +18,16 @@ const type = {
     priority: 'PRIORITY',
     size: 'SIZE'
 }
-const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList, columnStates }) => {
+const GroupTable: React.FC<GroupTableProps> = ({ dataList }) => {
     const dispatch = useDispatch();
+    // const dataList = useSelector(todosRemainningSelector);
     const columns = useSelector(colsSelector)
+    const columnIdGroupActive = useSelector(colIdGroupActive)
+
     const colorCol = useSelector(colorOptionSelector)
     const prioritys = useSelector(prioritySelector)
     const sizes = useSelector(sizeSelector)
+    const columnStates = useSelector(statusIconSelector);
 
     const [showEditTitleMap, setShowEditTitleMap] = useState<{ [taskId: string]: boolean }>({});
     const [showInputGroupMap, setShowInputGroupMap] = useState<{ [colId: string]: boolean }>({});
@@ -210,8 +212,8 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList, columnStat
         )
     }
 
-    if (colCurren === "status") {
-        if (columnStates[colCurren].isArrowDown) {
+    if (columnIdGroupActive === "status") {
+        if (columnStates[columnIdGroupActive].isArrowDown) {
             const columnsData = columns.map(column => {
                 const columnTasks = dataList.filter(task => task.columnId === column.id);
                 const [colorTasks] = colorCol.filter(color => color.id === column.colorId);
@@ -237,8 +239,8 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList, columnStat
             return renderColumns(columnsData);
         }
     }
-    if (colCurren === "inProgress") {
-        if (columnStates[colCurren].isArrowDown) {
+    if (columnIdGroupActive === "inProgress") {
+        if (columnStates[columnIdGroupActive].isArrowDown) {
             const columnsData = prioritys.map(priority => {
                 const priorityTasks = dataList.filter(task => task.priorityId === priority.id);
                 const [colorTasks] = colorCol.filter(color => color.id === priority.colorId);
@@ -264,8 +266,8 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList, columnStat
             return renderColumns(columnsData);
         }
     }
-    if (colCurren === "size") {
-        if (columnStates[colCurren].isArrowDown) {
+    if (columnIdGroupActive === "size") {
+        if (columnStates[columnIdGroupActive].isArrowDown) {
             const columnsData = sizes.map(size => {
                 const sizeTasks = dataList.filter(task => task.sizeId === size.id);
                 const [colorTasks] = colorCol.filter(color => color.id === size.colorId);

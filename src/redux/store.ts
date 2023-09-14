@@ -5,7 +5,7 @@ import filterReducer from '../component/SearchFilters/filtersSlice'
 import priorityReducer from '../component/WrapOptions/prioritySlice';
 import sizeReducer from '../component/WrapOptions/sizeSlice';
 import colorReducer from '../component/WrapOptions/colorSlice';
-import dataReducer from '../pages/Table/currenColTable'
+import dataReducer from '../pages/Table/currenColTableSlice'
 import statusIconsSlice from '../pages/Table/statusIconsSlice';
 
 
