@@ -6,6 +6,7 @@ import priorityReducer from '../component/WrapOptions/prioritySlice';
 import sizeReducer from '../component/WrapOptions/sizeSlice';
 import colorReducer from '../component/WrapOptions/colorSlice';
 import dataReducer from '../pages/Table/currenColTable'
+import statusIconsSlice from '../pages/Table/statusIconsSlice';
 
 
 export const store = configureStore({
@@ -14,11 +15,10 @@ export const store = configureStore({
         tasks: tasksReducer,
         columns: columnsReducer,
         filters: filterReducer,
-
+        statusIconsTable: statusIconsSlice,
         priority: priorityReducer,
         size: sizeReducer,
         colorOption: colorReducer
-
     },
 })
 

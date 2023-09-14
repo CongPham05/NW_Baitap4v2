@@ -9,6 +9,8 @@ export const colorOptionSelector = (state: RootState) => state.colorOption;
 export const dataSelector = (state: RootState) => state.data;
 export const colIdSelector = (state: RootState) => state.data.columnId;
 
+export const statusIconSelector = (state: RootState) => state.statusIconsTable;
+
 export const tasksSelector = (state: RootState) => state.tasks;
 export const colsSelector = (state: RootState) => state.columns;
 export const filterSearchSelector = (state: RootState) => state.filters.search;

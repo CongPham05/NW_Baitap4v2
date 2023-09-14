@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { colorOptionSelector, colsSelector, prioritySelector, sizeSelector } from '../../redux/selectors';
 import { useSelector } from 'react-redux';
 import PlusIcon from '../../icons/PlusIcon';
 import { ChartPieIcon, PencilIcon } from '@heroicons/react/24/outline';
 import ModalEdit from '../../services/ModalEdit';
-import { ColumnGroup, ColumnState, Task } from '../../types';
+import { ColumnGroup, ColumnState, Id, Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
-import { updTask } from '../../pages/Board/tasksSlice';
+import { addTaskTitleGroup, updTask } from '../../pages/Board/tasksSlice';
 import { useDispatch } from 'react-redux';
 
 interface GroupTableProps {
@@ -28,12 +28,59 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList, columnStat
     const sizes = useSelector(sizeSelector)
 
     const [showEditTitleMap, setShowEditTitleMap] = useState<{ [taskId: string]: boolean }>({});
+    const [showInputGroupMap, setShowInputGroupMap] = useState<{ [colId: string]: boolean }>({});
+
     const [editTitleTask, setEditTitleTask] = useState('');
 
     const [isModal, setIsModal] = useState(false);
     const [modalTask, setModalTask] = useState<Task | null>(null);
+    const [addTaskGroup, setTaskGroup] = useState('');
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const handleToggleEditTitle = (taskId: string | number) => {
+
+    const handleClickOutside = (e: MouseEvent) => {
+        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+            setTaskGroup('');
+            setShowInputGroupMap({});
+
+        }
+    };
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTaskGroup(event.target.value);
+    };
+    const saveAddItemEnter = (event: React.KeyboardEvent<HTMLInputElement>, colId: string | number) => {
+        if (event.key === 'Enter' && addTaskGroup.length > 0) {
+            let columnId: Id = 'new';
+            let priorityId = null;
+            let sizeId = null;
+
+            if (columns.some(item => item.id === colId)) {
+                columnId = colId;
+            } else if (prioritys.some(item => item.id === colId)) {
+                priorityId = colId;
+            } else if (sizes.some(item => item.id === colId)) {
+                sizeId = colId;
+            }
+            dispatch(addTaskTitleGroup({ columnId, priorityId, sizeId, content: addTaskGroup }));
+            const updatedMap = { ...showInputGroupMap };
+            updatedMap[colId] = false;
+            setShowInputGroupMap(updatedMap);
+            setTaskGroup('');
+        }
+    }
+    const handleShowInputCol = (colId: Id) => {
+        const updatedMap = { ...showInputGroupMap };
+        updatedMap[colId] = true;
+        setShowInputGroupMap(updatedMap);
+    };
+    const handleToggleEditTitle = (taskId: Id) => {
         const updatedMap = { ...showEditTitleMap };
         updatedMap[taskId] = !updatedMap[taskId];
         setShowEditTitleMap(updatedMap);
@@ -53,6 +100,7 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList, columnStat
         setModalTask(selectedTask);
     }
     const renderColumns = (columnsData: ColumnGroup[]) => {
+
         return (
             <div className='overflow-x-hidden dark-bg_sub bg-[#f6f8fa]  flex flex-col pb-40 gap-3 '>
                 {columnsData.map((column) => (
@@ -133,11 +181,27 @@ const GroupTable: React.FC<GroupTableProps> = ({ colCurren, dataList, columnStat
                                 <ModalEdit onRequestClose={() => setIsModal(false)} task={modalTask} />
                             )}
                         </div>
-                        <div className="dark-text dark-borderB border-b border-solid font-normal  text-xs  flex items-center justify-start">
-                            <div className='p-2'>
+                        <div className="relative flex items-center justify-start dark-text dark-borderB border-b border-solid hover:bg-[#f6f8fa]  " >
+                            <div className='px-2 text-[#656d76]'>
                                 <PlusIcon />
                             </div>
-                            <div>Add item</div>
+                            <div className='relative flex-1 py-2 text-[#656d76] hover:border-[#218bff] cursor-pointer pl-3'
+                                onClick={() => handleShowInputCol(column.id)}
+                            >
+                                <div className=' text-sm font-medium'>Add item</div>
+                                {showInputGroupMap[column.id] && (
+                                    <input className="w-full px-5 absolute top-0 right-0  h-full text-black border-2 cursor-auto dark:focus:border-[#218bff] focus:border-[#218bff] outline-none "
+                                        ref={inputRef}
+                                        autoFocus
+                                        type="text"
+                                        placeholder='Add item'
+                                        value={addTaskGroup}
+                                        onChange={handleInputChange}
+                                        onKeyDown={(e) => saveAddItemEnter(e, column.id)}
+                                    />
+                                )}
+                            </div>
+
                         </div>
 
                     </div>

@@ -138,11 +138,11 @@ export const dataSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        addTask: (state, action) => {
-            const { columnId, inputValue } = action.payload;
+        addTaskTable: (state, action) => {
+            const { inputValue } = action.payload;
             const newTask: Task = {
                 id: uuidv4(),
-                columnId,
+                columnId: 'new',
                 content: inputValue,
                 description: null,
                 priorityId: null,
@@ -152,11 +152,25 @@ export const dataSlice = createSlice({
             state.defaultTaskList.push(newTask);
             return state;
         },
-        addTaskTable: (state, action) => {
-            const { inputValue } = action.payload;
+        addTaskTitleGroup: (state, action) => {
+            const { columnId, priorityId, sizeId, content } = action.payload;
             const newTask: Task = {
                 id: uuidv4(),
-                columnId: 'new',
+                columnId,
+                content,
+                description: null,
+                priorityId,
+                sizeId,
+            };
+            state.taskList.push(newTask);
+            state.defaultTaskList.push(newTask);
+            return state;
+        },
+        addTask: (state, action) => {
+            const { columnId, inputValue } = action.payload;
+            const newTask: Task = {
+                id: uuidv4(),
+                columnId,
                 content: inputValue,
                 description: null,
                 priorityId: null,
@@ -319,6 +333,7 @@ export const dataSlice = createSlice({
 
 export const
     {
+        addTaskTitleGroup,
         addTask,
         updTask,
         delTask,

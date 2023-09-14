@@ -146,7 +146,7 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                 <div className='flex-1 relative py-2 cursor-pointer flex items-center' onClick={handleShowInput}>
                     <div className=" rounded-md text-[#656d76]"> You can use Enter to add an item</div>
                     {showInput && (
-                        <input className="w-full px-5 absolute top-0  h-full  border cursor-auto dark:focus:border-[#218bff]
+                        <input className="w-full px-5 absolute top-0  h-full  border-2 cursor-auto dark:focus:border-[#218bff]
                         focus:border-[#218bff] outline-none "
                             ref={inputRef}
                             autoFocus

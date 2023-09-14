@@ -118,6 +118,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         }));
     };
     const showGroupIcon = (columnId: string) => {
+
         dispatch(selectGroupType(columnId))
         setColCurren(columnId);
         resetOtherGroupIcon(columnId);
