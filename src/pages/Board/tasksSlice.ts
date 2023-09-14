@@ -254,9 +254,7 @@ export const dataSlice = createSlice({
             };
         },
         sortTable: (state, action) => {
-
             const { columnId, ascending } = action.payload;
-
             const sortedTasks = [...state.taskList].sort((a, b) => {
                 if (columnId === 'title') {
                     return ascending ? a.content.localeCompare(b.content) : b.content.localeCompare(a.content);

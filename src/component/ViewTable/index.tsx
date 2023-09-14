@@ -46,13 +46,11 @@ const ViewTable: React.FC<HeadTableProps> = () => {
     const dispatch = useDispatch();
     const tasks = useSelector(todosRemainningSelector);
     const taskRoot = useSelector(tasksSelector);
-
     const columnIdSort = useSelector(colIdSelector);
 
-
-    // const dataSortAndGroup = useSelector(dataSelector);
+    const [isDataGroup, setIsDataGroup] = useState(false);
     const [dataList, setdDataList] = useState(tasks);
-
+    const [colCurren, setColCurren] = useState<string | null>(null);
     const [columnStates, setColumnStates] = useState<Record<string, ColumnState>>({
         title: {
             isArrowUp: null,
@@ -75,8 +73,6 @@ const ViewTable: React.FC<HeadTableProps> = () => {
             isGroup: null,
         },
     });
-    const [isDataGroup, setIsDataGroup] = useState(false);
-    const [colCurren, setColCurren] = useState<string | null>(null);
 
     useEffect(() => {
         if (!columnStates[columnIdSort]?.isArrowDown &&
@@ -88,6 +84,8 @@ const ViewTable: React.FC<HeadTableProps> = () => {
             setdDataList(tasks);
         }
     }, [columnIdSort, tasks, columnStates, dispatch, taskRoot.defaultTaskList])
+
+
     const sortTasks = (columnId: string, ascending: boolean) => {
         if (!columnIdSort) {
             setdDataList(tasks)
@@ -205,9 +203,15 @@ const ViewTable: React.FC<HeadTableProps> = () => {
                     </div>
                 </div>
             </div>
-            {!isDataGroup ?
-                <BodyTable dataList={dataList} />
-                : <GroupTable dataList={dataList} colCurren={colCurren} columnStates={columnStates} />}
+            {
+                !isDataGroup
+                    ? <BodyTable dataList={dataList} />
+                    : <GroupTable
+                        dataList={dataList}
+                        colCurren={colCurren}
+                        columnStates={columnStates}
+                    />
+            }
         </>
     );
 };
