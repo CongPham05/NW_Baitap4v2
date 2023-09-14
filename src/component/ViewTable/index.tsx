@@ -56,8 +56,6 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         if (!columnStates[columnIdSort]?.isArrowDown &&
             !columnStates[columnIdSort]?.isArrowUp &&
             !columnStates[columnIdGroupActive]?.isGroup) {
-            console.log("vao");
-
             dispatch(setColStatus(''));
             dispatch(selectGroupType(''));
             setdDataList(taskRoot.defaultTaskList)
