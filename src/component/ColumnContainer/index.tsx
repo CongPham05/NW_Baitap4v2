@@ -2,24 +2,25 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState, useRef, useEffect } from "react";
-import { Column, Id, Task } from '../../types';
+import { Column, Task } from '../../types';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../TaskCard";
 import Dropdowns from "../Dropdowns/Dropdowns";
 import ModalDelete from "../../services/ModalDelete";
 import { useSelector } from "react-redux";
 import { colorOptionSelector } from "../../redux/selectors";
+import { updateCol } from "../../pages/Board/colsSlice";
+import { useDispatch } from "react-redux";
+import { addTask } from "../../pages/Board/tasksSlice";
 
 interface Props {
     column: Column;
-    updateColumn: (id: Id, title: string) => void;
-    createTask: (columnId: Id, inputValue: string) => void;
     tasks: Task[];
 }
 
-function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
+function ColumnContainer({ column, tasks }: Props) {
 
-
+    const dispatch = useDispatch()
     const colorCol = useSelector(colorOptionSelector)
     const colorCurren = colorCol.find(item => item.id === column.colorId)
 
@@ -47,27 +48,18 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
         };
     }, []);
 
-    const handleDisabledDnDKit = () => {
+    function handleDisabledDnDKit() {
         setDisabledDnDKit(!disabledDnDKit);
-    };
-
-    const handleShowInput = () => {
-        setShowInput(true);
-    };
+    }
     function deleteColumn() {
         setIsModalDelete(true);
     }
     function deleteAllTask() {
         setIsModalDeleteAll(true);
     }
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
-    };
-
     const handleInputEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && inputValue.length > 0) {
-            createTask(column.id, inputValue);
+            dispatch(addTask({ columnId: column.id, inputValue }))
             setInputValue('');
             setShowInput(false);
         }
@@ -89,6 +81,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
             </div>
         );
     }
+
     return (
         <div ref={setNodeRef} style={style}
             {...attributes}
@@ -110,7 +103,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
                         {editMode && (
                             <input className=" dark-text-black text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
                                 value={column.title}
-                                onChange={(e) => updateColumn(column.id, e.target.value)}
+                                onChange={(e) => dispatch(updateCol({ id: column.id, title: e.target.value }))}
                                 autoFocus
                                 onBlur={() => {
                                     setEditMode(false);
@@ -162,7 +155,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
             {/* Column footer */}
             <button className="dark-hover dark:hover:text-white flex gap-2 items-center 
             rounded-md p-2.5 hover:bg-[#eeeff2] text-[#656d76] "
-                onClick={handleShowInput}
+                onClick={() => setShowInput(true)}
             >
                 <PlusIcon className="w-4" />
                 Add item
@@ -172,7 +165,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
                     className="dark-border absolute 
                     bottom-0 w-full py-2.5 focus:outline-[#218bff] outline-none rounded-md cursor-auto  px-4"
                     value={inputValue}
-                    onChange={handleInputChange}
+                    onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleInputEnter}
                 />
             )}

@@ -12,13 +12,13 @@ import {
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-import { Column, Id, Task } from "../../types"
+import { Column, Task } from "../../types"
 import ColumnContainer from "../../component/ColumnContainer";
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../../component/TaskCard";
 import { colsSelector, todosRemainningSelector } from "../../redux/selectors";
-import { addTask, moveTaskToColumn, reorderTasks } from "./tasksSlice";
-import { addColumn, moveColumn, updateCol } from "./colsSlice";
+import { moveTaskToColumn, reorderTasks } from "./tasksSlice";
+import { addColumn, moveColumn } from "./colsSlice";
 
 
 function Board() {
@@ -51,8 +51,6 @@ function Board() {
                             <ColumnContainer
                                 key={col.id}
                                 column={col}
-                                updateColumn={updateColumn}
-                                createTask={createTask}
                                 tasks={tasks.filter((task) => task.columnId === col.id)}
                             />
                         ))}
@@ -71,8 +69,6 @@ function Board() {
                         {activeColumn && (
                             <ColumnContainer
                                 column={activeColumn}
-                                updateColumn={updateColumn}
-                                createTask={createTask}
                                 tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
                             />
                         )}
@@ -87,18 +83,9 @@ function Board() {
         </div>
     );
 
-    function createTask(columnId: Id, inputValue: string) {
-        dispatch(addTask({ columnId, inputValue }))
-    }
-
     function createNewColumn() {
         dispatch(addColumn())
     }
-
-    function updateColumn(id: Id, title: string) {
-        dispatch(updateCol({ id, title }))
-    }
-
     function onDragStart(event: DragStartEvent) {
 
         if (event.active.data.current?.type === "Column") {
