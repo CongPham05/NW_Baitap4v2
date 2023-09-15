@@ -14,7 +14,7 @@ import {
 } from "@dnd-kit/core";
 import { Column, Id, Task } from "../../types"
 import ColumnContainer from "../../component/ColumnContainer";
-import PlusIcon from "../../icons/PlusIcon";
+import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../../component/TaskCard";
 import { colsSelector, todosRemainningSelector } from "../../redux/selectors";
 import { addTask, moveTaskToColumn, reorderTasks } from "./tasksSlice";
@@ -38,7 +38,7 @@ function Board() {
         })
     );
     return (
-        <div className='dark-bg_sub pt-1 pb-8 pl-8 flex flex-grow overflow-y-hidden gap-2 bg-white '>
+        <div className='dark-bg_sub pt-1 pb-8 pr-7 pl-8 flex flex-grow overflow-y-hidden gap-2 bg-white '>
             <DndContext
                 sensors={sensors}
                 onDragStart={onDragStart}
@@ -61,7 +61,7 @@ function Board() {
                             className='dark-bg  dark-border  dark-text dark-hover hover:bg-[#fff] flex-shrink-0  cursor-pointer w-11 h-11  bg-[#f6f8fa] 
                                     border border-solid border-[#d0d7de] rounded-md flex items-center justify-center'
                         >
-                            <PlusIcon />
+                            <PlusIcon className="w-4" />
                         </div>
                     </SortableContext>
                 </div>

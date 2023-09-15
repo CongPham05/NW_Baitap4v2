@@ -3,7 +3,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState, useRef, useEffect } from "react";
 import { Column, Id, Task } from '../../types';
-import PlusIcon from "../../icons/PlusIcon";
+import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../TaskCard";
 import Dropdowns from "../Dropdowns/Dropdowns";
 import ModalDelete from "../../services/ModalDelete";
@@ -164,7 +164,7 @@ function ColumnContainer({ column, updateColumn, createTask, tasks }: Props) {
             rounded-md p-2.5 hover:bg-[#eeeff2] text-[#656d76] "
                 onClick={handleShowInput}
             >
-                <PlusIcon />
+                <PlusIcon className="w-4" />
                 Add item
             </button>
             {showInput && (

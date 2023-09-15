@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { colIdGroupActive, colorOptionSelector, colsSelector, prioritySelector, sizeSelector, statusIconSelector, todosRemainningSelector } from '../../redux/selectors';
 import { useSelector } from 'react-redux';
-import PlusIcon from '../../icons/PlusIcon';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import { ChartPieIcon, PencilIcon } from '@heroicons/react/24/outline';
 import ModalEdit from '../../services/ModalEdit';
 import { ColumnGroup, Id, Task } from '../../types';
@@ -183,8 +183,8 @@ const GroupTable: React.FC<GroupTableProps> = () => {
                             )}
                         </div>
                         <div className="relative flex items-center justify-start dark-text dark-borderB border-b border-solid dark-hover hover:bg-[#f6f8fa]  " >
-                            <div className='px-2 text-[#656d76]'>
-                                <PlusIcon />
+                            <div className='pl-4 text-[#656d76] m'>
+                                <PlusIcon className='w-4' />
                             </div>
                             <div className='relative flex-1 py-2 text-[#656d76] hover:border-[#218bff] cursor-pointer pl-3'
                                 onClick={() => handleShowInputCol(column.id)}
