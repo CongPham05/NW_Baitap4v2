@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { PropTasks, Task } from '../../types';
+import { PropTasks, Task } from '../types';
 import { arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState: PropTasks = {
-
     defaultTaskList: [{
         id: "1",
         columnId: "new",
@@ -17,7 +16,7 @@ const initialState: PropTasks = {
         id: "6",
         columnId: "done",
         content: "Bài 6",
-        description: null,
+        description: undefined,
         priorityId: "urgent",
         sizeId: "large"
     },
@@ -25,7 +24,7 @@ const initialState: PropTasks = {
         id: "3",
         columnId: "inProgress",
         content: "Bài 3",
-        description: null,
+        description: undefined,
         priorityId: "high",
         sizeId: "xLarge"
     },
@@ -33,7 +32,7 @@ const initialState: PropTasks = {
         id: "4",
         columnId: "inProgress",
         content: "Bài 4",
-        description: null,
+        description: undefined,
         priorityId: "medium",
         sizeId: "mediumS"
     },
@@ -41,7 +40,7 @@ const initialState: PropTasks = {
         id: "2",
         columnId: "new",
         content: "Bài 2",
-        description: null,
+        description: undefined,
         priorityId: "urgent",
         sizeId: "small"
     },
@@ -50,14 +49,14 @@ const initialState: PropTasks = {
         columnId: "delay",
         content: "Bài 5",
         description: "medium",
-        priorityId: null,
+        priorityId: undefined,
         sizeId: "tiny"
     },
     {
         id: "8",
         columnId: "new",
         content: "Bài 8",
-        description: null,
+        description: undefined,
         priorityId: "low",
         sizeId: "small"
     },
@@ -65,7 +64,7 @@ const initialState: PropTasks = {
         id: "10",
         columnId: "delay",
         content: "Bài 10",
-        description: null,
+        description: undefined,
         priorityId: "high",
         sizeId: "large"
     },],
@@ -81,7 +80,7 @@ const initialState: PropTasks = {
         id: "6",
         columnId: "done",
         content: "Bài 6",
-        description: null,
+        description: undefined,
         priorityId: "urgent",
         sizeId: "large"
     },
@@ -89,7 +88,7 @@ const initialState: PropTasks = {
         id: "3",
         columnId: "inProgress",
         content: "Bài 3",
-        description: null,
+        description: undefined,
         priorityId: "high",
         sizeId: "xLarge"
     },
@@ -97,7 +96,7 @@ const initialState: PropTasks = {
         id: "4",
         columnId: "inProgress",
         content: "Bài 4",
-        description: null,
+        description: undefined,
         priorityId: "medium",
         sizeId: "mediumS"
     },
@@ -105,7 +104,7 @@ const initialState: PropTasks = {
         id: "2",
         columnId: "new",
         content: "Bài 2",
-        description: null,
+        description: undefined,
         priorityId: "urgent",
         sizeId: "small"
     },
@@ -114,14 +113,14 @@ const initialState: PropTasks = {
         columnId: "delay",
         content: "Bài 5",
         description: "medium",
-        priorityId: null,
+        priorityId: undefined,
         sizeId: "tiny"
     },
     {
         id: "8",
         columnId: "new",
         content: "Bài 8",
-        description: null,
+        description: undefined,
         priorityId: "low",
         sizeId: "small"
     },
@@ -129,7 +128,7 @@ const initialState: PropTasks = {
         id: "10",
         columnId: "delay",
         content: "Bài 10",
-        description: null,
+        description: undefined,
         priorityId: "high",
         sizeId: "large"
     },],
@@ -144,9 +143,9 @@ export const dataSlice = createSlice({
                 id: uuidv4(),
                 columnId: 'new',
                 content: inputValue,
-                description: null,
-                priorityId: null,
-                sizeId: null,
+                description: undefined,
+                priorityId: undefined,
+                sizeId: undefined,
             };
             state.taskList.push(newTask);
             state.defaultTaskList.push(newTask);
@@ -158,7 +157,7 @@ export const dataSlice = createSlice({
                 id: uuidv4(),
                 columnId,
                 content,
-                description: null,
+                description: undefined,
                 priorityId,
                 sizeId,
             };
@@ -172,9 +171,9 @@ export const dataSlice = createSlice({
                 id: uuidv4(),
                 columnId,
                 content: inputValue,
-                description: null,
-                priorityId: null,
-                sizeId: null,
+                description: undefined,
+                priorityId: undefined,
+                sizeId: undefined,
             };
             state.taskList.push(newTask);
             state.defaultTaskList.push(newTask);

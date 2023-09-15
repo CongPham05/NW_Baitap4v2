@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Task } from '../types';
 import { ArchiveBoxIcon, EyeSlashIcon, SparklesIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useDispatch } from 'react-redux';
-import { updTask, updDesc } from '../pages/Board/tasksSlice';
+import { updTask, updDesc } from '../redux/tasksSlice';
 import ModalDelete from './ModalDelete';
 import DropdownsEdit from '../component/DropdownsEdit';
 

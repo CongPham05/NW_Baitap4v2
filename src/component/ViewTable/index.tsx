@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 import { colIdGroupActive, colIdSelector, statusIconSelector, tasksSelector, todosRemainningSelector } from '../../redux/selectors';
 import BodyTable from '../BodyTable';
 import GroupTable from '../GroupTable';
-import { sortTable } from '../../pages/Board/tasksSlice';
-import { selectGroupType, setColStatus, setSortStatus } from '../../pages/Table/currenColTableSlice';
-import { resetOtherArrow, resetOtherGroup, updateStatusDownIcon, updateStatusGroupIcon, updateStatusUpIcon } from '../../pages/Table/statusIconsSlice';
+import { sortTable } from '../../redux/tasksSlice';
+import { selectGroupType, setColStatus, setSortStatus } from '../../redux/currenColTableSlice';
+import { resetOtherArrow, resetOtherGroup, updateStatusDownIcon, updateStatusGroupIcon, updateStatusUpIcon } from '../../redux/statusIconsSlice';
 
 interface HeadTableProps {
 }

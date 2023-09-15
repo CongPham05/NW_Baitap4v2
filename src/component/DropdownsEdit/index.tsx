@@ -5,7 +5,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { Column, Priority, Task } from '../../types';
 import WrapOptions from '../WrapOptions/WrapOptions';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { sortTable, updCol } from '../../pages/Board/tasksSlice';
+import { sortTable, updCol } from '../../redux/tasksSlice';
 
 interface DropdownsProps {
     task: Task;
@@ -20,6 +20,7 @@ const Dropdowns: React.FC<DropdownsProps> = ({ task, typeOption }) => {
     const sortStatus = useSelector(dataSelector);
 
     const options = typeOption === 'STATUS' ? columns : typeOption === 'PRIORITY' ? prioritys : sizes;
+
     const propertyToUpdate = typeOption === 'STATUS' ? 'columnId' : typeOption === 'PRIORITY' ? 'priorityId' : 'sizeId';
 
     const updateTaskProperty = (option: Column | Priority) => {

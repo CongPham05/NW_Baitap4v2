@@ -4,7 +4,7 @@ import { useDispatch, } from 'react-redux';
 import ModalEdit from '../../services/ModalEdit';
 import { Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
-import { addTaskTable, updTask } from '../../pages/Board/tasksSlice';
+import { addTaskTable, updTask } from '../../redux/tasksSlice';
 
 interface BodyTableProps {
     dataList: Task[];

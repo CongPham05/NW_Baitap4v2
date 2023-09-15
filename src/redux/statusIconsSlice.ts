@@ -1,31 +1,31 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 interface StatusIconsState {
     [key: string]: {
-        isArrowUp: null | boolean;
-        isArrowDown: null | boolean;
-        isGroup: null | boolean;
+        isArrowUp?: boolean;
+        isArrowDown?: boolean;
+        isGroup?: boolean;
     };
 }
 const initialState: StatusIconsState = {
     title: {
-        isArrowUp: null,
-        isArrowDown: null,
-        isGroup: null
+        isArrowUp: undefined,
+        isArrowDown: undefined,
+        isGroup: undefined
     },
     status: {
-        isArrowUp: null,
-        isArrowDown: null,
-        isGroup: null,
+        isArrowUp: undefined,
+        isArrowDown: undefined,
+        isGroup: undefined,
     },
     inProgress: {
-        isArrowUp: null,
-        isArrowDown: null,
-        isGroup: null,
+        isArrowUp: undefined,
+        isArrowDown: undefined,
+        isGroup: undefined,
     },
     size: {
-        isArrowUp: null,
-        isArrowDown: null,
-        isGroup: null,
+        isArrowUp: undefined,
+        isArrowDown: undefined,
+        isGroup: undefined,
     },
 };
 
@@ -49,6 +49,7 @@ export const statusIconsSlice = createSlice({
                 return state;
             }
         },
+
         updateStatusDownIcon: (state, action: PayloadAction<{ columnId: string | keyof StatusIconsState }>) => {
             const { columnId } = action.payload;
 
@@ -99,6 +100,7 @@ export const statusIconsSlice = createSlice({
                 return state;
             }
         },
+
         resetOtherGroup: (state, action: PayloadAction<{ currentColumnId: string | keyof StatusIconsState }>) => {
             const { currentColumnId } = action.payload;
 
@@ -114,7 +116,6 @@ export const statusIconsSlice = createSlice({
                 return state;
             }
         },
-
     }
 });
 

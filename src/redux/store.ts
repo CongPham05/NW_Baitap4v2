@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import tasksReducer from '../pages/Board/tasksSlice';
-import columnsReducer from '../pages/Board/colsSlice';
+import tasksReducer from './tasksSlice';
+import columnsReducer from './colsSlice';
 import filterReducer from '../component/SearchFilters/filtersSlice'
 import priorityReducer from '../component/WrapOptions/prioritySlice';
 import sizeReducer from '../component/WrapOptions/sizeSlice';
 import colorReducer from '../component/WrapOptions/colorSlice';
-import dataReducer from '../pages/Table/currenColTableSlice'
-import statusIconsSlice from '../pages/Table/statusIconsSlice';
+import dataReducer from './currenColTableSlice'
+import statusIconsSlice from './statusIconsSlice';
 
 
 export const store = configureStore({

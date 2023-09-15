@@ -17,8 +17,8 @@ import ColumnContainer from "../../component/ColumnContainer";
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../../component/TaskCard";
 import { colsSelector, todosRemainningSelector } from "../../redux/selectors";
-import { moveTaskToColumn, reorderTasks } from "./tasksSlice";
-import { addColumn, moveColumn } from "./colsSlice";
+import { moveTaskToColumn, reorderTasks } from "../../redux/tasksSlice";
+import { addColumn, moveColumn } from "../../redux/colsSlice";
 
 
 function Board() {
