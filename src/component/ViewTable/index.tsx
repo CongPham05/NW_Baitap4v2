@@ -141,7 +141,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
                 </div>
             </div>
             {
-                (columnStates[columnIdGroupActive]?.isGroup) ? <GroupTable dataList={dataList} /> : <BodyTable dataList={dataList} />
+                (columnStates[columnIdGroupActive]?.isGroup) ? <GroupTable /> : <BodyTable dataList={dataList} />
             }
         </>
     );

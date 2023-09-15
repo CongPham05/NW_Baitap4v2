@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { colIdGroupActive, colorOptionSelector, colsSelector, prioritySelector, sizeSelector, statusIconSelector } from '../../redux/selectors';
+import { colIdGroupActive, colorOptionSelector, colsSelector, prioritySelector, sizeSelector, statusIconSelector, todosRemainningSelector } from '../../redux/selectors';
 import { useSelector } from 'react-redux';
 import PlusIcon from '../../icons/PlusIcon';
 import { ChartPieIcon, PencilIcon } from '@heroicons/react/24/outline';
@@ -10,7 +10,6 @@ import { addTaskTitleGroup, updTask } from '../../pages/Board/tasksSlice';
 import { useDispatch } from 'react-redux';
 
 interface GroupTableProps {
-    dataList: Task[];
 }
 
 const type = {
@@ -18,9 +17,9 @@ const type = {
     priority: 'PRIORITY',
     size: 'SIZE'
 }
-const GroupTable: React.FC<GroupTableProps> = ({ dataList }) => {
+const GroupTable: React.FC<GroupTableProps> = () => {
     const dispatch = useDispatch();
-    // const dataList = useSelector(todosRemainningSelector);
+    const dataList = useSelector(todosRemainningSelector);
     const columns = useSelector(colsSelector)
     const columnIdGroupActive = useSelector(colIdGroupActive)
 
