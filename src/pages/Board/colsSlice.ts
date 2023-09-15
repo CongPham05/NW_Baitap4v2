@@ -33,7 +33,7 @@ export const dataSlice = createSlice({
             const columnToAdd = {
                 id: uuidv4(),
                 title: `Column ${state.length + 1}`,
-                colorId: null,
+                colorId: "blue",
             };
             state.push(columnToAdd);
         },
