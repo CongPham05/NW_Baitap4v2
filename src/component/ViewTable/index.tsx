@@ -1,4 +1,4 @@
-import { Bars2Icon, BarsArrowDownIcon, BarsArrowUpIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { Bars2Icon, BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import MenuTable from '../DropdownsTable/MenuTable';
@@ -96,7 +96,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         < >
             <div className='flex border-y min-w-max dark-bg dark-border   '>
                 <div className='px-10'></div>
-                <div className=' flex items-center text-[#656d76]   dark:text-white ' >
+                <div className=' flex items-center text-[#656d76] dark-text ' >
                     {headTable.map((headCol, index) => {
                         return (
                             <div key={index} className="dark-border   border-r border-solid text-[14px] w-[300px] font-semibold px-2 py-1">
@@ -133,11 +133,11 @@ const ViewTable: React.FC<HeadTableProps> = () => {
                             </div>
                         )
                     })}
-                    <div className="  flex justify-start">
-                        <div className='p-2 dark:hover:bg-slate-600 hover:bg-[#eeeff2] '>
+                    {/* <div className="  flex justify-start">
+                        <div className='p-2 dark-hover hover:bg-[#eeeff2] '>
                             <PlusIcon className='w-[21px]' />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {

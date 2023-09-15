@@ -183,7 +183,7 @@ const GroupTable: React.FC<GroupTableProps> = ({ dataList }) => {
                                 <ModalEdit onRequestClose={() => setIsModal(false)} task={modalTask} />
                             )}
                         </div>
-                        <div className="relative flex items-center justify-start dark-text dark-borderB border-b border-solid hover:bg-[#f6f8fa]  " >
+                        <div className="relative flex items-center justify-start dark-text dark-borderB border-b border-solid dark-hover hover:bg-[#f6f8fa]  " >
                             <div className='px-2 text-[#656d76]'>
                                 <PlusIcon />
                             </div>
