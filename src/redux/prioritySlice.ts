@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Priority } from '../../types';
+import { Priority } from '../types';
 
 const initialState: Priority[] = [
     {

@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit"
 import type { RootState } from '../redux/store'
 
 
+export const authSelector = (state: RootState) => state.authentication;
 export const prioritySelector = (state: RootState) => state.priority;
 export const sizeSelector = (state: RootState) => state.size;
 export const colorOptionSelector = (state: RootState) => state.colorOption;

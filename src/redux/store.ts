@@ -1,26 +1,54 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import {
+    persistStore,
+    persistReducer,
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER,
+} from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import tasksReducer from './tasksSlice';
 import columnsReducer from './colsSlice';
 import filterReducer from '../component/SearchFilters/filtersSlice'
-import priorityReducer from '../component/WrapOptions/prioritySlice';
-import sizeReducer from '../component/WrapOptions/sizeSlice';
-import colorReducer from '../component/WrapOptions/colorSlice';
+import priorityReducer from './prioritySlice';
+import sizeReducer from './sizeSlice';
+import colorReducer from './colorSlice';
 import dataReducer from './currenColTableSlice'
 import statusIconsSlice from './statusIconsSlice';
+import authenticationReducer from './authSlice';
 
-
-export const store = configureStore({
-    reducer: {
-        data: dataReducer,
-        tasks: tasksReducer,
-        columns: columnsReducer,
-        filters: filterReducer,
-        statusIconsTable: statusIconsSlice,
-        priority: priorityReducer,
-        size: sizeReducer,
-        colorOption: colorReducer
-    },
+const persistConfig = {
+    key: 'root',
+    version: 1,
+    storage,
+}
+const rootReducer = combineReducers({
+    authentication: authenticationReducer,
+    data: dataReducer,
+    tasks: tasksReducer,
+    columns: columnsReducer,
+    filters: filterReducer,
+    statusIconsTable: statusIconsSlice,
+    priority: priorityReducer,
+    size: sizeReducer,
+    colorOption: colorReducer
 })
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+export const store = configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            },
+        }),
 
+})
+export const persistor = persistStore(store)
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+
+

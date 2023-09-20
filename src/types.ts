@@ -51,3 +51,8 @@ export type ColumnGroup = {
     colorId?: Id;
     title?: string;
 };
+
+export type Credentials = {
+    email: undefined;
+    password: undefined;
+}
