@@ -1,9 +1,11 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { loginUser } from '../../redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector } from '../../redux/selectors';
 import { resetMessage } from '../../redux/authSlice';
+import { LoginFormValues } from '../../types';
 
 
 const Login: React.FC = () => {
@@ -11,17 +13,16 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const auth = useSelector(authSelector);
 
-    const [credentials, setCredentials] = useState({
-        email: undefined,
-        password: undefined,
-    })
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCredentials(prev => ({ ...prev, [e.target.id]: e.target.value }))
-    }
-    const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<LoginFormValues>();
+
+    const onSubmit: SubmitHandler<LoginFormValues> = (credentials) => {
+        console.log(credentials);
         loginUser(credentials, dispatch, navigate)
-    }
+    };
     useEffect(() => {
         dispatch(resetMessage())
     }, [dispatch])
@@ -42,12 +43,33 @@ const Login: React.FC = () => {
                     <p className="w-80 text-center text-sm mb-8 font-semibold text-gray-700 tracking-wide cursor-pointer">
                         Login to your account now to enjoy all services without any ads for free!</p>
                 </div>
-                <form onSubmit={submit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="space-y-4">
-                        <input type="email" placeholder="Email" required id='email' className="block text-sm py-3 px-4 rounded-lg w-full border outline-none"
-                            onChange={handleChange} />
-                        <input type="text" placeholder="Password" required id='password' className="block text-sm py-3 px-4 rounded-lg w-full border outline-none"
-                            onChange={handleChange} />
+                        <input {...register('email', {
+                            required: 'Email is required',
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: 'Invalid email address',
+                            },
+                        })}
+                            type="email" placeholder="Email" name='email'
+                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                        <p className='text-red-500 text-sm mb-4'>{errors.email?.message}</p>
+
+                        <input   {...register('password', {
+                            required: 'Password is required',
+                            minLength: {
+                                value: 4,
+                                message: "Password must be more than 4 characters"
+                            },
+                            maxLength: {
+                                value: 10,
+                                message: "Password must be more than 10 characters"
+                            }
+                        })}
+                            type="password" placeholder="Password" name='password'
+                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                        <p className='text-red-500 text-sm mb-4'>{errors.password?.message}</p>
                     </div>
                     <div className="text-center mt-6">
                         <p className=' text-red-500 text-sm mb-4'> {auth?.logIn.errorMessage ? "Email or password is incorrect!" : ""}</p>

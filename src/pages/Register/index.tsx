@@ -1,31 +1,27 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react'
+import React from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { authSelector } from '../../redux/selectors';
 import { registerUser } from '../../redux/apiRequest';
-import { resetMessage } from '../../redux/authSlice';
+import { RegisterFormValues } from '../../types';
+import { authSelector } from '../../redux/selectors';
 
 
 const Register: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     const auth = useSelector(authSelector);
-    const [credentials, setCredentials] = useState({
-        userName: null,
-        email: null,
-        password: null,
-    })
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCredentials(prev => ({ ...prev, [e.target.id]: e.target.value }))
-    }
-    const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<RegisterFormValues>();
+
+    const onSubmit: SubmitHandler<RegisterFormValues> = (credentials) => {
+        console.log(credentials);
         registerUser(credentials, dispatch, navigate)
-    }
-    useEffect(() => {
-        dispatch(resetMessage())
-    }, [dispatch])
+    };
+
     return (
         <div className="min-h-screen bg-purple-400 flex justify-center items-center fixed top-0 right-0 w-full">
             <div className="absolute w-60 h-60 rounded-xl bg-purple-300 -top-5 -left-16 z-0 transform rotate-45 hidden md:block">
@@ -38,14 +34,40 @@ const Register: React.FC = () => {
                     <p className="w-80 text-center text-sm mb-8 font-semibold text-gray-700 tracking-wide cursor-pointer">Create an
                         account to enjoy all the services without any ads for free!</p>
                 </div>
-                <form onSubmit={submit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="space-y-4">
-                        <input type="text" placeholder="Name" required id='userName' className="block text-sm py-3 px-4 rounded-lg w-full border outline-none"
-                            onChange={handleChange} />
-                        <input type="email" placeholder="Email" required id='email' className="block text-sm py-3 px-4 rounded-lg w-full border outline-none"
-                            onChange={handleChange} />
-                        <input type="text" placeholder="Password" required id='password' className="block text-sm py-3 px-4 rounded-lg w-full border outline-none"
-                            onChange={handleChange} />
+                        <input  {...register('userName', {
+                            required: 'Name is required',
+                        })}
+                            type="text" placeholder="Name" name='userName'
+                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                        <p className='text-red-500 text-sm mb-4'>{errors.userName?.message}</p>
+
+                        <input {...register('email', {
+                            required: 'Email is required',
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: 'Invalid email address',
+                            },
+                        })}
+                            type="email" placeholder="Email" name='email'
+                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                        <p className='text-red-500 text-sm mb-4'>{errors.email?.message}</p>
+
+                        <input   {...register('password', {
+                            required: 'Password is required',
+                            minLength: {
+                                value: 4,
+                                message: "Password must be more than 4 characters"
+                            },
+                            maxLength: {
+                                value: 10,
+                                message: "Password must be more than 10 characters"
+                            }
+                        })}
+                            type="password" placeholder="Password" name='password'
+                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                        <p className='text-red-500 text-sm mb-4'>{errors.password?.message}</p>
                     </div>
                     <div className="text-center mt-6">
                         <p className=' text-red-500 text-sm mb-4'> {auth.register.errorMessage}</p>

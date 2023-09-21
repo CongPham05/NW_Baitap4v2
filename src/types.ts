@@ -56,3 +56,12 @@ export type Credentials = {
     email: undefined;
     password: undefined;
 }
+export type RegisterFormValues = {
+    userName: string;
+    email: string;
+    password: string;
+}
+export type LoginFormValues = {
+    email: string;
+    password: string;
+}

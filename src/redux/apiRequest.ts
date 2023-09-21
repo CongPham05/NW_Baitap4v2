@@ -3,8 +3,9 @@ import { logInFailed, logInStart, logInSuccess, logOut, registerFailed, register
 import { BASE_URL } from "../utils/config";
 import { Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { NavigateFunction } from "react-router-dom";
+import { LoginFormValues, RegisterFormValues } from "../types";
 
-export const registerUser = async (credentials: { email: null; userName: null; password: null; }, dispatch: Dispatch<AnyAction>, navigate: NavigateFunction) => {
+export const registerUser = async (credentials: RegisterFormValues, dispatch: Dispatch<AnyAction>, navigate: NavigateFunction) => {
     dispatch(registerStart());
     try {
         const response = await axios.post(`${BASE_URL}auth/register`, credentials, {
@@ -19,7 +20,7 @@ export const registerUser = async (credentials: { email: null; userName: null; p
         dispatch(registerFailed(error));
     }
 }
-export const loginUser = async (credentials: { email: undefined; password: undefined; }, dispatch: Dispatch<AnyAction>, navigate: NavigateFunction) => {
+export const loginUser = async (credentials: LoginFormValues, dispatch: Dispatch<AnyAction>, navigate: NavigateFunction) => {
     dispatch(logInStart());
     try {
         const response = await axios.post(`${BASE_URL}auth/login`, credentials, {
