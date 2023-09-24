@@ -3,8 +3,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useDispatch } from 'react-redux';
 import { Task, Column } from '../types'
-import { delTask, deleteAllTasksInColumn } from '../redux/tasksSlice';
-import { deleteCol } from '../redux/colsSlice';
+import { delTask, deleteAllTasksInColumn } from '../redux/reducerSlice/tasksSlice';
+import { deleteCol } from '../redux/reducerSlice/colsSlice';
 
 
 interface Props {

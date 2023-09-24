@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ColorOptions } from '../types';
+import { ColorOptions } from '../../types';
 
 const initialState: ColorOptions[] = [
     {

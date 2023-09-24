@@ -5,21 +5,19 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 const nav__links = [
     {
-        path: '/board',
+        path: '/view/board',
         display: 'Board',
         icon: <RectangleStackIcon className='w-5' />
     },
     {
-        path: '/table',
+        path: '/view/table',
         display: 'Table',
         icon: <CubeIcon className='w-5' />
     },
 ]
-interface NavbProps {
-    // Add any props you might need
-}
 
-const Navb: React.FC<NavbProps> = () => {
+
+const Navb: React.FC = () => {
     const location = useLocation();
     return (
         <nav className=' pl-8 flex dark-bg  '>

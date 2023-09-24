@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Column } from '../types';
+import { Column } from '../../types';
 import { arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from 'uuid';
 

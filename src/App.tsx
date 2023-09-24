@@ -1,22 +1,35 @@
 import './App.css';
-import { useState } from 'react'
-import Header from './component/Header';
-import Navb from './component/Navb';
-import SearchFilters from './component/SearchFilters';
 import Routers from './router/Routers';
 import clsx from 'clsx';
+import { ToastContainer } from 'react-toastify';
+import { SyncLoader } from 'react-spinners';
+import { useSelector } from "react-redux";
+import { loadingSelector, themSelector } from './redux/selectors';
 
 function App() {
-  const [enabled, setEnabled] = useState(false)
-  const handleToggle = () => {
-    setEnabled(!enabled)
+  const loading = useSelector(loadingSelector)
+  const enabled = useSelector(themSelector)
+
+
+  const override = {
+    position: 'fixed' as const,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgb(0 0 0 /30%)',
+    zIndex: "99999",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
   return (
-    <div className={clsx('App bg-[#f6f8fa]', enabled && 'dark')}>
-      <Header enabled={enabled} handleToggle={handleToggle} />
-      <Navb />
-      <SearchFilters />
-      <Routers />
+    <div className='App'>
+      <div className={clsx(' bg-[#f6f8fa] flex flex-col h-full', enabled && 'dark')}>
+        <SyncLoader loading={loading} color="#36d7b7" margin={5} size={8} cssOverride={override} />
+        <ToastContainer />
+        <Routers />
+      </div>
     </div>
   );
 }

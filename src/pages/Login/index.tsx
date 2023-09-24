@@ -1,36 +1,49 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { loginUser } from '../../redux/apiRequest';
-import { useDispatch, useSelector } from 'react-redux';
-import { authSelector } from '../../redux/selectors';
-import { resetMessage } from '../../redux/authSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { LoginFormValues } from '../../types';
-
+import requestApi from '../../helpers/api';
+import axios, { AxiosError } from 'axios';
+import { useDispatch } from 'react-redux';
+import { controlLoading } from '../../redux/reducerSlice/loadingSlice';
 
 const Login: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const auth = useSelector(authSelector);
-
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<LoginFormValues>();
 
-    const onSubmit: SubmitHandler<LoginFormValues> = (credentials) => {
-        console.log(credentials);
-        loginUser(credentials, dispatch, navigate)
-    };
-    useEffect(() => {
-        dispatch(resetMessage())
-    }, [dispatch])
-    useEffect(() => {
-        if (auth?.logIn.isAuthenticated) {
-            navigate('/board');
+    const onSubmit: SubmitHandler<LoginFormValues> = async (credentials) => {
+        dispatch(controlLoading(true));
+        try {
+            const res = await requestApi('auth/login', 'POST', credentials);
+            localStorage.setItem('access_token', res.data.tokens.accessToken);
+            localStorage.setItem('refresh_token', res.data.tokens.refreshToken);
+            localStorage.setItem('inforUser', JSON.stringify(res.data.user));
+
+            dispatch(controlLoading(false));
+            navigate('/view/board');
+        } catch (error) {
+            dispatch(controlLoading(false));
+            const err = error as Error | AxiosError;
+            if (axios.isAxiosError(err)) {
+                if (err.response?.status !== 201) {
+                    toast.error(err.response?.data.message, { position: 'top-center' })
+                }
+                else {
+                    toast.error('Server is down. Please try again!', { position: 'top-center' })
+                }
+            }
+            else {
+                toast.error('Server is down. Please try again!', { position: 'top-center' })
+            }
         }
-    }, [auth?.logIn.isAuthenticated, navigate])
+    };
     return (
         <div className="min-h-screen bg-purple-400 flex justify-center items-center fixed top-0 right-0 w-full">
             <div className="absolute w-60 h-60 rounded-xl bg-purple-300 -top-5 -left-16 z-0 transform rotate-45 hidden md:block">
@@ -72,7 +85,6 @@ const Login: React.FC = () => {
                         <p className='text-red-500 text-sm mb-4'>{errors.password?.message}</p>
                     </div>
                     <div className="text-center mt-6">
-                        <p className=' text-red-500 text-sm mb-4'> {auth?.logIn.errorMessage ? "Email or password is incorrect!" : ""}</p>
                         <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl">Login Now</button>
                         <p className="mt-4 text-sm">Don't have an account? <span className="underline cursor-pointer">
                             <Link to='/register'>Sign Up.</Link>

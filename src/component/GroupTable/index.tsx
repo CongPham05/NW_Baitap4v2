@@ -6,7 +6,7 @@ import { ChartPieIcon, PencilIcon } from '@heroicons/react/24/outline';
 import ModalEdit from '../../services/ModalEdit';
 import { ColumnGroup, Id, Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
-import { addTaskTitleGroup, updTask } from '../../redux/tasksSlice';
+import { addTaskTitleGroup, updTask } from '../../redux/reducerSlice/tasksSlice';
 import { useDispatch } from 'react-redux';
 
 interface GroupTableProps {

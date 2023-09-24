@@ -5,7 +5,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { Column, Priority, Task } from '../../types';
 import WrapOptions from '../WrapOptions/WrapOptions';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { sortTable, updCol } from '../../redux/tasksSlice';
+import { sortTable, updCol } from '../../redux/reducerSlice/tasksSlice';
 
 interface DropdownsProps {
     task: Task;

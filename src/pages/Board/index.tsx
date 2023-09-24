@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { SortableContext } from "@dnd-kit/sortable";
@@ -16,18 +16,16 @@ import { Column, Task } from "../../types"
 import ColumnContainer from "../../component/ColumnContainer";
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../../component/TaskCard";
-import { authSelector, colsSelector, todosRemainningSelector } from "../../redux/selectors";
-import { moveTaskToColumn, reorderTasks } from "../../redux/tasksSlice";
-import { addColumn, moveColumn } from "../../redux/colsSlice";
-import { useNavigate } from "react-router-dom";
+import { colsSelector, todosRemainningSelector } from "../../redux/selectors";
+import { moveTaskToColumn, reorderTasks } from "../../redux/reducerSlice/tasksSlice";
+import { addColumn, moveColumn } from "../../redux/reducerSlice/colsSlice";
+
 
 
 function Board() {
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const auth = useSelector(authSelector);
     const columns = useSelector(colsSelector)
     const tasks = useSelector(todosRemainningSelector)
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
@@ -42,13 +40,10 @@ function Board() {
             },
         })
     );
-    useEffect(() => {
-        if (!auth.logIn.isAuthenticated) {
-            navigate('/login');
-        }
-    }, [auth.logIn.isAuthenticated, navigate])
+
+
     return (
-        <div className='dark-bg_sub pt-1 pb-8 pr-7 pl-8 flex flex-grow overflow-y-hidden gap-2 bg-white '>
+        <div className='flex-1 dark-bg_sub pt-1 pb-8 pr-7 pl-8 flex flex-grow overflow-y-hidden gap-2 bg-white '>
             <DndContext
                 sensors={sensors}
                 onDragStart={onDragStart}

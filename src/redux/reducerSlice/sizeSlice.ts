@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Size } from '../types';
+import { Size } from '../../types';
 
 const initialState: Size[] = [
     {

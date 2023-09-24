@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { PropTasks, Task } from '../types';
+import { PropTasks, Task } from '../../types';
 import { arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -133,7 +133,7 @@ const initialState: PropTasks = {
         sizeId: "large"
     },],
 }
-export const dataSlice = createSlice({
+export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
@@ -344,7 +344,7 @@ export const
         updDesc,
         sortTable,
     }
-        = dataSlice.actions
-export default dataSlice.reducer
+        = tasksSlice.actions
+export default tasksSlice.reducer
 
 

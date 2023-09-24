@@ -9,9 +9,9 @@ import Dropdowns from "../Dropdowns/Dropdowns";
 import ModalDelete from "../../services/ModalDelete";
 import { useSelector } from "react-redux";
 import { colorOptionSelector } from "../../redux/selectors";
-import { updateCol } from "../../redux/colsSlice";
+import { updateCol } from "../../redux/reducerSlice/colsSlice";
 import { useDispatch } from "react-redux";
-import { addTask } from "../../redux/tasksSlice";
+import { addTask } from "../../redux/reducerSlice/tasksSlice";
 
 interface Props {
     column: Column;

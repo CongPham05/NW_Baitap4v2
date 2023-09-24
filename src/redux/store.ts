@@ -10,15 +10,16 @@ import {
     REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import tasksReducer from './tasksSlice';
-import columnsReducer from './colsSlice';
+import tasksReducer from './reducerSlice/tasksSlice';
+import columnsReducer from './reducerSlice/colsSlice';
 import filterReducer from '../component/SearchFilters/filtersSlice'
-import priorityReducer from './prioritySlice';
-import sizeReducer from './sizeSlice';
-import colorReducer from './colorSlice';
-import dataReducer from './currenColTableSlice'
-import statusIconsSlice from './statusIconsSlice';
-import authenticationReducer from './authSlice';
+import priorityReducer from './reducerSlice/prioritySlice';
+import sizeReducer from './reducerSlice/sizeSlice';
+import colorReducer from './reducerSlice/colorSlice';
+import dataReducer from './reducerSlice/currenColTableSlice'
+import statusIconsSlice from './reducerSlice/statusIconsSlice';
+import loadingReducer from './reducerSlice/loadingSlice';
+import themeReducer from './reducerSlice/themeSlice';
 
 const persistConfig = {
     key: 'root',
@@ -26,7 +27,8 @@ const persistConfig = {
     storage,
 }
 const rootReducer = combineReducers({
-    authentication: authenticationReducer,
+    theme: themeReducer,
+    loadingGlobal: loadingReducer,
     data: dataReducer,
     tasks: tasksReducer,
     columns: columnsReducer,
@@ -34,7 +36,8 @@ const rootReducer = combineReducers({
     statusIconsTable: statusIconsSlice,
     priority: priorityReducer,
     size: sizeReducer,
-    colorOption: colorReducer
+    colorOption: colorReducer,
+
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({

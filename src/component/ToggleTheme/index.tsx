@@ -1,11 +1,16 @@
 import { Switch } from '@headlessui/react';
 import { SunIcon } from '@heroicons/react/24/solid';
-interface HeaderProps {
-    enabled: boolean;
-    handleToggle: () => void;
-}
-const ToggleTheme: React.FC<HeaderProps> = ({ enabled, handleToggle }) => {
+import { useSelector } from 'react-redux';
+import { themSelector } from '../../redux/selectors';
+import { useDispatch } from 'react-redux';
+import { themeActive } from '../../redux/reducerSlice/themeSlice';
 
+const ToggleTheme: React.FC = () => {
+    const dispatch = useDispatch();
+    const enabled = useSelector(themSelector)
+    const handleToggle = () => {
+        dispatch(themeActive())
+    }
     return (
         <div className="dark-bg pr-10">
             <Switch

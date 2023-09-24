@@ -1,25 +1,35 @@
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../../redux/apiRequest';
 import { RegisterFormValues } from '../../types';
-import { authSelector } from '../../redux/selectors';
+import requestApi from '../../helpers/api';
+import axios, { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
 
 const Register: React.FC = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const auth = useSelector(authSelector);
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<RegisterFormValues>();
 
-    const onSubmit: SubmitHandler<RegisterFormValues> = (credentials) => {
-        console.log(credentials);
-        registerUser(credentials, dispatch, navigate)
+    const onSubmit: SubmitHandler<RegisterFormValues> = async (credentials) => {
+        try {
+            await requestApi('auth/register', 'POST', credentials);
+            navigate('/login');
+        } catch (error) {
+            const err = error as Error | AxiosError;
+            if (axios.isAxiosError(err)) {
+                if (err.response?.status !== 201) {
+                    toast.error(err.response?.data.message, { position: 'top-center' })
+                }
+            }
+            else {
+                toast.error('Server is down. Please try again!', { position: 'top-center' })
+            }
+        }
     };
 
     return (
@@ -70,7 +80,6 @@ const Register: React.FC = () => {
                         <p className='text-red-500 text-sm mb-4'>{errors.password?.message}</p>
                     </div>
                     <div className="text-center mt-6">
-                        <p className=' text-red-500 text-sm mb-4'> {auth.register.errorMessage}</p>
                         <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl"
                         >Create Account</button>
                         <p className="mt-4 text-sm">Already Have An Account? <span className="underline cursor-pointer">
