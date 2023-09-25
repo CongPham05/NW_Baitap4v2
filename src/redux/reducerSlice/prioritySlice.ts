@@ -4,24 +4,24 @@ import { Priority } from '../../types';
 const initialState: Priority[] = [
     {
         id: "urgent",
-        title: "🌋 Urgent",
+        content: "🌋 Urgent",
         colorId: "red"
     },
     {
         id: "high",
-        title: "🏔 High",
+        content: "🏔 High",
         colorId: "brown"
     },
 
     {
         id: "medium",
-        title: "🏕 Medium",
+        content: "🏕 Medium",
         colorId: "green"
     },
 
     {
         id: "low",
-        title: "🏝 Low",
+        content: "🏝 Low",
         colorId: "blue"
     }
 ]

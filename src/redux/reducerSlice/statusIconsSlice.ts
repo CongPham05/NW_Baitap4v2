@@ -7,7 +7,7 @@ interface StatusIconsState {
     };
 }
 const initialState: StatusIconsState = {
-    title: {
+    content: {
         isArrowUp: undefined,
         isArrowDown: undefined,
         isGroup: undefined
@@ -33,16 +33,16 @@ export const statusIconsSlice = createSlice({
     name: 'statusIconsSlice',
     initialState,
     reducers: {
-        updateStatusUpIcon: (state, action: PayloadAction<{ columnId: string | keyof StatusIconsState }>) => {
-            const { columnId } = action.payload;
+        updateStatusUpIcon: (state, action: PayloadAction<{ statusId: string | keyof StatusIconsState }>) => {
+            const { statusId } = action.payload;
 
-            if (columnId in state) {
+            if (statusId in state) {
                 return {
                     ...state,
-                    [columnId]: {
-                        isArrowUp: !state[columnId]?.isArrowUp,
+                    [statusId]: {
+                        isArrowUp: !state[statusId]?.isArrowUp,
                         isArrowDown: false,
-                        isGroup: state[columnId]?.isGroup,
+                        isGroup: state[statusId]?.isGroup,
                     },
                 };
             } else {
@@ -50,16 +50,16 @@ export const statusIconsSlice = createSlice({
             }
         },
 
-        updateStatusDownIcon: (state, action: PayloadAction<{ columnId: string | keyof StatusIconsState }>) => {
-            const { columnId } = action.payload;
+        updateStatusDownIcon: (state, action: PayloadAction<{ statusId: string | keyof StatusIconsState }>) => {
+            const { statusId } = action.payload;
 
-            if (columnId in state) {
+            if (statusId in state) {
                 return {
                     ...state,
-                    [columnId]: {
+                    [statusId]: {
                         isArrowUp: false,
-                        isArrowDown: !state[columnId].isArrowDown,
-                        isGroup: state[columnId].isGroup,
+                        isArrowDown: !state[statusId].isArrowDown,
+                        isGroup: state[statusId].isGroup,
                     },
                 };
             } else {
@@ -67,16 +67,16 @@ export const statusIconsSlice = createSlice({
             }
         },
 
-        updateStatusGroupIcon: (state, action: PayloadAction<{ columnId: string | keyof StatusIconsState }>) => {
-            const { columnId } = action.payload;
+        updateStatusGroupIcon: (state, action: PayloadAction<{ statusId: string | keyof StatusIconsState }>) => {
+            const { statusId } = action.payload;
 
-            if (columnId in state) {
+            if (statusId in state) {
                 return {
                     ...state,
-                    [columnId]: {
-                        isArrowUp: state[columnId].isArrowUp,
-                        isArrowDown: state[columnId].isArrowDown,
-                        isGroup: !state[columnId].isGroup,
+                    [statusId]: {
+                        isArrowUp: state[statusId].isArrowUp,
+                        isArrowDown: state[statusId].isArrowDown,
+                        isGroup: !state[statusId].isGroup,
                     },
                 };
             } else {
@@ -89,10 +89,10 @@ export const statusIconsSlice = createSlice({
 
             if (currentColumnId in state) {
 
-                for (const columnId in state) {
-                    if (columnId !== currentColumnId) {
-                        state[columnId].isArrowUp = false;
-                        state[columnId].isArrowDown = false;
+                for (const statusId in state) {
+                    if (statusId !== currentColumnId) {
+                        state[statusId].isArrowUp = false;
+                        state[statusId].isArrowDown = false;
                     }
                 }
                 return state;
@@ -106,9 +106,9 @@ export const statusIconsSlice = createSlice({
 
             if (currentColumnId in state) {
 
-                for (const columnId in state) {
-                    if (columnId !== currentColumnId) {
-                        state[columnId].isGroup = false;
+                for (const statusId in state) {
+                    if (statusId !== currentColumnId) {
+                        state[statusId].isGroup = false;
                     }
                 }
                 return state;

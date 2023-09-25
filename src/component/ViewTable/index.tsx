@@ -14,28 +14,28 @@ interface HeadTableProps {
 }
 const headTable = [
     {
-        id: 'title',
-        title: "Tilte",
+        id: 'content',
+        content: "Tilte",
         optionUp: "Sort ascending",
         optionDown: "Sort descending"
     },
     {
         id: 'status',
-        title: "Status",
+        content: "Status",
         optionUp: "Sort ascending",
         optionDown: "Sort descending",
         optionGroup: "Group by values"
     },
     {
         id: 'inProgress',
-        title: "In progress",
+        content: "In progress",
         optionUp: "Sort ascending",
         optionDown: "Sort descending",
         optionGroup: "Group by values"
     },
     {
         id: 'size',
-        title: "Size",
+        content: "Size",
         optionUp: "Sort ascending",
         optionDown: "Sort descending",
         optionGroup: "Group by values"
@@ -65,31 +65,31 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         }
     }, [columnIdGroupActive, columnIdSort, columnStates, dispatch, taskRoot.defaultTaskList, tasks])
 
-    const sortTasks = (columnId: string, ascending: boolean) => {
+    const sortTasks = (statusId: string, ascending: boolean) => {
         if (!columnIdSort) {
             setdDataList(tasks)
         }
-        dispatch(setSortStatus({ columnId, ascending }));
-        dispatch(sortTable({ columnId, ascending }));
+        dispatch(setSortStatus({ statusId, ascending }));
+        dispatch(sortTable({ statusId, ascending }));
     };
-    const showArrowUpIcon = (columnId: string) => {
-        sortTasks(columnId, true);
+    const showArrowUpIcon = (statusId: string) => {
+        sortTasks(statusId, true);
 
-        dispatch(resetOtherArrow({ currentColumnId: columnId }));
-        dispatch(updateStatusUpIcon({ columnId }));
-
-    };
-    const showArrowDownIcon = (columnId: string) => {
-        sortTasks(columnId, false);
-
-        dispatch(resetOtherArrow({ currentColumnId: columnId }));
-        dispatch(updateStatusDownIcon({ columnId }));
+        dispatch(resetOtherArrow({ currentColumnId: statusId }));
+        dispatch(updateStatusUpIcon({ statusId }));
 
     };
-    const showGroupIcon = (columnId: string) => {
-        dispatch(selectGroupType({ columnId }));
-        dispatch(updateStatusGroupIcon({ columnId }));
-        dispatch(resetOtherGroup({ currentColumnId: columnId }));
+    const showArrowDownIcon = (statusId: string) => {
+        sortTasks(statusId, false);
+
+        dispatch(resetOtherArrow({ currentColumnId: statusId }));
+        dispatch(updateStatusDownIcon({ statusId }));
+
+    };
+    const showGroupIcon = (statusId: string) => {
+        dispatch(selectGroupType({ statusId }));
+        dispatch(updateStatusGroupIcon({ statusId }));
+        dispatch(resetOtherGroup({ currentColumnId: statusId }));
 
     };
     return (
@@ -101,7 +101,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
                         return (
                             <div key={index} className="dark-border   border-r border-solid text-[14px] w-[300px] font-semibold px-2 py-1">
                                 <div className='flex items-center justify-between'>
-                                    <div>{headCol.title}</div>
+                                    <div>{headCol.content}</div>
                                     <div className='flex items-center'>
                                         {columnStates[headCol.id as keyof typeof columnStates].isGroup &&
                                             <div className='px-1 '><Bars2Icon className=" dark-text w-5 text-gray-500" /></div>

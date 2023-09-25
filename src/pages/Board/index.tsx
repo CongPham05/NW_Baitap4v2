@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { SortableContext } from "@dnd-kit/sortable";
@@ -17,22 +17,23 @@ import ColumnContainer from "../../component/ColumnContainer";
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../../component/TaskCard";
 import { colsSelector, todosRemainningSelector } from "../../redux/selectors";
-import { moveTaskToColumn, reorderTasks } from "../../redux/reducerSlice/tasksSlice";
+import { fetchTodoList, moveTaskToColumn, reorderTasks } from "../../redux/reducerSlice/tasksSlice";
 import { addColumn, moveColumn } from "../../redux/reducerSlice/colsSlice";
+import requestApi from "../../helpers/api";
 
 
 
 function Board() {
-
+    console.log("board")
     const dispatch = useDispatch();
-
     const columns = useSelector(colsSelector)
     const tasks = useSelector(todosRemainningSelector)
+
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
     const [activeTask, setActiveTask] = useState<Task | null>(null);
-
     const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -41,6 +42,19 @@ function Board() {
         })
     );
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await requestApi('todo', 'GET', []);
+                const fetchData = res.data.todos;
+                dispatch(fetchTodoList({ dataList: fetchData }))
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData();
+    }, [dispatch])
 
     return (
         <div className='flex-1 dark-bg_sub pt-1 pb-8 pr-7 pl-8 flex flex-grow overflow-y-hidden gap-2 bg-white '>
@@ -56,7 +70,7 @@ function Board() {
                             <ColumnContainer
                                 key={col.id}
                                 column={col}
-                                tasks={tasks.filter((task) => task.columnId === col.id)}
+                                tasks={tasks.filter((task) => task.statusId === col.id)}
                             />
                         ))}
 
@@ -74,7 +88,7 @@ function Board() {
                         {activeColumn && (
                             <ColumnContainer
                                 column={activeColumn}
-                                tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
+                                tasks={tasks.filter((task) => task.statusId === activeColumn.id)}
                             />
                         )}
                         {activeTask && (

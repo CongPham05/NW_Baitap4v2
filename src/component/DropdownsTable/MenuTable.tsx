@@ -15,7 +15,7 @@ interface MenuTableProps {
     isGroup: boolean | null;
     headCol: {
         id: string;
-        title: string;
+        content: string;
         optionUp: string;
         optionDown: string;
         optionGroup?: string | undefined;

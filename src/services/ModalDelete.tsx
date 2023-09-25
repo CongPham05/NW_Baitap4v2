@@ -12,11 +12,11 @@ interface Props {
     onClose: () => void;
     inputId: Task | Column;
     type: string;
-    title: string;
+    content: string;
     sub: string;
 }
 
-const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, title, sub }) => {
+const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, content, sub }) => {
     const dispatch = useDispatch();
     const cancelButtonRef = useRef(null)
 
@@ -69,7 +69,7 @@ const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, title, s
                                         </div>
                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                             <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
-                                                {title}
+                                                {content}
                                             </Dialog.Title>
                                             <div className="mt-2">
                                                 <p className="text-sm text-gray-500">

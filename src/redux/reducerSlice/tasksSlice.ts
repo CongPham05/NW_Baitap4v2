@@ -4,144 +4,158 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState: PropTasks = {
-    defaultTaskList: [{
-        id: "1",
-        columnId: "new",
-        content: "Bài 1",
-        description: "Xin Chào Việt Nam!",
-        priorityId: "low",
-        sizeId: "mediumS"
-    },
-    {
-        id: "6",
-        columnId: "done",
-        content: "Bài 6",
-        description: undefined,
-        priorityId: "urgent",
-        sizeId: "large"
-    },
-    {
-        id: "3",
-        columnId: "inProgress",
-        content: "Bài 3",
-        description: undefined,
-        priorityId: "high",
-        sizeId: "xLarge"
-    },
-    {
-        id: "4",
-        columnId: "inProgress",
-        content: "Bài 4",
-        description: undefined,
-        priorityId: "medium",
-        sizeId: "mediumS"
-    },
-    {
-        id: "2",
-        columnId: "new",
-        content: "Bài 2",
-        description: undefined,
-        priorityId: "urgent",
-        sizeId: "small"
-    },
-    {
-        id: "5",
-        columnId: "delay",
-        content: "Bài 5",
-        description: "medium",
-        priorityId: undefined,
-        sizeId: "tiny"
-    },
-    {
-        id: "8",
-        columnId: "new",
-        content: "Bài 8",
-        description: undefined,
-        priorityId: "low",
-        sizeId: "small"
-    },
-    {
-        id: "10",
-        columnId: "delay",
-        content: "Bài 10",
-        description: undefined,
-        priorityId: "high",
-        sizeId: "large"
-    },],
-    taskList: [{
-        id: "1",
-        columnId: "new",
-        content: "Bài 1",
-        description: "Xin Chào Việt Nam!",
-        priorityId: "low",
-        sizeId: "mediumS"
-    },
-    {
-        id: "6",
-        columnId: "done",
-        content: "Bài 6",
-        description: undefined,
-        priorityId: "urgent",
-        sizeId: "large"
-    },
-    {
-        id: "3",
-        columnId: "inProgress",
-        content: "Bài 3",
-        description: undefined,
-        priorityId: "high",
-        sizeId: "xLarge"
-    },
-    {
-        id: "4",
-        columnId: "inProgress",
-        content: "Bài 4",
-        description: undefined,
-        priorityId: "medium",
-        sizeId: "mediumS"
-    },
-    {
-        id: "2",
-        columnId: "new",
-        content: "Bài 2",
-        description: undefined,
-        priorityId: "urgent",
-        sizeId: "small"
-    },
-    {
-        id: "5",
-        columnId: "delay",
-        content: "Bài 5",
-        description: "medium",
-        priorityId: undefined,
-        sizeId: "tiny"
-    },
-    {
-        id: "8",
-        columnId: "new",
-        content: "Bài 8",
-        description: undefined,
-        priorityId: "low",
-        sizeId: "small"
-    },
-    {
-        id: "10",
-        columnId: "delay",
-        content: "Bài 10",
-        description: undefined,
-        priorityId: "high",
-        sizeId: "large"
-    },],
+    defaultTaskList: [
+        {
+            id: 1,
+            statusId: "new",
+            content: "Bài 1",
+            description: "Xin Chào Việt Nam!",
+            priorityId: "low",
+            sizeId: "mediumS"
+        },
+        {
+            id: 2,
+            statusId: "done",
+            content: "Bài 6",
+            description: undefined,
+            priorityId: "urgent",
+            sizeId: "large"
+        },
+
+        {
+            id: 3,
+            statusId: "inProgress",
+            content: "Bài 3",
+            description: undefined,
+            priorityId: "high",
+            sizeId: "xLarge"
+        },
+        {
+            id: 4,
+            statusId: "inProgress",
+            content: "Bài 4",
+            description: undefined,
+            priorityId: "medium",
+            sizeId: "mediumS"
+        },
+        {
+            id: 5,
+            statusId: "new",
+            content: "Bài 2",
+            description: undefined,
+            priorityId: "urgent",
+            sizeId: "small"
+        },
+        {
+            id: 6,
+            statusId: "delay",
+            content: "Bài 5",
+            description: "medium",
+            priorityId: undefined,
+            sizeId: "tiny"
+        },
+        {
+            id: 7,
+            statusId: "new",
+            content: "Bài 8",
+            description: undefined,
+            priorityId: "low",
+            sizeId: "small"
+        },
+        {
+            id: 8,
+            statusId: "delay",
+            content: "Bài 10",
+            description: undefined,
+            priorityId: "high",
+            sizeId: "large"
+        }
+    ],
+    taskList: [
+        {
+            id: 1,
+            statusId: "new",
+            content: "Bài 1",
+            description: "Xin Chào Việt Nam!",
+            priorityId: "low",
+            sizeId: "mediumS"
+        },
+
+        {
+            id: 2,
+            statusId: "done",
+            content: "Bài 6",
+            description: undefined,
+            priorityId: "urgent",
+            sizeId: "large"
+        },
+
+        {
+            id: 3,
+            statusId: "inProgress",
+            content: "Bài 3",
+            description: undefined,
+            priorityId: "high",
+            sizeId: "xLarge"
+        },
+        {
+            id: 4,
+            statusId: "inProgress",
+            content: "Bài 4",
+            description: undefined,
+            priorityId: "medium",
+            sizeId: "mediumS"
+        },
+        {
+            id: 5,
+            statusId: "new",
+            content: "Bài 2",
+            description: undefined,
+            priorityId: "urgent",
+            sizeId: "small"
+        },
+        {
+            id: 6,
+            statusId: "delay",
+            content: "Bài 5",
+            description: "medium",
+            priorityId: undefined,
+            sizeId: "tiny"
+        },
+        {
+            id: 7,
+            statusId: "new",
+            content: "Bài 8",
+            description: undefined,
+            priorityId: "low",
+            sizeId: "small"
+        },
+        {
+            id: 8,
+            statusId: "delay",
+            content: "Bài 10",
+            description: undefined,
+            priorityId: "high",
+            sizeId: "large"
+        }
+    ]
 }
 export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
+        fetchTodoList: (state, action) => {
+            const { dataList } = action.payload;
+            state.defaultTaskList = dataList;
+            state.taskList = dataList;
+            return state;
+
+        },
         addTaskTable: (state, action) => {
             const { inputValue } = action.payload;
             const newTask: Task = {
                 id: uuidv4(),
-                columnId: 'new',
+                statusId: 'new',
                 content: inputValue,
                 description: undefined,
                 priorityId: undefined,
@@ -152,10 +166,10 @@ export const tasksSlice = createSlice({
             return state;
         },
         addTaskTitleGroup: (state, action) => {
-            const { columnId, priorityId, sizeId, content } = action.payload;
+            const { statusId, priorityId, sizeId, content } = action.payload;
             const newTask: Task = {
                 id: uuidv4(),
-                columnId,
+                statusId,
                 content,
                 description: undefined,
                 priorityId,
@@ -166,10 +180,10 @@ export const tasksSlice = createSlice({
             return state;
         },
         addTask: (state, action) => {
-            const { columnId, inputValue } = action.payload;
+            const { statusId, inputValue } = action.payload;
             const newTask: Task = {
                 id: uuidv4(),
-                columnId,
+                statusId,
                 content: inputValue,
                 description: undefined,
                 priorityId: undefined,
@@ -258,8 +272,8 @@ export const tasksSlice = createSlice({
         },
         deleteAllTasksInColumn: (state, action) => {
             const { id } = action.payload;
-            const newTaskLst = state.taskList.filter((task) => task.columnId !== id);
-            const newDefaultTaskLst = state.defaultTaskList.filter((task) => task.columnId !== id);
+            const newTaskLst = state.taskList.filter((task) => task.statusId !== id);
+            const newDefaultTaskLst = state.defaultTaskList.filter((task) => task.statusId !== id);
             return {
                 ...state,
                 defaultTaskList: newDefaultTaskLst,
@@ -267,19 +281,19 @@ export const tasksSlice = createSlice({
             };
         },
         sortTable: (state, action) => {
-            const { columnId, ascending } = action.payload;
+            const { statusId, ascending } = action.payload;
             const sortedTasks = [...state.taskList].sort((a, b) => {
-                if (columnId === 'title') {
+                if (statusId === 'content') {
                     return ascending ? a.content.localeCompare(b.content) : b.content.localeCompare(a.content);
-                } else if (columnId === 'status') {
+                } else if (statusId === 'status') {
                     return ascending
-                        ? String(a.columnId).localeCompare(String(b.columnId))
-                        : String(b.columnId).localeCompare(String(a.columnId));
-                } else if (columnId === 'inProgress') {
+                        ? String(a.statusId).localeCompare(String(b.statusId))
+                        : String(b.statusId).localeCompare(String(a.statusId));
+                } else if (statusId === 'inProgress') {
                     return ascending
                         ? String(a.priorityId).localeCompare(String(b.priorityId))
                         : String(b.priorityId).localeCompare(String(a.priorityId));
-                } else if (columnId === 'size') {
+                } else if (statusId === 'size') {
                     return ascending
                         ? String(a.sizeId).localeCompare(String(b.sizeId))
                         : String(b.sizeId).localeCompare(String(a.sizeId));
@@ -296,11 +310,11 @@ export const tasksSlice = createSlice({
             const activeIndex = state.taskList.findIndex((t) => t.id === activeId);
             const overIndex = state.taskList.findIndex((t) => t.id === overId);
 
-            if (state.taskList[activeIndex].columnId !== state.taskList[overIndex].columnId) {
+            if (state.taskList[activeIndex].statusId !== state.taskList[overIndex].statusId) {
 
                 const updatedTasks = state.taskList.map((task, index) => {
                     if (index === activeIndex) {
-                        return { ...task, columnId: state.taskList[overIndex].columnId };
+                        return { ...task, statusId: state.taskList[overIndex].statusId };
                     }
                     return task;
                 });
@@ -318,7 +332,7 @@ export const tasksSlice = createSlice({
             const activeIndex = state.taskList.findIndex((t) => t.id === activeId);
             const updatedTasks = state.taskList.map((task, index) => {
                 if (index === activeIndex) {
-                    return { ...task, columnId: overId };
+                    return { ...task, statusId: overId };
                 }
                 return task;
             })
@@ -332,6 +346,7 @@ export const tasksSlice = createSlice({
 
 export const
     {
+        fetchTodoList,
         addTaskTitleGroup,
         addTask,
         updTask,

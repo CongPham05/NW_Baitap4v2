@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    columnId: '',
+    statusId: '',
     ascending: false,
     groupType: '',
 };
@@ -11,25 +11,25 @@ export const currenColTableSlice = createSlice({
     initialState,
     reducers: {
         setColStatus: (state, action) => {
-            const { columnId } = action.payload
+            const { statusId } = action.payload
             return {
                 ...state,
-                columnId
+                statusId
             }
         },
         setSortStatus: (state, action) => {
-            const { columnId, ascending } = action.payload
+            const { statusId, ascending } = action.payload
             return {
                 ...state,
-                columnId: columnId,
+                statusId: statusId,
                 ascending: ascending
             }
         },
         selectGroupType: (state, action) => {
-            const { columnId } = action.payload
+            const { statusId } = action.payload
             return {
                 ...state,
-                groupType: columnId,
+                groupType: statusId,
             }
         },
     },

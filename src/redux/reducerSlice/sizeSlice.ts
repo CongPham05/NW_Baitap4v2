@@ -4,27 +4,27 @@ import { Size } from '../../types';
 const initialState: Size[] = [
     {
         id: "xLarge",
-        title: "🐋 X-Large",
+        content: "🐋 X-Large",
         colorId: "red"
     },
     {
         id: "large",
-        title: "🦑 Large",
+        content: "🦑 Large",
         colorId: "orange"
     },
     {
         id: "mediumS",
-        title: "🐂 Medium",
+        content: "🐂 Medium",
         colorId: "brown"
     },
     {
         id: "small",
-        title: "🐇 Small",
+        content: "🐇 Small",
         colorId: "green"
     },
     {
         id: "tiny",
-        title: "🦔 Tiny",
+        content: "🦔 Tiny",
         colorId: "blue"
     },
 ]

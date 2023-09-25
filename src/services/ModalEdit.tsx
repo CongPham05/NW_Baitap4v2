@@ -76,7 +76,7 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                             <span className='text-2xl font-medium'> {inputValue} </span>
                             <button onClick={handleShowInput}>
                                 <span className='text-xs px-2.5 py-2 font-medium border-[#d0d7de] rounded-md hover:bg-[#afb8c11d]'>
-                                    Edit title
+                                    Edit content
                                 </span>
                             </button>
                         </div>}
@@ -212,7 +212,7 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                                     onClose={handleShowModalDel}
                                     inputId={task}
                                     type={'TASK'}
-                                    title="Delete item?"
+                                    content="Delete item?"
                                     sub='Are you sure you want to delete this item from this project?'
                                 />
                             </div>

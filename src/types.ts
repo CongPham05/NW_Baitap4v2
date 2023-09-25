@@ -7,7 +7,7 @@ export type PropTasks = {
 }
 export type Column = {
     id: Id;
-    title: string;
+    content: string;
     colorId?: string;
 };
 export type ColumnState = {
@@ -17,7 +17,7 @@ export type ColumnState = {
 }
 export type Task = {
     id: Id;
-    columnId: Id;
+    statusId: Id;
     content: string;
     description?: string,
     priorityId: IdCol,
@@ -27,13 +27,13 @@ export type Task = {
 export type Priority = {
     id: Id,
     colorId: Id
-    title?: string,
+    content?: string,
 };
 
 export type Size = {
     id: Id,
     colorId: Id
-    title?: string,
+    content?: string,
 };
 
 export type ColorOptions = {
@@ -49,7 +49,7 @@ export type ColumnGroup = {
     color: ColorOptions;
     id: Id;
     colorId?: Id;
-    title?: string;
+    content?: string;
 };
 
 export type Credentials = {

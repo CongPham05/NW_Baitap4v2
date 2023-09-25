@@ -10,7 +10,7 @@ export const sizeSelector = (state: RootState) => state.size;
 export const colorOptionSelector = (state: RootState) => state.colorOption;
 
 export const dataSelector = (state: RootState) => state.data;
-export const colIdSelector = (state: RootState) => state.data.columnId;
+export const colIdSelector = (state: RootState) => state.data.statusId;
 export const colIdGroupActive = (state: RootState) => state.data.groupType;
 
 export const statusIconSelector = (state: RootState) => state.statusIconsTable;
@@ -29,9 +29,9 @@ export const todosRemainningSelector = createSelector(
     (tasksList, colsLst, priority, size, searchText) => {
         return tasksList.taskList.filter(task => {
 
-            const columnTitle = colsLst.find(column => column.id === task.columnId)?.title || "";
-            const priorityTitle = priority.find(item => item.id === task.priorityId)?.title || "";
-            const sizeTitle = size.find(item => item.id === task.sizeId)?.title || "";
+            const columnTitle = colsLst.find(column => column.id === task.statusId)?.content || "";
+            const priorityTitle = priority.find(item => item.id === task.priorityId)?.content || "";
+            const sizeTitle = size.find(item => item.id === task.sizeId)?.content || "";
 
 
             return task.content.includes(searchText) ||

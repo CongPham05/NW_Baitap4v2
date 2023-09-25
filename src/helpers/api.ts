@@ -8,6 +8,7 @@ export default function requestApi(endpoint: string, method: string, body: unkno
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
     }
+
     const instance = axios.create({ headers });
 
     instance.interceptors.request.use(

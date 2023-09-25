@@ -6,22 +6,22 @@ import { v4 as uuidv4 } from 'uuid';
 const initialState: Column[] = [
     {
         id: "new",
-        title: "New",
+        content: "New",
         colorId: "blue"
     },
     {
         id: "inProgress",
-        title: "In progress",
+        content: "In progress",
         colorId: "brown"
     },
     {
         id: 'delay',
-        title: "Delay",
+        content: "Delay",
         colorId: "red"
     },
     {
         id: "done",
-        title: "Done",
+        content: "Done",
         colorId: "green"
     },
 ];
@@ -32,16 +32,16 @@ export const dataSlice = createSlice({
         addColumn: (state) => {
             const columnToAdd = {
                 id: uuidv4(),
-                title: `Column ${state.length + 1}`,
+                content: `Column ${state.length + 1}`,
                 colorId: "blue",
             };
             state.push(columnToAdd);
         },
         updateCol: (state, action) => {
-            const { id, title } = action.payload;
+            const { id, content } = action.payload;
             return state.map((col) => {
                 if (col.id !== id) return col;
-                return { ...col, title };
+                return { ...col, content };
             });
         },
         deleteCol: (state, action) => {

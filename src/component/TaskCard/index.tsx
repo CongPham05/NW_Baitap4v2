@@ -75,7 +75,7 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
                     onClose={() => setIsModalDelete(false)}
                     inputId={task}
                     type="TASK"
-                    title="Delete item?"
+                    content="Delete item?"
                     sub='Are you sure you want to delete this item from this project?'
                 />
 

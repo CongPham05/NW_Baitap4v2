@@ -20,7 +20,7 @@ const OptionsTable: React.FC<OptionsTableProps> = ({ task, typeOption }) => {
     const sortStatus = useSelector(dataSelector);
 
     const options = typeOption === 'STATUS' ? columns : typeOption === 'PRIORITY' ? prioritys : sizes;
-    const propertyToUpdate = typeOption === 'STATUS' ? 'columnId' : typeOption === 'PRIORITY' ? 'priorityId' : 'sizeId';
+    const propertyToUpdate = typeOption === 'STATUS' ? 'statusId' : typeOption === 'PRIORITY' ? 'priorityId' : 'sizeId';
 
     const updateTaskProperty = (option: Column | Priority) => {
         const id = task.id;
@@ -64,7 +64,7 @@ const OptionsTable: React.FC<OptionsTableProps> = ({ task, typeOption }) => {
                                             <div className='w-3.5 mr-2'></div>
                                         )}
                                         <div onClick={() => updateTaskProperty(option)} className='pl-2 py-2 flex-grow text-sm'>
-                                            {option.title}
+                                            {option.content}
                                         </div>
                                     </div>
                                 )}

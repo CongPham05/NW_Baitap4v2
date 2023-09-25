@@ -1,7 +1,7 @@
-
+import { useMemo, useState, useRef } from "react";
+import { useOnClickOutside } from 'usehooks-ts'
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState, useRef, useEffect } from "react";
 import { Column, Task } from '../../types';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../TaskCard";
@@ -13,17 +13,18 @@ import { updateCol } from "../../redux/reducerSlice/colsSlice";
 import { useDispatch } from "react-redux";
 import { addTask } from "../../redux/reducerSlice/tasksSlice";
 
+
 interface Props {
     column: Column;
     tasks: Task[];
 }
+
 
 function ColumnContainer({ column, tasks }: Props) {
 
     const dispatch = useDispatch()
     const colorCol = useSelector(colorOptionSelector)
     const colorCurren = colorCol.find(item => item.id === column.colorId)
-
     const [isModalDelete, setIsModalDelete] = useState(false);
     const [isModalDeleteAll, setIsModalDeleteAll] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -32,21 +33,10 @@ function ColumnContainer({ column, tasks }: Props) {
     const [inputValue, setInputValue] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null);
 
+
     const tasksIds = useMemo(() => {
         return tasks.map((task) => task.id);
     }, [tasks]);
-
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
-                setShowInput(false);
-            }
-        };
-        document.addEventListener('mousedown', handleOutsideClick);
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        };
-    }, []);
 
     function handleDisabledDnDKit() {
         setDisabledDnDKit(!disabledDnDKit);
@@ -57,9 +47,13 @@ function ColumnContainer({ column, tasks }: Props) {
     function deleteAllTask() {
         setIsModalDeleteAll(true);
     }
+    const handleClickOutside = () => {
+        setShowInput(false);
+    }
+    useOnClickOutside(inputRef, handleClickOutside)
     const handleInputEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && inputValue.length > 0) {
-            dispatch(addTask({ columnId: column.id, inputValue }))
+            dispatch(addTask({ statusId: column.id, inputValue }))
             setInputValue('');
             setShowInput(false);
         }
@@ -89,7 +83,7 @@ function ColumnContainer({ column, tasks }: Props) {
             className=" dark-border dark-bg bg-[#f6f8fa] flex-col flex w-[350px]
              h-full  pc-border hover:cursor-grab relative "
         >
-            {/* Column title */}
+            {/* Column content */}
             <div className=" py-2 px-4 flex items-center justify-between " >
                 <div className="flex gap-2 items-center">
                     <div className='w-4 h-4 border rounded-full'
@@ -99,11 +93,11 @@ function ColumnContainer({ column, tasks }: Props) {
                         }}> </div>
                     <div onClick={() => { setEditMode(true) }}
                         className=" dark-text gap-2 text-[17px] font-semibold flex items-center cursor-pointer hover:border-b hover:border-[#639ee1] ">
-                        {!editMode && column.title}
+                        {!editMode && column.content}
                         {editMode && (
                             <input className=" dark-text-black text-lg font-semibold  border rounded outline-none px-2 w-[130px]"
-                                value={column.title}
-                                onChange={(e) => dispatch(updateCol({ id: column.id, title: e.target.value }))}
+                                value={column.content}
+                                onChange={(e) => dispatch(updateCol({ id: column.id, content: e.target.value }))}
                                 autoFocus
                                 onBlur={() => {
                                     setEditMode(false);
@@ -126,7 +120,7 @@ function ColumnContainer({ column, tasks }: Props) {
                 onClose={() => setIsModalDeleteAll(false)}
                 inputId={column}
                 type="ALLTASK"
-                title="Delete all items?"
+                content="Delete all items?"
                 sub='Are you sure you want to delete items from the project?'
             />
             <ModalDelete
@@ -134,13 +128,10 @@ function ColumnContainer({ column, tasks }: Props) {
                 onClose={() => setIsModalDelete(false)}
                 inputId={column}
                 type="COLUMN"
-                title="Delete option?"
+                content="Delete option?"
                 sub='This will permanently delete this option from the "Status" field. This cannot be undone.'
             />
-
-
             {/* Column task container */}
-
             <div className="flex flex-col gap-2 flex-grow px-2 pb-2 overflow-x-hidden overflow-y-auto">
                 <SortableContext items={tasksIds}>
                     {tasks.map((task) => (

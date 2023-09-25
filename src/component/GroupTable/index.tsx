@@ -58,18 +58,18 @@ const GroupTable: React.FC<GroupTableProps> = () => {
     };
     const saveAddItemEnter = (event: React.KeyboardEvent<HTMLInputElement>, colId: string | number) => {
         if (event.key === 'Enter' && addTaskGroup.length > 0) {
-            let columnId: Id = 'new';
+            let statusId: Id = 'new';
             let priorityId = null;
             let sizeId = null;
 
             if (columns.some(item => item.id === colId)) {
-                columnId = colId;
+                statusId = colId;
             } else if (prioritys.some(item => item.id === colId)) {
                 priorityId = colId;
             } else if (sizes.some(item => item.id === colId)) {
                 sizeId = colId;
             }
-            dispatch(addTaskTitleGroup({ columnId, priorityId, sizeId, content: addTaskGroup }));
+            dispatch(addTaskTitleGroup({ statusId, priorityId, sizeId, content: addTaskGroup }));
             const updatedMap = { ...showInputGroupMap };
             updatedMap[colId] = false;
             setShowInputGroupMap(updatedMap);
@@ -112,7 +112,7 @@ const GroupTable: React.FC<GroupTableProps> = () => {
                                     borderColor: `${column.color.colorBorder}`,
                                     backgroundColor: `${column.color.colorBg}`,
                                 }}> </div>
-                            <div className='font-medium dark-text '> {column.title}</div>
+                            <div className='font-medium dark-text '> {column.content}</div>
                             <div className='w-4 h-4 bg-[#e8ebef]  rounded-xl flex items-center justify-center'>
                                 <span className='text-[#656d76] text-xs block'>{column.dataList.length}</span>
                             </div>
@@ -214,7 +214,7 @@ const GroupTable: React.FC<GroupTableProps> = () => {
     if (columnIdGroupActive === "status") {
         if (columnStates[columnIdGroupActive].isArrowDown) {
             const columnsData = columns.map(column => {
-                const columnTasks = dataList.filter(task => task.columnId === column.id);
+                const columnTasks = dataList.filter(task => task.statusId === column.id);
                 const [colorTasks] = colorCol.filter(color => color.id === column.colorId);
                 return {
                     ...column,
@@ -227,7 +227,7 @@ const GroupTable: React.FC<GroupTableProps> = () => {
         }
         else {
             const columnsData = columns.map(column => {
-                const columnTasks = dataList.filter(task => task.columnId === column.id);
+                const columnTasks = dataList.filter(task => task.statusId === column.id);
                 const [colorTasks] = colorCol.filter(color => color.id === column.colorId);
                 return {
                     ...column,
