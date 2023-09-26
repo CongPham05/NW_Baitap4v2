@@ -6,7 +6,7 @@ import { ChartPieIcon, PencilIcon } from '@heroicons/react/24/outline';
 import ModalEdit from '../../services/ModalEdit';
 import { ColumnGroup, Id, Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
-import { addTaskTitleGroup, updTask } from '../../redux/reducerSlice/tasksSlice';
+import { addTaskTitleGroup } from '../../redux/reducerSlice/tasksSlice';
 import { useDispatch } from 'react-redux';
 import requestApi from '../../helpers/api';
 import { toast } from 'react-toastify';
@@ -30,10 +30,7 @@ const GroupTable: React.FC<GroupTableProps> = () => {
     const sizes = useSelector(sizeSelector)
     const columnStates = useSelector(statusIconSelector);
 
-    const [showEditTitleMap, setShowEditTitleMap] = useState<{ [taskId: string]: boolean }>({});
     const [showInputGroupMap, setShowInputGroupMap] = useState<{ [colId: string]: boolean }>({});
-
-    const [editTitleTask, setEditTitleTask] = useState('');
 
     const [isModal, setIsModal] = useState(false);
     const [modalTask, setModalTask] = useState<Task | null>(null);
@@ -94,11 +91,6 @@ const GroupTable: React.FC<GroupTableProps> = () => {
         updatedMap[colId] = true;
         setShowInputGroupMap(updatedMap);
     };
-    const handleToggleEditTitle = (taskId: Id) => {
-        const updatedMap = { ...showEditTitleMap };
-        updatedMap[taskId] = !updatedMap[taskId];
-        setShowEditTitleMap(updatedMap);
-    };
 
     const handleShowModal = (selectedTask: Task) => {
         setIsModal(true);
@@ -155,32 +147,6 @@ const GroupTable: React.FC<GroupTableProps> = () => {
 
                                             </div>
                                         </div>
-
-                                        {/* {showEditTitleMap[task.id] && (
-                                            <div className='flex items-center gap-2 dark-border  border-r text-sm  w-[300px] min-w-[300px]  
-                                        text-[#656d76]  font-semibold pl-2' >
-                                                <span className=' w-5 mr-1.5'>
-                                                    <ChartPieIcon />
-                                                </span>
-                                                <div className='flex-1 w-full h-full'>
-                                                    <input className=" dark:text-black text-sm  font-normal w-full pl-2 h-full outline-[#0969da]"
-                                                        value={editTitleTask || task.content}
-                                                        onChange={changeTitleTask}
-                                                        autoFocus
-                                                        onBlur={() => {
-                                                            const updatedMap = { ...showEditTitleMap };
-                                                            updatedMap[task.id] = !updatedMap[task.id];
-                                                            setShowEditTitleMap(updatedMap);
-                                                        }}
-                                                        onKeyDown={(e) => {
-                                                            if (e.key !== "Enter") return;
-                                                            saveTitleTask(task)
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
-
-                                        )} */}
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.priority} /></div>
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.size} /></div>
