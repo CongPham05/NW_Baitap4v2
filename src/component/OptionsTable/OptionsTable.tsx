@@ -6,6 +6,8 @@ import { Column, Priority, Task } from '../../types';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { sortTable, updCol } from '../../redux/reducerSlice/tasksSlice';
 import WrapOptions from '../WrapOptions/WrapOptions';
+import requestApi from '../../helpers/api';
+import { toast } from 'react-toastify';
 
 interface OptionsTableProps {
     task: Task;
@@ -22,12 +24,20 @@ const OptionsTable: React.FC<OptionsTableProps> = ({ task, typeOption }) => {
     const options = typeOption === 'STATUS' ? columns : typeOption === 'PRIORITY' ? prioritys : sizes;
     const propertyToUpdate = typeOption === 'STATUS' ? 'statusId' : typeOption === 'PRIORITY' ? 'priorityId' : 'sizeId';
 
-    const updateTaskProperty = (option: Column | Priority) => {
+    const updateTaskProperty = async (option: Column | Priority) => {
         const id = task.id;
         const newTask = {
             ...task,
             [propertyToUpdate]: option.id,
         };
+        try {
+            const fetchData = await requestApi(`todo/${id}`, 'PATCH', newTask)
+            const message = fetchData.data.message;
+            toast.success(message, { position: 'bottom-right', autoClose: 2000 })
+
+        } catch (error) {
+            console.log(error);
+        }
         dispatch(updCol({ id, newTask }));
         dispatch(sortTable(sortStatus));
     };

@@ -20,6 +20,7 @@ const Header: React.FC = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('inforUser');
+        localStorage.removeItem('hasCalledApi');
         setUserName('');
         navigate('/login');
     };

@@ -38,8 +38,17 @@ const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, content,
         else if (type === "COLUMN") {
             dispatch(deleteCol({ id: inputId.id }));
             dispatch(deleteAllTasksInColumn({ id: inputId.id }))
+            dispatch(deleteAllTasksInColumn({ id: inputId.id }))
+            try {
+                const res = await requestApi(`todo/status/${inputId.id}`, 'DELETE', [])
+                const message = res.data.message;
+                toast.success(message, { position: 'bottom-right' })
+            } catch (error) {
+                console.log(error);
+            }
 
         }
+
         else if (type === "ALLTASK") {
             dispatch(deleteAllTasksInColumn({ id: inputId.id }))
             try {

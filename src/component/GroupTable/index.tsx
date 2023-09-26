@@ -8,6 +8,8 @@ import { ColumnGroup, Id, Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
 import { addTaskTitleGroup, updTask } from '../../redux/reducerSlice/tasksSlice';
 import { useDispatch } from 'react-redux';
+import requestApi from '../../helpers/api';
+import { toast } from 'react-toastify';
 
 interface GroupTableProps {
 }
@@ -56,7 +58,7 @@ const GroupTable: React.FC<GroupTableProps> = () => {
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTaskGroup(event.target.value);
     };
-    const saveAddItemEnter = (event: React.KeyboardEvent<HTMLInputElement>, colId: string | number) => {
+    const saveAddItemEnter = async (event: React.KeyboardEvent<HTMLInputElement>, colId: string | number) => {
         if (event.key === 'Enter' && addTaskGroup.length > 0) {
             let statusId: Id = 'new';
             let priorityId = null;
@@ -69,7 +71,18 @@ const GroupTable: React.FC<GroupTableProps> = () => {
             } else if (sizes.some(item => item.id === colId)) {
                 sizeId = colId;
             }
-            dispatch(addTaskTitleGroup({ statusId, priorityId, sizeId, content: addTaskGroup }));
+
+            try {
+                const fetchData = await requestApi('todo', 'POST', { statusId, priorityId, sizeId, content: addTaskGroup })
+                const message = fetchData.data.message;
+                const idTodo = fetchData.data.result.id;
+                toast.success(message, { position: 'bottom-right' })
+                dispatch(addTaskTitleGroup({ idTodo, statusId, priorityId, sizeId, content: addTaskGroup }));
+
+            } catch (error) {
+                console.log(error);
+
+            }
             const updatedMap = { ...showInputGroupMap };
             updatedMap[colId] = false;
             setShowInputGroupMap(updatedMap);
@@ -90,11 +103,19 @@ const GroupTable: React.FC<GroupTableProps> = () => {
         setEditTitleTask(e.target.value);
 
     }
-    const saveTitleTask = (task: Task) => {
+    const saveTitleTask = async (task: Task) => {
         (editTitleTask.length) && dispatch(updTask({ id: task.id, content: editTitleTask }));
         const updatedMap = { ...showEditTitleMap };
         updatedMap[task.id] = !updatedMap[task.id];
         setShowEditTitleMap(updatedMap);
+        try {
+            const fetchData = await requestApi(`todo/${task.id}`, 'PATCH', { content: editTitleTask })
+            const message = fetchData.data.message;
+            toast.success(message, { position: 'bottom-right' })
+
+        } catch (error) {
+            console.log(error);
+        }
     }
     const handleShowModal = (selectedTask: Task) => {
         setIsModal(true);
@@ -161,7 +182,9 @@ const GroupTable: React.FC<GroupTableProps> = () => {
                                                         onChange={changeTitleTask}
                                                         autoFocus
                                                         onBlur={() => {
-                                                            saveTitleTask(task)
+                                                            const updatedMap = { ...showEditTitleMap };
+                                                            updatedMap[task.id] = !updatedMap[task.id];
+                                                            setShowEditTitleMap(updatedMap);
                                                         }}
                                                         onKeyDown={(e) => {
                                                             if (e.key !== "Enter") return;

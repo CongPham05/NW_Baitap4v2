@@ -42,19 +42,21 @@ function Board() {
     );
 
     useEffect(() => {
-        console.log("check");
-
-        const fetchData = async () => {
-            try {
-                const res = await requestApi('todo', 'GET', []);
-                const fetchData = res.data.todos;
-                dispatch(fetchTodoList({ dataList: fetchData }))
-
-            } catch (error) {
-                console.error(error);
+        const hasCalledApi = localStorage.getItem('hasCalledApi');
+        if (!hasCalledApi) {
+            const fetchData = async () => {
+                try {
+                    const res = await requestApi('todo', 'GET', []);
+                    const fetchData = res.data.todos;
+                    dispatch(fetchTodoList({ dataList: fetchData }))
+                    localStorage.setItem('hasCalledApi', 'true');
+                } catch (error) {
+                    console.error(error);
+                }
             }
+            fetchData();
         }
-        fetchData();
+
     }, [dispatch])
 
     return (
@@ -135,7 +137,7 @@ function Board() {
 
         dispatch(moveColumn({ activeId, overId }))
     }
-    function onDragOver(event: DragOverEvent) {
+    async function onDragOver(event: DragOverEvent) {
         const { active, over } = event;
         if (!over) return;
 
@@ -151,12 +153,20 @@ function Board() {
 
         // Dropping a Task over another Task
         if (isActiveATask && isOverATask) {
+            console.log({ activeId, overId });
             dispatch(reorderTasks({ activeId, overId }))
         }
-        const isOverAColumn = over.data.current?.type === "Column";
 
+        const isOverAColumn = over.data.current?.type === "Column";
         //Dropping a Task over a column
         if (isActiveATask && isOverAColumn) {
+            console.log({ activeId, overId });
+            try {
+                await requestApi(`todo/${activeId}`, 'PATCH', { statusId: overId })
+
+            } catch (error) {
+                console.log(error);
+            }
             dispatch(moveTaskToColumn({ activeId, overId }))
         }
     }

@@ -226,6 +226,7 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
                                     <TrashIcon className="h-5 w-5  text-red-600 ml-1.5" aria-hidden="true" />
                                     <a href="#" className=' pl-2 py-1.5 flex-grow text-sm '>Delete from project </a>
                                 </div>
+
                                 <ModalDelete
                                     isOpen={isModalDelete}
                                     onClose={handleShowModalDel}

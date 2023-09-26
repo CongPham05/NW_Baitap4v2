@@ -5,6 +5,8 @@ import ModalEdit from '../../services/ModalEdit';
 import { Task } from '../../types';
 import OptionsTable from '../OptionsTable/OptionsTable';
 import { addTaskTable, updTask } from '../../redux/reducerSlice/tasksSlice';
+import requestApi from '../../helpers/api';
+import { toast } from 'react-toastify';
 
 interface BodyTableProps {
     dataList: Task[];
@@ -54,11 +56,19 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
         setEditNameTask(updatedIsEditNameTask);
         setEditTitleTask(dataList[index].content);
     }
-    const saveTitleTask = (index: number) => {
+    const saveTitleTask = async (index: number) => {
         const updatedIsEditNameTask = [...isEditNameTask];
         updatedIsEditNameTask[index] = false;
         setEditNameTask(updatedIsEditNameTask);
         (editTitleTask.length) && dispatch(updTask({ id: dataList[index].id, content: editTitleTask }))
+        try {
+            const fetchData = await requestApi(`todo/${dataList[index].id}`, 'PATCH', { content: editTitleTask })
+            const message = fetchData.data.message;
+            toast.success(message, { position: 'bottom-right' })
+
+        } catch (error) {
+            console.log(error);
+        }
     }
     const handleShowInput = () => {
         setShowInput(true);
@@ -66,9 +76,18 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
     };
-    const handleInputEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleInputEnter = async (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && inputValue.length > 0) {
-            dispatch(addTaskTable({ inputValue }));
+
+            try {
+                const fetchData = await requestApi('todo', 'POST', { statusId: "new", content: inputValue })
+                const message = fetchData.data.message;
+                const idTodo = fetchData.data.result.id;
+                toast.success(message, { position: 'bottom-right' })
+                dispatch(addTaskTable({ idTodo, inputValue }));
+            } catch (error) {
+                console.log(error);
+            }
             setInputValue('');
             setShowInput(false);
         }
@@ -119,7 +138,9 @@ const BodyTable: React.FC<BodyTableProps> = ({ dataList }) => {
                                         onChange={changeTitleTask}
                                         autoFocus
                                         onBlur={() => {
-                                            saveTitleTask(index)
+                                            const updatedIsEditNameTask = [...isEditNameTask];
+                                            updatedIsEditNameTask[index] = false;
+                                            setEditNameTask(updatedIsEditNameTask);
                                         }}
                                         onKeyDown={(e) => {
                                             if (e.key !== "Enter") return;

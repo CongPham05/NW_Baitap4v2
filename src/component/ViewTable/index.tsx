@@ -78,6 +78,8 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         dispatch(resetOtherArrow({ currentColumnId: statusId }));
         dispatch(updateStatusUpIcon({ statusId }));
 
+
+
     };
     const showArrowDownIcon = (statusId: string) => {
         sortTasks(statusId, false);

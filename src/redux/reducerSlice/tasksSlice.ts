@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { PropTasks, Task } from '../../types';
 import { arrayMove } from "@dnd-kit/sortable";
-import { v4 as uuidv4 } from 'uuid';
 
 const initialState: PropTasks = {
     defaultTaskList: [],
@@ -154,9 +153,9 @@ export const tasksSlice = createSlice({
 
         },
         addTaskTable: (state, action) => {
-            const { inputValue } = action.payload;
+            const { idTodo, inputValue } = action.payload;
             const newTask: Task = {
-                id: uuidv4(),
+                id: idTodo,
                 statusId: 'new',
                 content: inputValue,
                 description: undefined,
@@ -168,9 +167,10 @@ export const tasksSlice = createSlice({
             return state;
         },
         addTaskTitleGroup: (state, action) => {
-            const { statusId, priorityId, sizeId, content } = action.payload;
+            const { idTodo, statusId, priorityId, sizeId, content } = action.payload;
+
             const newTask: Task = {
-                id: uuidv4(),
+                id: idTodo,
                 statusId,
                 content,
                 description: undefined,
