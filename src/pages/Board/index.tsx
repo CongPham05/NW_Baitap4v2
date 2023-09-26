@@ -24,7 +24,6 @@ import requestApi from "../../helpers/api";
 
 
 function Board() {
-    console.log("board")
     const dispatch = useDispatch();
     const columns = useSelector(colsSelector)
     const tasks = useSelector(todosRemainningSelector)
@@ -43,6 +42,8 @@ function Board() {
     );
 
     useEffect(() => {
+        console.log("check");
+
         const fetchData = async () => {
             try {
                 const res = await requestApi('todo', 'GET', []);

@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { Task, Column } from '../types'
 import { delTask, deleteAllTasksInColumn } from '../redux/reducerSlice/tasksSlice';
 import { deleteCol } from '../redux/reducerSlice/colsSlice';
+import requestApi from '../helpers/api';
+import { toast } from 'react-toastify';
 
 
 interface Props {
@@ -20,9 +22,17 @@ const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, content,
     const dispatch = useDispatch();
     const cancelButtonRef = useRef(null)
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (type === "TASK") {
             dispatch(delTask({ id: inputId.id }));
+            try {
+                const res = await requestApi(`todo/${inputId.id}`, 'DELETE', [])
+                const message = res.data.message;
+                toast.success(message, { position: 'bottom-right' })
+
+            } catch (error) {
+                console.log(error);
+            }
 
         }
         else if (type === "COLUMN") {
@@ -32,6 +42,14 @@ const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, content,
         }
         else if (type === "ALLTASK") {
             dispatch(deleteAllTasksInColumn({ id: inputId.id }))
+            try {
+                const res = await requestApi(`todo/status/${inputId.id}`, 'DELETE', [])
+                const message = res.data.message;
+                toast.success(message, { position: 'bottom-right' })
+            } catch (error) {
+                console.log(error);
+            }
+
         }
         onClose();
     }

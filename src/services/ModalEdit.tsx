@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { updTask, updDesc } from '../redux/reducerSlice/tasksSlice';
 import ModalDelete from './ModalDelete';
 import DropdownsEdit from '../component/DropdownsEdit';
+import requestApi from '../helpers/api';
+import { toast } from 'react-toastify';
 
 interface ModalProps {
     onRequestClose: () => void,
@@ -36,16 +38,33 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
     const handleValueInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value)
     }
-    const handleSaveTitle = () => {
+    const handleSaveTitle = async () => {
         const id = task.id;
         const content = inputValue;
-        setInputValue(content);
+        try {
+            const fetchData = await requestApi(`todo/${id}`, 'PATCH', { content })
+            const message = fetchData.data.message;
+            toast.success(message, { position: 'bottom-right' })
+
+        } catch (error) {
+            console.log(error);
+        }
         dispatch(updTask({ id, content }))
+        setInputValue(content);
         setEditMode(false)
     }
-    const handleSaveDesc = () => {
+    const handleSaveDesc = async () => {
         const id = task.id;
         const description = descContent;
+        try {
+            const fetchData = await requestApi(`todo/${id}`, 'PATCH', { description })
+            const idTodo = fetchData.data.res.id;
+            console.log(idTodo);
+            const message = fetchData.data.message;
+            toast.success(message, { position: 'bottom-right' })
+        } catch (error) {
+            console.log(error);
+        }
         dispatch(updDesc({ id, description }))
         setShowEditDesc(false)
     }

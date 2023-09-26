@@ -20,7 +20,6 @@ interface DropdownsProps {
 }
 
 const Dropdowns: React.FC<DropdownsProps> = ({ deleteColumn, column, deleteAllTask }) => {
-
     return (
         <Menu as="div" className="relative inline-block text-left ">
             <div>

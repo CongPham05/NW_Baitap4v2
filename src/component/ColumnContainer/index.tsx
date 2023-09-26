@@ -1,5 +1,6 @@
 import { useMemo, useState, useRef } from "react";
-import { useOnClickOutside } from 'usehooks-ts'
+import { useOnClickOutside } from 'usehooks-ts';
+import { toast } from 'react-toastify';
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Column, Task } from '../../types';
@@ -12,6 +13,7 @@ import { colorOptionSelector } from "../../redux/selectors";
 import { updateCol } from "../../redux/reducerSlice/colsSlice";
 import { useDispatch } from "react-redux";
 import { addTask } from "../../redux/reducerSlice/tasksSlice";
+import requestApi from "../../helpers/api";
 
 
 interface Props {
@@ -51,9 +53,18 @@ function ColumnContainer({ column, tasks }: Props) {
         setShowInput(false);
     }
     useOnClickOutside(inputRef, handleClickOutside)
-    const handleInputEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+
+    const handleInputEnter = async (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && inputValue.length > 0) {
-            dispatch(addTask({ statusId: column.id, inputValue }))
+            try {
+                const fetchData = await requestApi('todo', 'POST', { statusId: column.id, content: inputValue })
+                const message = fetchData.data.message;
+                toast.success(message, { position: 'bottom-right' })
+                dispatch(addTask(fetchData.data.result))
+            } catch (error) {
+                console.log(error);
+
+            }
             setInputValue('');
             setShowInput(false);
         }

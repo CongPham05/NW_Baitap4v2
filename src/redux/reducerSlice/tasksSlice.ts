@@ -4,141 +4,143 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState: PropTasks = {
-    defaultTaskList: [
-        {
-            id: 1,
-            statusId: "new",
-            content: "Bài 1",
-            description: "Xin Chào Việt Nam!",
-            priorityId: "low",
-            sizeId: "mediumS"
-        },
-        {
-            id: 2,
-            statusId: "done",
-            content: "Bài 6",
-            description: undefined,
-            priorityId: "urgent",
-            sizeId: "large"
-        },
+    defaultTaskList: [],
+    taskList: [],
+    // defaultTaskList: [
+    //     {
+    //         id: 1,
+    //         statusId: "new",
+    //         content: "Bài 1",
+    //         description: "Xin Chào Việt Nam!",
+    //         priorityId: "low",
+    //         sizeId: "mediumS"
+    //     },
+    //     {
+    //         id: 2,
+    //         statusId: "done",
+    //         content: "Bài 6",
+    //         description: undefined,
+    //         priorityId: "urgent",
+    //         sizeId: "large"
+    //     },
 
-        {
-            id: 3,
-            statusId: "inProgress",
-            content: "Bài 3",
-            description: undefined,
-            priorityId: "high",
-            sizeId: "xLarge"
-        },
-        {
-            id: 4,
-            statusId: "inProgress",
-            content: "Bài 4",
-            description: undefined,
-            priorityId: "medium",
-            sizeId: "mediumS"
-        },
-        {
-            id: 5,
-            statusId: "new",
-            content: "Bài 2",
-            description: undefined,
-            priorityId: "urgent",
-            sizeId: "small"
-        },
-        {
-            id: 6,
-            statusId: "delay",
-            content: "Bài 5",
-            description: "medium",
-            priorityId: undefined,
-            sizeId: "tiny"
-        },
-        {
-            id: 7,
-            statusId: "new",
-            content: "Bài 8",
-            description: undefined,
-            priorityId: "low",
-            sizeId: "small"
-        },
-        {
-            id: 8,
-            statusId: "delay",
-            content: "Bài 10",
-            description: undefined,
-            priorityId: "high",
-            sizeId: "large"
-        }
-    ],
-    taskList: [
-        {
-            id: 1,
-            statusId: "new",
-            content: "Bài 1",
-            description: "Xin Chào Việt Nam!",
-            priorityId: "low",
-            sizeId: "mediumS"
-        },
+    //     {
+    //         id: 3,
+    //         statusId: "inProgress",
+    //         content: "Bài 3",
+    //         description: undefined,
+    //         priorityId: "high",
+    //         sizeId: "xLarge"
+    //     },
+    //     {
+    //         id: 4,
+    //         statusId: "inProgress",
+    //         content: "Bài 4",
+    //         description: undefined,
+    //         priorityId: "medium",
+    //         sizeId: "mediumS"
+    //     },
+    //     {
+    //         id: 5,
+    //         statusId: "new",
+    //         content: "Bài 2",
+    //         description: undefined,
+    //         priorityId: "urgent",
+    //         sizeId: "small"
+    //     },
+    //     {
+    //         id: 6,
+    //         statusId: "delay",
+    //         content: "Bài 5",
+    //         description: "medium",
+    //         priorityId: undefined,
+    //         sizeId: "tiny"
+    //     },
+    //     {
+    //         id: 7,
+    //         statusId: "new",
+    //         content: "Bài 8",
+    //         description: undefined,
+    //         priorityId: "low",
+    //         sizeId: "small"
+    //     },
+    //     {
+    //         id: 8,
+    //         statusId: "delay",
+    //         content: "Bài 10",
+    //         description: undefined,
+    //         priorityId: "high",
+    //         sizeId: "large"
+    //     }
+    // ],
+    // taskList: [
+    //     {
+    //         id: 1,
+    //         statusId: "new",
+    //         content: "Bài 1",
+    //         description: "Xin Chào Việt Nam!",
+    //         priorityId: "low",
+    //         sizeId: "mediumS"
+    //     },
 
-        {
-            id: 2,
-            statusId: "done",
-            content: "Bài 6",
-            description: undefined,
-            priorityId: "urgent",
-            sizeId: "large"
-        },
+    //     {
+    //         id: 2,
+    //         statusId: "done",
+    //         content: "Bài 6",
+    //         description: undefined,
+    //         priorityId: "urgent",
+    //         sizeId: "large"
+    //     },
 
-        {
-            id: 3,
-            statusId: "inProgress",
-            content: "Bài 3",
-            description: undefined,
-            priorityId: "high",
-            sizeId: "xLarge"
-        },
-        {
-            id: 4,
-            statusId: "inProgress",
-            content: "Bài 4",
-            description: undefined,
-            priorityId: "medium",
-            sizeId: "mediumS"
-        },
-        {
-            id: 5,
-            statusId: "new",
-            content: "Bài 2",
-            description: undefined,
-            priorityId: "urgent",
-            sizeId: "small"
-        },
-        {
-            id: 6,
-            statusId: "delay",
-            content: "Bài 5",
-            description: "medium",
-            priorityId: undefined,
-            sizeId: "tiny"
-        },
-        {
-            id: 7,
-            statusId: "new",
-            content: "Bài 8",
-            description: undefined,
-            priorityId: "low",
-            sizeId: "small"
-        },
-        {
-            id: 8,
-            statusId: "delay",
-            content: "Bài 10",
-            description: undefined,
-            priorityId: "high",
-            sizeId: "large"
-        }
-    ]
+    //     {
+    //         id: 3,
+    //         statusId: "inProgress",
+    //         content: "Bài 3",
+    //         description: undefined,
+    //         priorityId: "high",
+    //         sizeId: "xLarge"
+    //     },
+    //     {
+    //         id: 4,
+    //         statusId: "inProgress",
+    //         content: "Bài 4",
+    //         description: undefined,
+    //         priorityId: "medium",
+    //         sizeId: "mediumS"
+    //     },
+    //     {
+    //         id: 5,
+    //         statusId: "new",
+    //         content: "Bài 2",
+    //         description: undefined,
+    //         priorityId: "urgent",
+    //         sizeId: "small"
+    //     },
+    //     {
+    //         id: 6,
+    //         statusId: "delay",
+    //         content: "Bài 5",
+    //         description: "medium",
+    //         priorityId: undefined,
+    //         sizeId: "tiny"
+    //     },
+    //     {
+    //         id: 7,
+    //         statusId: "new",
+    //         content: "Bài 8",
+    //         description: undefined,
+    //         priorityId: "low",
+    //         sizeId: "small"
+    //     },
+    //     {
+    //         id: 8,
+    //         statusId: "delay",
+    //         content: "Bài 10",
+    //         description: undefined,
+    //         priorityId: "high",
+    //         sizeId: "large"
+    //     }
+    // ]
 }
 export const tasksSlice = createSlice({
     name: 'tasks',
@@ -180,11 +182,12 @@ export const tasksSlice = createSlice({
             return state;
         },
         addTask: (state, action) => {
-            const { statusId, inputValue } = action.payload;
+            const { id, statusId, content } = action.payload;
+            console.log({ id, statusId, content });
             const newTask: Task = {
-                id: uuidv4(),
+                id,
                 statusId,
-                content: inputValue,
+                content,
                 description: undefined,
                 priorityId: undefined,
                 sizeId: undefined,
