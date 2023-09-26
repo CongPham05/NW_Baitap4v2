@@ -99,24 +99,7 @@ const GroupTable: React.FC<GroupTableProps> = () => {
         updatedMap[taskId] = !updatedMap[taskId];
         setShowEditTitleMap(updatedMap);
     };
-    const changeTitleTask = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEditTitleTask(e.target.value);
 
-    }
-    const saveTitleTask = async (task: Task) => {
-        (editTitleTask.length) && dispatch(updTask({ id: task.id, content: editTitleTask }));
-        const updatedMap = { ...showEditTitleMap };
-        updatedMap[task.id] = !updatedMap[task.id];
-        setShowEditTitleMap(updatedMap);
-        try {
-            const fetchData = await requestApi(`todo/${task.id}`, 'PATCH', { content: editTitleTask })
-            const message = fetchData.data.message;
-            toast.success(message, { position: 'bottom-right' })
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
     const handleShowModal = (selectedTask: Task) => {
         setIsModal(true);
         setModalTask(selectedTask);
@@ -146,31 +129,34 @@ const GroupTable: React.FC<GroupTableProps> = () => {
                                         <div className="dark:text-white flex justify-center items-center w-20 min-w-[80px] ">
                                             <span className="text-sm ">{index + 1}</span>
                                         </div>
-                                        {!showEditTitleMap[task.id] &&
-                                            <div className='dark-border flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] 
-                                        font-semibold group'
-                                                onClick={() => { handleToggleEditTitle(task.id) }}
-                                            >
-                                                <span className=' w-5 mr-1.5'>
-                                                    <ChartPieIcon />
-                                                </span>
-                                                <div className='flex-1 flex items-center w-full h-full group:hover:border-[#0969da] '>
-                                                    <span className=' dark:text-white hover:underline hover:text-[#0969da] cursor-pointer pl-2 font-normal '
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleShowModal(task);
-                                                        }}
-                                                    >
-                                                        {task.content}
-                                                    </span>
-                                                    <div className='flex flex-1 items-center justify-end  pr-5'>
-                                                        <PencilIcon className='w-3 opacity-30 dark:text-white group-hover:opacity-100' />
-                                                    </div>
 
+                                        <div className='dark-border flex items-center border-r border-solid text-sm w-[300px] min-w-[300px] 
+                                        font-semibold group'
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleShowModal(task);
+                                            }}
+                                        >
+                                            <span className=' w-5 mr-1.5'>
+                                                <ChartPieIcon />
+                                            </span>
+                                            <div className='flex-1 flex items-center w-full h-full group:hover:border-[#0969da] '>
+                                                <span className=' dark:text-white hover:underline hover:text-[#0969da] cursor-pointer pl-2 font-normal '
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleShowModal(task);
+                                                    }}
+                                                >
+                                                    {task.content}
+                                                </span>
+                                                <div className='flex flex-1 items-center justify-end  pr-5'>
+                                                    <PencilIcon className='w-3 opacity-30 dark:text-white group-hover:opacity-100' />
                                                 </div>
+
                                             </div>
-                                        }
-                                        {showEditTitleMap[task.id] && (
+                                        </div>
+
+                                        {/* {showEditTitleMap[task.id] && (
                                             <div className='flex items-center gap-2 dark-border  border-r text-sm  w-[300px] min-w-[300px]  
                                         text-[#656d76]  font-semibold pl-2' >
                                                 <span className=' w-5 mr-1.5'>
@@ -194,7 +180,7 @@ const GroupTable: React.FC<GroupTableProps> = () => {
                                                 </div>
                                             </div>
 
-                                        )}
+                                        )} */}
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.priority} /></div>
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.size} /></div>
