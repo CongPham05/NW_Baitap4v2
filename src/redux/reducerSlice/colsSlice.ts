@@ -25,6 +25,28 @@ const initialState: Column[] = [
         colorId: "green"
     },
 ];
+// const initialState: Column[] = [
+//     {
+//         id: 1,
+//         content: "New",
+//         colorId: "blue"
+//     },
+//     {
+//         id: 2,
+//         content: "In progress",
+//         colorId: "brown"
+//     },
+//     {
+//         id: 3,
+//         content: "Delay",
+//         colorId: "red"
+//     },
+//     {
+//         id: 4,
+//         content: "Done",
+//         colorId: "green"
+//     },
+// ];
 export const dataSlice = createSlice({
     name: 'columns',
     initialState,

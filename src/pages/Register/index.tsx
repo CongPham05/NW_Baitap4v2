@@ -10,14 +10,15 @@ import { toast } from 'react-toastify';
 const Register: React.FC = () => {
     const navigate = useNavigate();
     const {
-        register,
-        handleSubmit,
+        register, handleSubmit, watch,
         formState: { errors },
     } = useForm<RegisterFormValues>();
 
     const onSubmit: SubmitHandler<RegisterFormValues> = async (credentials) => {
+        const { userName, email, password } = credentials;
+        const credential = { userName, email, password };
         try {
-            await requestApi('auth/register', 'POST', credentials);
+            await requestApi('auth/register', 'POST', credential);
             navigate('/login');
         } catch (error) {
             const err = error as Error | AxiosError;
@@ -31,7 +32,7 @@ const Register: React.FC = () => {
             }
         }
     };
-
+    const password = watch('password');
     return (
         <div className="min-h-screen bg-purple-400 flex justify-center items-center fixed top-0 right-0 w-full">
             <div className="absolute w-60 h-60 rounded-xl bg-purple-300 -top-5 -left-16 z-0 transform rotate-45 hidden md:block">
@@ -75,14 +76,28 @@ const Register: React.FC = () => {
                                 message: "Password must be more than 10 characters"
                             }
                         })}
-                            type="password" placeholder="Password" name='password'
+                            type="password"
+                            placeholder="Password"
+                            name='password'
                             className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
                         <p className='text-red-500 text-sm mb-4'>{errors.password?.message}</p>
+
+                        <input  {...register('confirmPassword', {
+                            required: 'Confirm Password is required',
+                            validate: (value) => value === password || 'Passwords do not match',
+                        })}
+                            type="password"
+                            placeholder="Confirm Password"
+                            name="confirmPassword"
+                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none"
+                        />
+                        <p className="text-red-500 text-sm mb-4">{errors.confirmPassword?.message}</p>
+
                     </div>
                     <div className="text-center mt-6">
-                        <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl"
+                        <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl hover:bg-purple-500"
                         >Create Account</button>
-                        <p className="mt-4 text-sm">Already Have An Account? <span className="underline cursor-pointer">
+                        <p className="mt-4 text-sm">Already have an account? <span className="underline cursor-pointer">
                             <Link to='/login'>Sign In.</Link>
                         </span>
                         </p>

@@ -144,7 +144,6 @@ const GroupTable: React.FC<GroupTableProps> = () => {
                                                 <div className='flex flex-1 items-center justify-end  pr-5'>
                                                     <PencilIcon className='w-3 opacity-30 dark:text-white group-hover:opacity-100' />
                                                 </div>
-
                                             </div>
                                         </div>
                                         <div className='w-[300px] min-w-[300px] '><OptionsTable task={task} typeOption={type.status} /></div>

@@ -82,10 +82,13 @@ const Login: React.FC = () => {
                         })}
                             type="password" placeholder="Password" name='password'
                             className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                        <p className=' text-xs mb-4 underline cursor-pointer'>
+                            <Link to='/forgot-password'>Forgot password?</Link>
+                        </p>
                         <p className='text-red-500 text-sm mb-4'>{errors.password?.message}</p>
                     </div>
                     <div className="text-center mt-6">
-                        <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl">Login Now</button>
+                        <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl hover:bg-purple-500">Login Now</button>
                         <p className="mt-4 text-sm">Don't have an account? <span className="underline cursor-pointer">
                             <Link to='/register'>Sign Up.</Link>
                         </span>

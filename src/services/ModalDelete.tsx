@@ -46,7 +46,6 @@ const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, content,
             } catch (error) {
                 console.log(error);
             }
-
         }
 
         else if (type === "ALLTASK") {
@@ -58,7 +57,6 @@ const ModalDelete: React.FC<Props> = ({ isOpen, onClose, inputId, type, content,
             } catch (error) {
                 console.log(error);
             }
-
         }
         onClose();
     }
