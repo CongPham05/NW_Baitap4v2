@@ -10,6 +10,8 @@ import PrivateRoutes from './PrivateRoutes';
 import PublicRoutes from './PublicRoutes';
 import Layout from '../Layout/Layout';
 import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
+import NotiReset from '../services/NotiReset';
 
 const Routers: React.FC = () => {
     return (
@@ -19,6 +21,8 @@ const Routers: React.FC = () => {
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="password_reset/*" element={<ResetPassword />} />
+                <Route path="notification-password" element={<NotiReset />} />
             </Route>
             <Route element={<PrivateRoutes />}>
                 <Route path="view" element={<Layout />} >

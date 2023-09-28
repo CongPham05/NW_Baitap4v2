@@ -23,7 +23,6 @@ const ForgotPassword: React.FC = () => {
         dispatch(controlLoading(true));
         try {
             const res = await requestApi('auth/forgot-password', 'POST', credentials);
-            console.log(res.data.message);
             setMessage(res.data.message);
             dispatch(controlLoading(false));
         } catch (error) {
@@ -55,45 +54,42 @@ const ForgotPassword: React.FC = () => {
                         Enter your user account's verified email address and we will send you a password reset link!</p>
                 </div>
                 {
-                    !message &&
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="space-y-4">
-                            <input {...register('email', {
-                                required: 'Email is required',
-                                pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                    message: 'Invalid email address',
-                                },
-                            })}
-                                type="email" placeholder="Email" name='email'
-                                className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
-                            <p className='text-red-500 text-sm mb-4'>{errors.email?.message}</p>
-                        </div>
+                    !message ?
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className="space-y-4">
+                                <input {...register('email', {
+                                    required: 'Email is required',
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: 'Invalid email address',
+                                    },
+                                })}
+                                    type="email" placeholder="Email" name='email'
+                                    className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                                <p className='text-red-500 text-sm mb-4'>{errors.email?.message}</p>
+                            </div>
 
-                        <div className="text-center mt-6">
-                            <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl hover:bg-purple-500">Send</button>
-                            <p className="mt-4 text-sm">Don't have an account? <span className="underline cursor-pointer">
-                                <Link to='/register'>Sign Up.</Link>
-                            </span>
-                            </p>
-                        </div>
+                            <div className="text-center mt-6">
+                                <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl hover:bg-purple-500">Send</button>
+                                <p className="mt-4 text-sm">Don't have an account? <span className="underline cursor-pointer">
+                                    <Link to='/register'>Sign Up.</Link>
+                                </span>
+                                </p>
+                            </div>
 
-                    </form>
-                }
-                {
-                    message &&
-                    <div className="space-y-4">
-                        <div className='border flex items-center justify-center bg-green-200 ' >
-                            <p className='w-80 text-center text-sm p-4 font-semibold text-gray-700 tracking-wide cursor-pointer '>
-                                {message}
-                            </p>
+                        </form>
+                        : <div className="space-y-4">
+                            <div className=' flex items-center justify-center bg-green-200 ' >
+                                <p className='w-80 text-center text-sm p-4 font-semibold text-gray-700 tracking-wide cursor-pointer '>
+                                    {message}
+                                </p>
+                            </div>
+                            <div className="text-center mt-6">
+                                <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl hover:bg-purple-500">
+                                    <Link to='/login'> Return to sign in</Link>
+                                </button>
+                            </div>
                         </div>
-                        <div className="text-center mt-6">
-                            <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl hover:bg-purple-500">
-                                <Link to='/login'> Return to sign in</Link>
-                            </button>
-                        </div>
-                    </div>
                 }
             </div>
             <div className="w-40 h-40 absolute bg-purple-300 rounded-full top-0 right-12 hidden md:block"></div>

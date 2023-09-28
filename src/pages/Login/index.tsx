@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify';
@@ -8,10 +8,16 @@ import requestApi from '../../helpers/api';
 import axios, { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
 import { controlLoading } from '../../redux/reducerSlice/loadingSlice';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const Login: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [passwordShow, setPasswordShow] = useState(false);
+    const togglePasswordVisiblity = () => {
+        setPasswordShow(!passwordShow);
+    };
+
     const {
         register,
         handleSubmit,
@@ -69,19 +75,32 @@ const Login: React.FC = () => {
                             className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
                         <p className='text-red-500 text-sm mb-4'>{errors.email?.message}</p>
 
-                        <input   {...register('password', {
-                            required: 'Password is required',
-                            minLength: {
-                                value: 4,
-                                message: "Password must be more than 4 characters"
-                            },
-                            maxLength: {
-                                value: 10,
-                                message: "Password must be more than 10 characters"
+                        <div className='relative'>
+                            <input   {...register('password', {
+                                required: 'Password is required',
+                                minLength: {
+                                    value: 4,
+                                    message: "Password must be more than 4 characters"
+                                },
+                                maxLength: {
+                                    value: 15,
+                                    message: "Password must be more than 15s characters"
+                                }
+                            })}
+                                type={passwordShow ? "text" : "password"}
+                                placeholder="Password"
+                                name='password'
+                                className="block text-sm py-3 px-4 rounded-lg w-full border outline-none " />
+                            {
+                                passwordShow ?
+                                    <i onClick={togglePasswordVisiblity} className='hover:cursor-pointer absolute top-[30%] right-4' >
+                                        <EyeIcon className='w-5 text-gray-500' />
+                                    </i>
+                                    : <i onClick={togglePasswordVisiblity} className='hover:cursor-pointer absolute top-[30%] right-4'  >
+                                        <EyeSlashIcon className='w-5 text-gray-500' />
+                                    </i>
                             }
-                        })}
-                            type="password" placeholder="Password" name='password'
-                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                        </div>
                         <p className=' text-xs mb-4 underline cursor-pointer'>
                             <Link to='/forgot-password'>Forgot password?</Link>
                         </p>
