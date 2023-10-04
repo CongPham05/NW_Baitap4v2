@@ -183,7 +183,6 @@ export const tasksSlice = createSlice({
         },
         addTask: (state, action) => {
             const { id, statusId, content } = action.payload;
-            console.log({ id, statusId, content });
             const newTask: Task = {
                 id,
                 statusId,

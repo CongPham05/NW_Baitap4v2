@@ -69,6 +69,10 @@
     transition-property: opacity, transform;
 }
 
+.modal-user_edit {
+    width: 40%;
+}
+
 .close-button {
     align-self: flex-end;
     margin    : 8px;

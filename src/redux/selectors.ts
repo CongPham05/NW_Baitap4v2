@@ -16,6 +16,7 @@ export const colIdGroupActive = (state: RootState) => state.data.groupType;
 export const statusIconSelector = (state: RootState) => state.statusIconsTable;
 
 export const tasksSelector = (state: RootState) => state.tasks;
+export const authSelector = (state: RootState) => state.auth;
 export const colsSelector = (state: RootState) => state.columns;
 export const filterSearchSelector = (state: RootState) => state.filters.search;
 

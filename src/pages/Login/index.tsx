@@ -9,6 +9,7 @@ import axios, { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
 import { controlLoading } from '../../redux/reducerSlice/loadingSlice';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { fetchDataAuth } from '../../redux/reducerSlice/authSlice';
 
 const Login: React.FC = () => {
     const dispatch = useDispatch();
@@ -17,7 +18,6 @@ const Login: React.FC = () => {
     const togglePasswordVisiblity = () => {
         setPasswordShow(!passwordShow);
     };
-
     const {
         register,
         handleSubmit,
@@ -30,8 +30,7 @@ const Login: React.FC = () => {
             const res = await requestApi('auth/login', 'POST', credentials);
             localStorage.setItem('access_token', res.data.tokens.accessToken);
             localStorage.setItem('refresh_token', res.data.tokens.refreshToken);
-            localStorage.setItem('inforUser', JSON.stringify(res.data.user));
-
+            dispatch(fetchDataAuth({ auth: res.data.user }))
             dispatch(controlLoading(false));
             navigate('/view/board');
         } catch (error) {

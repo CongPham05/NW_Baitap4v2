@@ -36,12 +36,12 @@ const Dropdowns: React.FC<DropdownsProps> = ({ task, typeOption }) => {
             const fetchData = await requestApi(`todo/${id}`, 'PATCH', newTask)
             const message = fetchData.data.message;
             toast.success(message, { position: 'bottom-right', autoClose: 2000 })
+            dispatch(updCol({ id, newTask }));
+            dispatch(sortTable(sortStatus));
 
         } catch (error) {
             console.log(error);
         }
-        dispatch(updCol({ id, newTask }));
-        dispatch(sortTable(sortStatus));
     };
     return (
         <Menu as="div" className="relative inline-block text-left w-full">

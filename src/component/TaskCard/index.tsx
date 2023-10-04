@@ -3,7 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { XMarkIcon, ChartPieIcon } from '@heroicons/react/24/outline'
 import { Task } from "../../types"
 import WrapOptions from "../WrapOptions/WrapOptions";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ModalEdit from "../../services/ModalEdit";
 import ModalDelete from "../../services/ModalDelete";
 
@@ -18,10 +18,10 @@ function TaskCard({ task, handleDisabledDnDKit }: Props) {
     const [isModal, setIsModal] = useState(false);
     const [isModalDelete, setIsModalDelete] = useState(false);
 
-    const handleShowModal = () => {
+    const handleShowModal = useCallback(() => {
         handleDisabledDnDKit();
-        setIsModal(!isModal)
-    }
+        setIsModal(!isModal);
+    }, [handleDisabledDnDKit, isModal]);
 
     const { setNodeRef, attributes, listeners, transform, transition, isDragging }
         = useSortable({

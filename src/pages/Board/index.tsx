@@ -12,7 +12,7 @@ import {
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-import { Column, Task } from "../../types"
+import { Column, Id, Task } from "../../types"
 import ColumnContainer from "../../component/ColumnContainer";
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../../component/TaskCard";
@@ -153,14 +153,11 @@ function Board() {
 
         // Dropping a Task over another Task
         if (isActiveATask && isOverATask) {
-            console.log({ activeId, overId });
             dispatch(reorderTasks({ activeId, overId }))
         }
-
         const isOverAColumn = over.data.current?.type === "Column";
         //Dropping a Task over a column
         if (isActiveATask && isOverAColumn) {
-            console.log({ activeId, overId });
             try {
                 await requestApi(`todo/${activeId}`, 'PATCH', { statusId: overId })
 

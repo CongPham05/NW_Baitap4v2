@@ -18,6 +18,7 @@ const Register: React.FC = () => {
     const togglePasswordConfirm = () => {
         setConfirmPasswordShow(!confirmPasswordShow);
     };
+
     const {
         register, handleSubmit, watch,
         formState: { errors },

@@ -20,6 +20,7 @@ import dataReducer from './reducerSlice/currenColTableSlice'
 import statusIconsSlice from './reducerSlice/statusIconsSlice';
 import loadingReducer from './reducerSlice/loadingSlice';
 import themeReducer from './reducerSlice/themeSlice';
+import authReducer from './reducerSlice/authSlice';
 
 const persistConfig = {
     key: 'root',
@@ -27,6 +28,7 @@ const persistConfig = {
     storage,
 }
 const rootReducer = combineReducers({
+    auth: authReducer,
     theme: themeReducer,
     loadingGlobal: loadingReducer,
     data: dataReducer,

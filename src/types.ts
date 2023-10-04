@@ -1,6 +1,12 @@
 export type Id = string | number;
 export type IdCol = string | number | undefined;
 
+
+export type PropUser = {
+    id?: number,
+    userName?: string,
+    email?: string,
+}
 export type PropTasks = {
     defaultTaskList: Task[],
     taskList: Task[],
@@ -59,6 +65,11 @@ export type Credentials = {
 export type RegisterFormValues = {
     userName: string;
     email: string;
+    password: string;
+    confirmPassword: string;
+}
+export type ChangePasswordForm = {
+    oldPassword: string
     password: string;
     confirmPassword: string;
 }

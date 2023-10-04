@@ -27,9 +27,9 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
     const [descContent, setDescContent] = useState(task.description);
     const [isModalDelete, setIsModalDelete] = useState(false);
 
+
     const handleShowModalDel = () => {
         setIsModalDelete(false);
-        onRequestClose();
     }
     const handleShowInput = () => {
         setEditMode(!editMode)
@@ -58,8 +58,6 @@ const ModalEdit: React.FC<ModalProps> = ({ onRequestClose, task }) => {
         const description = descContent;
         try {
             const fetchData = await requestApi(`todo/${id}`, 'PATCH', { description })
-            const idTodo = fetchData.data.res.id;
-            console.log(idTodo);
             const message = fetchData.data.message;
             toast.success(message, { position: 'bottom-right' })
         } catch (error) {
