@@ -6,6 +6,7 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { EyeIcon, EyeSlashIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { useOnClickOutside } from 'usehooks-ts';
+import clsx from 'clsx';
 
 interface Props {
     userId?: number;
@@ -18,6 +19,15 @@ const FormChangePassword: React.FC<Props> = ({ userId, label }) => {
     const [oldPasswordShow, setOldPasswordShow] = useState(false);
     const [passwordShow, setPasswordShow] = useState(false);
     const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
+    const [clickCount, setClickCount] = useState(0);
+
+    const handleClick = (e: React.MouseEvent<Element, MouseEvent>) => {
+        setClickCount(clickCount + 1);
+        if (clickCount === 1) {
+            handleShowEdit(e)
+            setClickCount(0);
+        }
+    };
 
     const toggleOldPasswordShow = () => {
         setOldPasswordShow(!oldPasswordShow)
@@ -40,6 +50,7 @@ const FormChangePassword: React.FC<Props> = ({ userId, label }) => {
     }
 
     const handleOutsideClick = (e: MouseEvent) => {
+        setClickCount(0);
         if (showEdit) {
             e.stopPropagation();
             setShowEdit(!showEdit);
@@ -67,12 +78,13 @@ const FormChangePassword: React.FC<Props> = ({ userId, label }) => {
     };
     useOnClickOutside(ref, handleOutsideClick);
     const password = watch('password');
-
     return (
         <>
             {!showEdit ?
-                <div className=' px-5 flex flex-col  py-5 hover:bg-slate-100 hover:cursor-pointer'
-                    onClick={(e) => handleShowEdit(e)}
+                <div ref={ref} className={
+                    clsx('px-5 flex flex-col border-t border-b py-5 hover:bg-slate-50 hover:cursor-pointer',
+                        clickCount && ' border-blue-500')}
+                    onClick={(e) => handleClick(e)}
                 >
                     <div className='flex justify-between items-center'>
                         <p>{label}</p>
@@ -81,7 +93,7 @@ const FormChangePassword: React.FC<Props> = ({ userId, label }) => {
                             <p className=' ml-1 text-sm '>Edit</p>
                         </div>
                     </div>
-                    <p className='text-gray-500' >************</p>
+                    <p className='text-gray-500 pt-3' >************</p>
                 </div>
                 : <div ref={ref} className=' bg-gray-100 py-5' >
                     <div className=' px-5'>
@@ -94,7 +106,7 @@ const FormChangePassword: React.FC<Props> = ({ userId, label }) => {
                                             required: 'Old password is required',
                                         })}
                                             type={oldPasswordShow ? "text" : "password"} placeholder="Old Password" name='oldPassword'
-                                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none bg-white" />
                                         {
                                             oldPasswordShow ?
                                                 <i onClick={toggleOldPasswordShow} className='hover:cursor-pointer absolute top-[30%] right-4' >
@@ -121,7 +133,7 @@ const FormChangePassword: React.FC<Props> = ({ userId, label }) => {
                                             type={passwordShow ? "text" : "password"}
                                             placeholder="New Password "
                                             name='password'
-                                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none " />
+                                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none bg-white " />
                                         {
                                             passwordShow ?
                                                 <i onClick={togglePasswordVisiblity} className='hover:cursor-pointer absolute top-[30%] right-4' >
@@ -141,7 +153,7 @@ const FormChangePassword: React.FC<Props> = ({ userId, label }) => {
                                             type={confirmPasswordShow ? "text" : "password"}
                                             placeholder="Confirm Password"
                                             name="confirmPassword"
-                                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none"
+                                            className="block text-sm py-3 px-4 rounded-lg w-full border outline-none bg-white"
                                         />
                                         {
                                             confirmPasswordShow ?

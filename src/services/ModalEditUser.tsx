@@ -40,7 +40,7 @@ const ModalEditUser: React.FC<Props> = ({ isOpen, onClose, user }) => {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
-                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-1/2 translate-y-[-30px] ">
+                            <Dialog.Panel className="relative transform bg-white text-left shadow-xl transition-all sm:my-8 w-1/2 translate-y-[-30px] ">
                                 <div className="flex items-center justify-between bg-gray-500 px-4 py-3">
                                     <div className='text-lg font-semibold text-white'>Profile Settings</div>
                                     <div className=" block mt-3 w-full px-2 py-2 text-sm font-semibold hover:opacity-60 cursor-pointer sm:mt-0 sm:w-auto"
@@ -50,14 +50,11 @@ const ModalEditUser: React.FC<Props> = ({ isOpen, onClose, user }) => {
                                         <XMarkIcon className='w-5 text-white' />
                                     </div>
                                 </div>
-                                <div className="bg-white  pb-4 ">
+                                <div className="bg-white  pb-4 overflow-x-hidden h-[345px] ">
                                     <div className="flex flex-col">
                                         <EditUser userId={user.id} active={user.userName} label={"User Name"} />
-                                        <div className='border-b'></div>
                                         <EditUser userId={user.id} active={user.email} label={"Email"} />
-                                        <div className='border-b'></div>
                                         <FormChangePassword userId={user.id} label={"Password"} />
-                                        <div className='border-b'></div>
                                     </div>
                                 </div>
                             </Dialog.Panel>
