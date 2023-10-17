@@ -35,7 +35,7 @@ export default function requestApi(endpoint: string, method: string, body: unkno
                     const result = await instance.post(`${BASE_URL}auth/refresh-token`, {
                         refresh_token: localStorage.getItem('refresh_token')
                     })
-                    console.log(result);
+
                     const { accessToken, refreshToken } = result.data;
                     localStorage.setItem('access_token', accessToken)
                     localStorage.setItem('refresh_token', refreshToken)

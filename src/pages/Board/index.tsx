@@ -12,7 +12,7 @@ import {
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-import { Column, Id, Task } from "../../types"
+import { Column, Task } from "../../types"
 import ColumnContainer from "../../component/ColumnContainer";
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskCard from "../../component/TaskCard";
@@ -42,20 +42,20 @@ function Board() {
     );
 
     useEffect(() => {
-        const hasCalledApi = localStorage.getItem('hasCalledApi');
-        if (!hasCalledApi) {
-            const fetchData = async () => {
-                try {
-                    const res = await requestApi('todo', 'GET', []);
-                    const fetchData = res.data.todos;
-                    dispatch(fetchTodoList({ dataList: fetchData }))
-                    localStorage.setItem('hasCalledApi', 'true');
-                } catch (error) {
-                    console.error(error);
-                }
+        // const hasCalledApi = localStorage.getItem('hasCalledApi');
+        // if (!hasCalledApi) {
+        const fetchData = async () => {
+            try {
+                const res = await requestApi('todo', 'GET', []);
+                const fetchData = res.data.todos;
+                dispatch(fetchTodoList({ dataList: fetchData }))
+                // localStorage.setItem('hasCalledApi', 'true');
+            } catch (error) {
+                console.error(error);
             }
-            fetchData();
         }
+        fetchData();
+        // }
 
     }, [dispatch])
 

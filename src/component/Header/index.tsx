@@ -6,6 +6,7 @@ import ModalEditUser from '../../services/ModalEditUser';
 import { authSelector } from '../../redux/selectors';
 import { useDispatch } from 'react-redux';
 import { resetUser } from '../../redux/reducerSlice/authSlice';
+import socket from '../../socket';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -26,13 +27,14 @@ const Header: React.FC = () => {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('inforUser');
         localStorage.removeItem('hasCalledApi');
-        dispatch(resetUser())
+        dispatch(resetUser());
+        socket.disconnect();
         navigate('/login');
     };
     return (
         <div className='dark-bg pt-5 '>
             <div className=' header px-8 py-3 flex justify-between'>
-                <h1 className="text-xl font-semibold dark-text">{`${user?.userName}'s untitled project`}</h1>
+                <h1 className="text-2xl font-bold dark-text ">Github Project</h1>
                 <div className='flex items-center '>
                     <span className='font-bold mr-4 dark-text hover:underline cursor-pointer'
                         onClick={() => setIsModalDelete(true)}

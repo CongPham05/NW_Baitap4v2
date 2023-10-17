@@ -30,9 +30,16 @@ const Login: React.FC = () => {
             const res = await requestApi('auth/login', 'POST', credentials);
             localStorage.setItem('access_token', res.data.tokens.accessToken);
             localStorage.setItem('refresh_token', res.data.tokens.refreshToken);
-            dispatch(fetchDataAuth({ auth: res.data.user }))
+
+            dispatch(fetchDataAuth({ auth: res.data.user }));
             dispatch(controlLoading(false));
-            navigate('/view/board');
+
+            if (res.data.user.roles === 'admin') {
+                navigate('/dashboard');
+                return;
+            }
+            navigate('/view');
+
         } catch (error) {
             dispatch(controlLoading(false));
             const err = error as Error | AxiosError;

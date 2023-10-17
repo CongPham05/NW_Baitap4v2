@@ -5,9 +5,9 @@ import { PropUser } from '../../types';
 const initialState: PropUser = {
     id: undefined,
     userName: undefined,
-    email: undefined
+    email: undefined,
+    roles: undefined,
 }
-
 
 export const authSlice = createSlice({
     name: 'auth',

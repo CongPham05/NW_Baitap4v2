@@ -21,6 +21,8 @@ import statusIconsSlice from './reducerSlice/statusIconsSlice';
 import loadingReducer from './reducerSlice/loadingSlice';
 import themeReducer from './reducerSlice/themeSlice';
 import authReducer from './reducerSlice/authSlice';
+import userReducer from './reducerSlice/listUserSlice';
+
 
 const persistConfig = {
     key: 'root',
@@ -29,6 +31,7 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
     auth: authReducer,
+    user: userReducer,
     theme: themeReducer,
     loadingGlobal: loadingReducer,
     data: dataReducer,
