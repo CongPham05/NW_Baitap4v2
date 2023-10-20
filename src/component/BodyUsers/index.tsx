@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import requestApi from '../../helpers/api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../redux/reducerSlice/listUserSlice';
-import { useNavigate } from 'react-router-dom';
+import { authSelector } from '../../redux/selectors';
+import socket from '../../socket';
 
 interface User {
     id: number;
     userName: string;
     email: string;
 }
+interface UserUpdate {
+    id: number;
+    userName: string;
+    email: string;
+    status: boolean;
+}
 
 interface BodyUsersProps { }
 
 const BodyUsers: React.FC<BodyUsersProps> = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-
+    const auth = useSelector(authSelector);
     const [listUser, setListUser] = useState<User[]>([])
+    const [updateUser, setUpdateUser] = useState<UserUpdate[]>([])
+    const [onlineUsers, setOnlineUsers] = useState<{ userId: number }[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,10 +40,25 @@ const BodyUsers: React.FC<BodyUsersProps> = () => {
             }
         }
         fetchData();
-    }, [dispatch])
-    const handleOnClick = (userId: number) => {
-        navigate(`/admin/chats/${userId}`);
-    }
+    }, [dispatch]);
+
+    useEffect(() => {
+        socket.emit("new-user-add", auth.id);
+        socket.on("get-users", (users) => {
+            setOnlineUsers(users);
+        });
+    }, [auth])
+
+    useEffect(() => {
+        const socketIds = new Set(onlineUsers.map(socket => socket.userId));
+        const updatedUsers = listUser.map(user => ({
+            ...user,
+            status: socketIds.has(user.id) ? true : false,
+        }));
+        setUpdateUser(updatedUsers)
+    }, [listUser, onlineUsers])
+
+
     return (
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -62,7 +85,7 @@ const BodyUsers: React.FC<BodyUsersProps> = () => {
             </thead>
             <tbody>
                 {
-                    listUser.map((user) => (
+                    updateUser.map((user) => (
                         <tr key={user.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td className="w-4 p-4">
                                 <div className="flex items-center">
@@ -75,14 +98,19 @@ const BodyUsers: React.FC<BodyUsersProps> = () => {
                                 <div className="text-base font-semibold">{user.userName}</div>
                             </th>
                             <td className="px-6 py-4"> {user.email} </td>
-                            <td className="px-6 py-4">
-                                <div className="flex items-center">
-                                    <a className="cursor-pointer rounded-full mr-5 font-bold hover:underline"
-                                        onClick={() => handleOnClick(user.id)}
-                                    >Chat</a>
-                                    <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-1"></div>Online
 
-                                </div>
+                            <td className="px-6 py-4">
+                                {
+                                    user.status
+                                        ? <div className='flex items-center'>
+                                            <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-1"></div>
+                                            <span>Online</span>
+                                        </div>
+                                        : <div className='flex items-center'>
+                                            <div className="h-2.5 w-2.5 rounded-full bg-slate-500 mr-1"></div>
+                                            <span>Offline</span>
+                                        </div>
+                                }
                             </td>
                             <td className="px-6 py-4">
                                 <a href="#" type="button" data-modal-target="editUserModal"

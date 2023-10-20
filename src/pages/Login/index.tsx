@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { controlLoading } from '../../redux/reducerSlice/loadingSlice';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { fetchDataAuth } from '../../redux/reducerSlice/authSlice';
+import socket from '../../socket';
 
 const Login: React.FC = () => {
     const dispatch = useDispatch();
@@ -35,9 +36,11 @@ const Login: React.FC = () => {
             dispatch(controlLoading(false));
 
             if (res.data.user.roles === 'admin') {
+                socket.connect();
                 navigate('/dashboard');
                 return;
             }
+            socket.connect();
             navigate('/view');
 
         } catch (error) {

@@ -1,17 +1,20 @@
 export type Id = string | number;
 export type IdCol = string | number | undefined;
 
-export type dataMess = {
-    message: string;
-    userName: string;
-}
-
 export type PropUser = {
     id?: number,
     userName?: string,
     email?: string,
     roles?: string
 }
+export type PropUserBoard = {
+    id: number,
+    userName: string,
+    email: string,
+    roles: string,
+    status: boolean,
+}
+
 export type PropTasks = {
     defaultTaskList: Task[],
     taskList: Task[],

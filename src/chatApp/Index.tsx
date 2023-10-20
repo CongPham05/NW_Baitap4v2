@@ -1,14 +1,14 @@
 import React from "react";
 import ChatContent from "./ChatContent";
-import ChatInputBox from "./ChatInputBox";
-
-const Chat: React.FC = () => {
+interface Props {
+    chatId?: number;
+}
+const Chat: React.FC<Props> = ({ chatId }) => {
 
 
     return (
-        <div className=" h-[430px] flex flex-col">
-            <ChatContent />
-            <ChatInputBox />
+        <div className=" h-[470px] flex flex-col">
+            <ChatContent chatId={chatId} />
         </div>
     );
 };

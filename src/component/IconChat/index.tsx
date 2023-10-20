@@ -1,15 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ChatApp from '../../chatApp/Index';
 import ChatHeader from '../../chatApp/ChatHeader';
 import ConfirmChat from '../../chatApp/ConfirmChat';
+import requestApi from '../../helpers/api';
+import { authSelector } from '../../redux/selectors';
+import { useSelector } from 'react-redux';
+import socket from '../../socket';
+
 
 const IconChat: React.FC = () => {
+    const auth = useSelector(authSelector);
     const [confirmChat, setConfirmChat] = useState(false);
     const [showChat, setShowChat] = useState(false);
+    const [chatId, setChatId] = useState(undefined);
+    const [onlineUser, setOnlineUser] = useState(null);
 
-    const handleShowConfirm = () => setConfirmChat(!confirmChat);
+    const handleShowConfirm = () => {
+        setConfirmChat(!confirmChat);
+    }
     const handleCloseChat = () => setConfirmChat(false);
     const handleShowAppChat = () => setShowChat(true);
+
+    useEffect(() => {
+        const getChat = async () => {
+            try {
+                const res = await requestApi('chat', 'POST', { senderId: auth.id, receiverId: 1 })
+                setChatId(res.data.id)
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getChat();
+    }, [auth.id]);
+    useEffect(() => {
+        socket.emit("new-user-add", auth.id);
+        socket.on("get-users", (users) => {
+            const statusOnline = users.some((user: { userId: number; }) => user.userId === 1)
+            setOnlineUser(statusOnline)
+        });
+    }, [auth])
 
     return (
         <div className='relative'>
@@ -24,8 +53,8 @@ const IconChat: React.FC = () => {
             </div>
             {confirmChat && (
                 <div className='absolute bottom-24 right-8 w-[378px] bg-white rounded-2xl shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]'>
-                    <ChatHeader handleCloseChat={handleCloseChat} />
-                    {!showChat ? <ConfirmChat handleShowAppChat={handleShowAppChat} /> : <ChatApp />}
+                    <ChatHeader handleCloseChat={handleCloseChat} onlineUser={onlineUser} />
+                    {!showChat ? <ConfirmChat handleShowAppChat={handleShowAppChat} /> : <ChatApp chatId={chatId} />}
                 </div>
             )}
         </div>

@@ -4,11 +4,11 @@ import { NavLink } from 'react-router-dom';
 
 
 const nav__links = [
-    {
-        path: '/admin/dashboard',
-        display: 'Dashboard',
-        icon: <ListBulletIcon className='w-5' />
-    },
+    // {
+    //     path: '/admin/dashboard',
+    //     display: 'Dashboard',
+    //     icon: <ListBulletIcon className='w-5' />
+    // },
     {
         path: '/admin/users',
         display: 'Users',

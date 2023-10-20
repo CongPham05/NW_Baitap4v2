@@ -99,7 +99,8 @@ const Register: React.FC = () => {
                                 autoComplete="current-password"
                                 name='password'
                                 className="block text-sm py-3 px-4 rounded-lg w-full border outline-none pb-2.5 pt-4 text-gray-900 bg-transparent border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
-
+                            <label className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+                                Password</label>
                             {
                                 passwordShow ?
                                     <i onClick={togglePasswordVisiblity} className='hover:cursor-pointer absolute top-[30%] right-4' >
@@ -109,8 +110,7 @@ const Register: React.FC = () => {
                                         <EyeSlashIcon className='w-5 text-gray-500' />
                                     </i>
                             }
-                            <label className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-                                Password</label>
+
                             <p className='text-red-500 text-sm mb-4'>{errors.password?.message}</p>
                         </div>
                         <div className='relative'>
@@ -123,6 +123,8 @@ const Register: React.FC = () => {
                                 autoComplete="current-confirmPassword"
                                 name="confirmPassword"
                                 className="block text-sm py-3 px-4 rounded-lg w-full border outline-none pb-2.5 pt-4 text-gray-900 bg-transparent border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
+                            <label className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+                                Confirm Password</label>
                             {
                                 confirmPasswordShow ?
                                     <i onClick={togglePasswordConfirm} className='hover:cursor-pointer absolute top-[30%] right-4' >
@@ -132,11 +134,9 @@ const Register: React.FC = () => {
                                         <EyeSlashIcon className='w-5 text-gray-500' />
                                     </i>
                             }
-                            <label className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-                                Confirm Password</label>
+
                             <p className="text-red-500 text-sm mb-4">{errors.confirmPassword?.message}</p>
                         </div>
-
                     </div>
                     <div className="text-center mt-6">
                         <button type='submit' className="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl hover:bg-purple-500"

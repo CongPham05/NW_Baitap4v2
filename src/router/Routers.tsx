@@ -15,7 +15,6 @@ import NotiReset from '../services/NotiReset';
 import LayoutAdmin from '../LayoutAdmin/LayoutAdmin';
 import Dashboard from '../dashboard';
 import BodyUsers from '../component/BodyUsers';
-import BodyChat from '../component/BodyChats';
 import LayoutRouteChat from '../LayoutRouteChat/LayoutRouteChat';
 
 const Routers: React.FC = () => {
@@ -31,11 +30,10 @@ const Routers: React.FC = () => {
             </Route>
             <Route element={<PrivateRoutes />}>
                 <Route path="admin" element={<LayoutAdmin />} >
-                    <Route index element={<Navigate to="dashboard" />} />
+                    <Route index element={<Navigate to="users" />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="users" element={<BodyUsers />} />
                     <Route path="chats" element={<LayoutRouteChat />} >
-                        <Route path=":userId" element={<BodyChat />} />
                     </Route>
                 </Route>
                 <Route path="view" element={<Layout />} >

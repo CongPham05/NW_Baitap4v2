@@ -22,6 +22,7 @@ import loadingReducer from './reducerSlice/loadingSlice';
 import themeReducer from './reducerSlice/themeSlice';
 import authReducer from './reducerSlice/authSlice';
 import userReducer from './reducerSlice/listUserSlice';
+import userBoardReducer from './reducerSlice/litsUserBoard';
 
 
 const persistConfig = {
@@ -42,6 +43,7 @@ const rootReducer = combineReducers({
     priority: priorityReducer,
     size: sizeReducer,
     colorOption: colorReducer,
+    usersBoard: userBoardReducer,
 
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)
