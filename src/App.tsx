@@ -5,11 +5,19 @@ import { ToastContainer } from 'react-toastify';
 import { SyncLoader } from 'react-spinners';
 import { useSelector } from "react-redux";
 import { loadingSelector, themSelector } from './redux/selectors';
+import { useEffect } from 'react';
+import socket from './socket';
 
-function App() {
+const App: React.FC = () => {
   const loading = useSelector(loadingSelector)
   const enabled = useSelector(themSelector)
 
+  useEffect(() => {
+    socket.connect();
+    return (() => {
+      socket.disconnect();
+    })
+  }, [])
 
   const override = {
     position: 'fixed' as const,
@@ -23,6 +31,8 @@ function App() {
     alignItems: 'center',
     justifyContent: 'center',
   }
+
+
   return (
     <div className='App'>
       <div className={clsx(' bg-[#f6f8fa] flex flex-col h-full', enabled && 'dark')}>

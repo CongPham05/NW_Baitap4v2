@@ -2,7 +2,7 @@ export type Id = string | number;
 export type IdCol = string | number | undefined;
 
 export type PropUser = {
-    id?: number,
+    id: number,
     userName?: string,
     email?: string,
     roles?: string

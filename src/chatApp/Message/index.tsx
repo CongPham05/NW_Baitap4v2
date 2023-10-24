@@ -7,9 +7,8 @@ import { format } from "timeago.js";
 interface Message {
     senderId?: number;
     text: string;
-    chatId?: number;
+    chatId?: number | null;
     createdAt: Date;
-    receiverId?: number;
 }
 interface MessageProps {
     message: Message;

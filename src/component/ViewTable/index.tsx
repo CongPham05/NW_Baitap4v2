@@ -45,7 +45,6 @@ const headTable = [
 const ViewTable: React.FC<HeadTableProps> = () => {
     const dispatch = useDispatch();
     const columnIdGroupActive = useSelector(colIdGroupActive)
-
     const tasks = useSelector(todosRemainningSelector);
     const taskRoot = useSelector(tasksSelector);
     const columnIdSort = useSelector(colIdSelector);
@@ -94,6 +93,7 @@ const ViewTable: React.FC<HeadTableProps> = () => {
         dispatch(resetOtherGroup({ currentColumnId: statusId }));
 
     };
+
     return (
         < >
             <div className='flex border-y min-w-max dark-bg dark-border   '>
@@ -135,11 +135,6 @@ const ViewTable: React.FC<HeadTableProps> = () => {
                             </div>
                         )
                     })}
-                    {/* <div className="  flex justify-start">
-                        <div className='p-2 dark-hover hover:bg-[#eeeff2] '>
-                            <PlusIcon className='w-[21px]' />
-                        </div>
-                    </div> */}
                 </div>
             </div>
             {

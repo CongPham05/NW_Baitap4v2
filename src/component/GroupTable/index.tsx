@@ -22,6 +22,7 @@ const type = {
 const GroupTable: React.FC<GroupTableProps> = () => {
     const dispatch = useDispatch();
     const dataList = useSelector(todosRemainningSelector);
+
     const columns = useSelector(colsSelector)
     const columnIdGroupActive = useSelector(colIdGroupActive)
 

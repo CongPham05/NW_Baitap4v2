@@ -15,13 +15,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ handleCloseChat, onlineUser }) 
             <div className="flex flex-row items-center space-x-1.5">
                 <Avatar />
                 <div className="flex flex-col ">
-                    <p className="text-xs text-gray-600 font-bold">Admin</p>
+                    <p className="text-sm text-gray-600 font-bold">Admin</p>
                     {onlineUser ?
                         <div className="flex items-center">
-                            <p className="text-xs text-gray-600 font-bold mr-1">online</p>
+                            <p className="text-xs text-gray-500 font-bold mr-1">Online</p>
                             <div className="h-2.5 w-2.5 rounded-full bg-green-500 "></div>
                         </div> :
-                        <p className="text-xs text-gray-600 font-bold">offline</p>}
+                        <p className="text-xs text-gray-500 font-bold">Offline</p>}
                 </div>
             </div>
 

@@ -34,7 +34,6 @@ const BodyUsers: React.FC<BodyUsersProps> = () => {
                 const dataUser = fetchData.filter((data: { roles: string; }) => data.roles !== 'admin')
                 dispatch(getUsers({ dataUser }));
                 setListUser(dataUser);
-
             } catch (error) {
                 console.error(error);
             }
@@ -97,9 +96,9 @@ const BodyUsers: React.FC<BodyUsersProps> = () => {
                             <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                 <div className="text-base font-semibold">{user.userName}</div>
                             </th>
-                            <td className="px-6 py-4"> {user.email} </td>
+                            <td className="px-6 py-4 text-base "> {user.email} </td>
 
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4 ">
                                 {
                                     user.status
                                         ? <div className='flex items-center'>

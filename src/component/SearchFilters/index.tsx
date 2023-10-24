@@ -7,6 +7,7 @@ interface SearchProps { }
 const Search: React.FC<SearchProps> = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState('')
+    console.log(search);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);

@@ -12,32 +12,51 @@ interface MessageProps {
     chatId: number;
     createdAt: Date;
 }
-interface ChatContentProps {
-    chatId?: number;
+interface SendMessageProps {
+    chatId: number;
+    receiverId: number;
+    senderId: number;
+    text: string;
+    createdAt: Date;
 }
+interface ChatContentProps {
+    chatId: number;
+}
+
 const ChatContent: React.FC<ChatContentProps> = ({ chatId }) => {
     const auth = useSelector(authSelector);
     const [newMessage, setNewMessage] = useState<string>('');
     const [messages, setMessages] = useState<MessageProps[]>([]);
     const scroll = useRef<HTMLDivElement>(null);
-    const [sendMessage, setSendMessage] = useState(null);
-    const [receivedMessage, setReceivedMessage] = useState(null);
+    const [sendMessage, setSendMessage] = useState<SendMessageProps | null>(null);
+    const [receivedMessage, setReceivedMessage] = useState<SendMessageProps | null>(null);
 
     const handleChange = (newMessage: React.SetStateAction<string>) => {
         setNewMessage(newMessage)
     }
+    const handleInputEnter = async (e: KeyboardEvent) => {
+        if (e.key === 'Enter' && newMessage.length > 0) {
+            handleSend();
+        }
+    };
 
-    const handleSend = async (e: React.MouseEvent) => {
-        e.preventDefault()
+    const handleSend = async () => {
+        if (!newMessage.length) { return; }
+
         const message = {
             senderId: auth.id,
             text: newMessage,
             chatId: chatId,
         }
-        const receiverId = 1;
-        setSendMessage({ ...message, receiverId })
         try {
             const { data } = await requestApi('message', 'POST', message);
+            setSendMessage({
+                chatId,
+                senderId: auth.id,
+                text: newMessage,
+                createdAt: data.createdAt,
+                receiverId: 1
+            });
             setMessages([...messages, data]);
             setNewMessage('');
 
@@ -45,6 +64,7 @@ const ChatContent: React.FC<ChatContentProps> = ({ chatId }) => {
             console.log(error);
         }
     }
+
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -55,7 +75,7 @@ const ChatContent: React.FC<ChatContentProps> = ({ chatId }) => {
             }
         }
         if (chatId !== null) fetchMessages();
-    }, [chatId])
+    }, [chatId]);
 
     useEffect(() => {
         if (sendMessage !== null) {
@@ -70,15 +90,20 @@ const ChatContent: React.FC<ChatContentProps> = ({ chatId }) => {
     }, []);
 
     useEffect(() => {
-        if (receivedMessage !== null) {
-            setMessages([...messages, receivedMessage]);
+        if (receivedMessage !== null && receivedMessage?.chatId === chatId) {
+            const { chatId, senderId, text, createdAt } = receivedMessage;
+            setMessages(
+                [
+                    ...messages,
+                    { chatId, senderId, text, createdAt }
+                ])
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [receivedMessage]);
+
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
-    }, [messages])
+    }, [messages]);
 
     return (
         <>
@@ -90,6 +115,7 @@ const ChatContent: React.FC<ChatContentProps> = ({ chatId }) => {
                     <InputEmoji
                         value={newMessage}
                         onChange={handleChange}
+                        onKeyDown={handleInputEnter}
                     />
                 </div>
                 <div className="flex items-center cursor-pointer text-xs font-medium text-center text-white"
